@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'waitlist.apps.WaitlistConfig',
+    'studentview.apps.StudentviewConfig',
 ]
 
 MIDDLEWARE = [
