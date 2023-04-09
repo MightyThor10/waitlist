@@ -7,8 +7,9 @@ def register(request):
         form =UserRegisterForm(request.POST)
         if form.is_valid():
             form.save() #automatically hashes password and saves user
-            username = form.cleaned_data.get('username')
-            messages.success(request,f'Account created for {username}')
+            first = form.cleaned_data.get('first_name')
+            last = form.cleaned_data.get('last_name')
+            messages.success(request,f'Account created for {first} {last}')
             return redirect('student-home')
     else:
         form =UserRegisterForm()
