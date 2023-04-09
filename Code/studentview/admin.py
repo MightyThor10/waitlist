@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import StudentTicket, ClassWaitlist
+
+admin.site.register(ClassWaitlist)
+admin.site.register(StudentTicket)

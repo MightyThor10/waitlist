@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views import generic
+from .models import ClassWaitlist
 
 # Create your views here.
 classes = [
@@ -27,3 +29,6 @@ def home(request):
 def joinWaitlist(request):
     return render(request,'studentview/join_waitlist.html', {'title': 'join waitlist'})
 
+class DetailView(generic.DetailView):
+    model = ClassWaitlist
+    template_name = 'studentview/detail.html'
