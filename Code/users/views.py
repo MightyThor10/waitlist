@@ -10,7 +10,7 @@ def register(request):
             first = form.cleaned_data.get('first_name')
             last = form.cleaned_data.get('last_name')
             messages.success(request,f'Account created for {first} {last}')
-            return redirect('student-home')
+            return redirect('login')
     else:
         form =UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
