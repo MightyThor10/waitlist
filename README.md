@@ -40,7 +40,7 @@ directory of the waitlist repository:
 cd [PATH_TO_REPO]/waitlist
 
 # To activate the virtual environment
-source .venv/bin/activate
+source waitlist-env/bin/activate
 
 # To start the django server
 python3 Code/manage.py runserver
