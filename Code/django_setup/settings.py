@@ -80,7 +80,8 @@ DATABASES = {
         'NAME': 'WaitlistWM$postgres',
         'USER': 'super',
         'PASSWORD': 'Foo12345',
-        'HOST': 'WaitlistWM-3129.postgres.pythonanywhere-services.com'
+        'HOST': 'WaitlistWM-3129.postgres.pythonanywhere-services.com',
+        'PORT': '13129'
     }
 }
 
