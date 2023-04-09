@@ -36,8 +36,21 @@
         </nav>
     </header>
 
-<div class="container">
+
+<div class="column-md-8">
+
+    {% if messages %}
+        {% for message in messages %}
+            <!--    prints out message and the tag of message -->
+
+            <div class ="alert alert-{{message.tags}}">
+                {{ message }}</div>
+        {% endfor %}
+    {% endif%}
+
+
     {% block content %}{% endblock %} <!--Block of data that will be rewritten when inherited-->
+
 </div>
 
 
