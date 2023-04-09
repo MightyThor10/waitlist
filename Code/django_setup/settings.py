@@ -76,8 +76,10 @@ WSGI_APPLICATION = 'django_setup.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'USER': 'super',
+        'PASSWORD': 'Foo12345',
+        'HOST': 'WaitlistWM-3129.postgres.pythonanywhere-services.com'
     }
 }
 
