@@ -15,15 +15,18 @@ def home(request):
     message =  ""
 
     if (not currentUser.is_anonymous):
-        if (groupOfUser.id == 1):
-            classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
-        if (groupOfUser.id == 2):
-            studentTickets = StudentTicket.objects.filter(student=currentUser.pk)
-            classPKs = set()
-            for ticket in studentTickets:
-                classPKs.add(ticket.class_waitlist.pk)
-            classPKs = list(classPKs)
-            classes = ClassWaitlist.objects.filter(pk__in=classPKs)
+        if (groupOfUser):
+            if (groupOfUser.id == 1):
+                classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
+            elif (groupOfUser.id == 2):
+                studentTickets = StudentTicket.objects.filter(student=currentUser.pk)
+                classPKs = set()
+                for ticket in studentTickets:
+                    classPKs.add(ticket.class_waitlist.pk)
+                classPKs = list(classPKs)
+                classes = ClassWaitlist.objects.filter(pk__in=classPKs)
+        else:
+            message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
         message = "Log in to view your classes!"
          
