@@ -22,7 +22,7 @@ build-job:
     - deactivate
   artifacts:
     paths:
-      - $(pwd)/Code/venv
+      - Code/env
 
 
 test-job:
