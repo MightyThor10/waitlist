@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from .models import ClassWaitlist
+from django.contrib.auth.models import User, Group
 
 # Create your views here.
 classes = [
@@ -31,4 +32,10 @@ def joinWaitlist(request):
 
 class DetailView(generic.DetailView):
     model = ClassWaitlist
+    
     template_name = 'studentview/detail.html'
+
+# def detail(request, pk):
+#     class_waitlist = get_object_or_404(ClassWaitlist)
+#     return render(request, "studentview/detail.html", class_waitlist) 
+
