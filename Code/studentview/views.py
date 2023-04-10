@@ -9,16 +9,20 @@ from django.contrib.auth.models import User, Group
 def home(request):
 
     currentUser = request.user
-    groupOfUser = currentUser.groups.all().first()
+    groupOfUser = currentUser.groups.all().first() #if we ever add more groups than profs and students, change this
 
     classes = []
     message =  ""
+    isProfessor = False
+    isStudent = False
 
     if (not currentUser.is_anonymous):
         if (groupOfUser):
             if (groupOfUser.id == 1):
                 classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
+                isProfessor = True
             elif (groupOfUser.id == 2):
+                isStudent = True
                 studentTickets = StudentTicket.objects.filter(student=currentUser.pk)
                 classPKs = set()
                 for ticket in studentTickets:
@@ -29,13 +33,14 @@ def home(request):
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
         message = "Log in to view your classes!"
-         
+    
+    
 
     context={
         'classes':classes,
         'message':message,
-        'isProfessor':groupOfUser.id==1,
-        'isStudent':groupOfUser.id==2
+        'isProfessor':isProfessor,
+        'isStudent':isStudent
     }
     return render(request,'studentview/home.html', context)
 
