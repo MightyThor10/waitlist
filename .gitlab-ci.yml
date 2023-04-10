@@ -9,10 +9,13 @@ build-job:
   script:
     - cd Code
     - pwd
+    - echo "Installing pip..."
+    - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    - python get-pip.py --user
     - echo "Installing virtualenv..."
-    - pip install virtualenv
+    - ~/.local/bin/pip install virtualenv
     - echo "creating virtual environment for the project..."
-    - virtualenv $(pwd)/venv
+    - ~/.local/bin/virtualenv $(pwd)/venv
     - source $(pwd)/venv/bin/activate
     - echo "Installing requirements..."
     - pip install -r requirements.txt
@@ -20,6 +23,7 @@ build-job:
   artifacts:
     paths:
       - $(pwd)/venv
+
 
 
 test-job:
