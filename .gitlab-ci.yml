@@ -11,7 +11,7 @@ build-job:
     - cd Code
     - pwd
     - echo "creating virtual environment for the project..."
-    - ~/.local/bin/virtualenv $(pwd)/venv
+    - virtualenv $(pwd)/venv
     - source $(pwd)/venv/bin/activate
     - echo "Installing requirements..."
     - pip install -r requirements.txt
@@ -35,12 +35,3 @@ test-job:
     - sudo pkill python
     - deactivate
     - echo "All tests successfully passed."
-
-build image:
-  image: docker
-  services: 
-    - docker:dind
-  script:
-    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
-    - docker build -t $CI_REGISTRY_IMAGE .
-    - docker push $CI_REGISTRY_IMAGE
