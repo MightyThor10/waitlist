@@ -4,7 +4,7 @@
     <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredIdentifiers">
         <list>
-          <option value="Code.django_setup.urls.users" />
+          <option value="Code.waitlist.urls.users" />
         </list>
       </option>
     </inspection_tool>
