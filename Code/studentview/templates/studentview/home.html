@@ -1,6 +1,7 @@
 {% extends "studentview/base.html" %}
 {% block content %}
 <h1> My Classes</h1>
+<h2> {{message}}</h2>
     {% for class in classes %}
     <div class = "studentclassbox">
 
@@ -9,15 +10,16 @@
         <p>{{class.schedule}}</p>
         <p>CRN: {{class.crn}}</p>
         <p>{{class.waitlistposition}}</p>
-        <button onclick="window.location.href='/studenthome/{{class.pk}}/detail';">  Expand Details</button>
+        <button onclick="window.location.href='/studenthome/{{class.pk}}/detail';">  Expand Details </button>
     </div>
 
     {%endfor%}
 
-<a href="/studenthome/joinwaitlist" target="_blank">
-    <button>
-        Join Waitlist
-    </button>
-</a>
+    <a href="/studenthome/joinwaitlist" target="_blank">
+        
+        <button>
+            Join Waitlist
+        </button>
+    </a>
 
 {% endblock content %}
