@@ -8,6 +8,9 @@ build-job:
   stage: build
   script:
     - cd Code
+    - pwd
+    - echo "Installing virtualenv..."
+    - pip install virtualenv
     - echo "creating virtual environment for the project..."
     - virtualenv $(pwd)/venv
     - source $(pwd)/venv/bin/activate
@@ -17,6 +20,7 @@ build-job:
   artifacts:
     paths:
       - $(pwd)/venv
+
 
 test-job:
   stage: test
