@@ -1,7 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
 from .models import ClassWaitlist, StudentTicket
 from django.contrib.auth.models import User, Group
+from django.utils import timezone
 
 # Create your views here.
 
@@ -45,7 +46,27 @@ def home(request):
     return render(request,'studentview/home.html', context)
 
 def joinWaitlist(request):
-    return render(request,'studentview/join_waitlist.html', {'title': 'join waitlist'})
+
+    if request.method =='POST':
+        
+        classid = request.POST['classID']
+        waitlist = ClassWaitlist.objects.get(id=classid)
+        user = request.user
+        if waitlist and user:
+            st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
+        response = redirect('/studenthome/')
+        return response
+
+
+    else:
+        classes = ClassWaitlist.objects.all()
+
+        context = {
+            'title': 'join waitlist',
+            'classes': classes
+            }
+
+        return render(request,'studentview/join_waitlist.html', context)
 
 class DetailView(generic.DetailView):
     model = ClassWaitlist
