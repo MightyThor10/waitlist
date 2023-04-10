@@ -24,6 +24,10 @@ test-job:
   script:
     - cd Code
     - pwd
+    - python --version
+    - pip --version
+    - echo "Installing requirements..."
+    - pip install -r requirements.txt
     - echo "Running unit tests..."
     - python manage.py test studentview
     - python manage.py test users
