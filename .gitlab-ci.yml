@@ -12,26 +12,22 @@ build-job:
     - pwd 
     - python --version
     - pip --version
-    - echo "Installing virtualenv..."
-    - pip install virtualenv
-    - echo "creating virtual environment for the project..."
-    - virtualenv $(pwd)/venv
-    - source $(pwd)/venv/bin/activate
     - echo "Installing requirements..."
     - pip install -r requirements.txt
-    - deactivate
   artifacts:
     paths:
-      - Code/env
-
+      - Code/
 
 test-job:
+  image: python:3.9
   stage: test
   script:
     - cd Code
     - pwd
-    - echo "Activating virtual environment..."
-    - source $(pwd)/venv/bin/activate
+    - python --version
+    - pip --version
+    - echo "Installing requirements..."
+    - pip install -r requirements.txt
     - echo "Running unit tests..."
     - python manage.py test studentview
     - python manage.py test users
@@ -39,6 +35,5 @@ test-job:
     - python manage.py runserver &
     - sleep 10
     - curl -sSf http://localhost:8000 > /dev/null && echo "Server is Up"
-    - sudo pkill python
-    - deactivate
+    - pkill python
     - echo "All tests successfully passed."
