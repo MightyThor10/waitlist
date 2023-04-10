@@ -33,7 +33,9 @@ def home(request):
 
     context={
         'classes':classes,
-        'message':message
+        'message':message,
+        'isProfessor':groupOfUser.id==1,
+        'isStudent':groupOfUser.id==2
     }
     return render(request,'studentview/home.html', context)
 

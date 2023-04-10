@@ -15,11 +15,24 @@
 
     {%endfor%}
 
-    <a href="/studenthome/joinwaitlist" target="_blank">
-        
-        <button>
-            Join Waitlist
-        </button>
-    </a>
+    {% if user.is_authenticated %}
+
+    {% if isProfessor %}
+        <a href="/studenthome/joinwaitlist" target="_blank">
+            <button>
+                Create Waitlist
+            </button>
+        </a>
+    {% endif %}
+
+    {% if isStudent %}
+        <a href="/studenthome/joinwaitlist" target="_blank">
+            <button>
+                Join Waitlist
+            </button>
+        </a>
+    {% endif %}
+
+    {% endif %}
 
 {% endblock content %}
