@@ -28,6 +28,8 @@ build-job:
 test-job:
   stage: test
   script:
+    - cd Code
+    - pwd
     - echo "Activating virtual environment..."
     - source $(pwd)/venv/bin/activate
     - echo "Running unit tests..."
