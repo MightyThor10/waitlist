@@ -9,11 +9,6 @@ build-job:
   script:
     - cd Code
     - pwd
-    - echo "Installing pip..."
-    - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    - python get-pip.py --user
-    - echo "Installing virtualenv..."
-    - ~/.local/bin/pip install virtualenv
     - echo "creating virtual environment for the project..."
     - ~/.local/bin/virtualenv $(pwd)/venv
     - source $(pwd)/venv/bin/activate
@@ -23,8 +18,6 @@ build-job:
   artifacts:
     paths:
       - $(pwd)/venv
-
-
 
 test-job:
   stage: test
@@ -41,3 +34,12 @@ test-job:
     - sudo pkill python
     - deactivate
     - echo "All tests successfully passed."
+
+build image:
+  image: docker
+  services: 
+    - docker:dind
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
