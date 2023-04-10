@@ -48,7 +48,7 @@ def home(request):
 def joinWaitlist(request):
 
     if request.method =='POST':
-        
+        # TODO: Add error checking here, this currently has none lol
         classid = request.POST['classID']
         waitlist = ClassWaitlist.objects.get(id=classid)
         user = request.user
@@ -56,8 +56,6 @@ def joinWaitlist(request):
             st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
         response = redirect('/studenthome/')
         return response
-
-
     else:
         classes = ClassWaitlist.objects.all()
 
@@ -67,6 +65,30 @@ def joinWaitlist(request):
             }
 
         return render(request,'studentview/join_waitlist.html', context)
+    
+def createWaitlist(request):
+
+    if request.method =='POST':
+        name = request.POST['className']
+        code = request.POST['classCode']
+        crn = request.POST['classCRN']
+        schedule = request.POST['classSchedule']
+        sortType = request.POST['classSort']
+        term = request.POST['classTerm']
+        datePosted = timezone.now()
+        user = request.user
+        # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
+        
+        cwl = ClassWaitlist.objects.create(className=name, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user)
+        
+        response = redirect('/studenthome/')
+        return response
+
+    else:
+        context = {
+            'title': 'join waitlist'
+            }
+        return render(request,'studentview/create_class.html', context)
 
 class DetailView(generic.DetailView):
     model = ClassWaitlist
