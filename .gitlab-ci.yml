@@ -22,7 +22,7 @@ build-job:
     - deactivate
   artifacts:
     paths:
-      - $(pwd)/Code/venv
+      - Code/env
 
 
 test-job:
@@ -30,7 +30,6 @@ test-job:
   script:
     - cd Code
     - pwd
-    - python --version
     - echo "Activating virtual environment..."
     - source $(pwd)/venv/bin/activate
     - echo "Running unit tests..."
