@@ -21,4 +21,4 @@ def register(request):
 
 
 def profile(request):
-    return render(request, 'user/profile.html')
+    return render(request, 'users/profile.html')
