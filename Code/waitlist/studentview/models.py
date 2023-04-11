@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 
 class ClassWaitlist(models.Model):
-    className = models.CharField(max_length=200, name="className")
-    classCode = models.CharField(max_length=200) #ex: CSCI425
+    className = models.CharField(max_length=200, name='className', db_column='class_name')
+    classCode = models.CharField(max_length=200, db_column='class_code') #ex: CSCI425
     crn = models.IntegerField(default=0)
     schedule = models.CharField(max_length=200)
-    sortType = models.CharField(max_length=200) #we should probably change this to an enum eventually
+    sortType = models.CharField(max_length=200, db_column='sort_type') #we should probably change this to an enum eventually
     term = models.CharField(max_length=200) #we should probably turn this into some kind of custom datatype eventually
     professor = models.ForeignKey(User, on_delete=models.CASCADE) #dunno if cascade is nessicary.
     date_added = models.DateTimeField("date published")
