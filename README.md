@@ -8,6 +8,9 @@ Andrew Allan
 Ryan Gainor
 Sean Lindell
 Isaac Mast
+Sayyed Hadi Razmjo
+Annemarie Zheng
+Stephen Hoag
 
 Waitlist is tool meant to remedy the hassle that students
 and professors are met with when course registration rolls
@@ -55,4 +58,6 @@ server was started, which should match this address:
 http://127.0.0.1:8000/
 
 Open the address in a browser to view Waitlist.
+
+More documentation under Artifacts folder.
 
