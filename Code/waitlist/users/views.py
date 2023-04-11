@@ -8,8 +8,12 @@ def register(request):
         form =UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save() #automatically hashes password and saves user
-            group = Group.objects.get(name='Student')
-            user.groups.add(group)
+            if (request.POST.get('isProfessor', False)):
+                group = Group.objects.get(name='Professor')
+                user.groups.add(group)
+            else:
+                group = Group.objects.get(name='Student')
+                user.groups.add(group)
             user.save()
             first = form.cleaned_data.get('first_name')
             last = form.cleaned_data.get('last_name')

@@ -7,6 +7,9 @@
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Create an Account</legend>
                 {{ form|crispy }}
+                <label for="isProfessor"> Are you a professor: </label><br>
+                <input type="checkbox" id="isProfessor" name="isProfessor" value="isProfessor">
+                
             </fieldset>
             <div class ="form-group">
                 <button class="btn btn-outline-info" type="submit"> Sign Up </button>

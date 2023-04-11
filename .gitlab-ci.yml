@@ -1,0 +1,39 @@
+stages:
+  - build
+  - test
+  - release
+  - deploy
+
+build-job:
+  image: python:3.9
+  stage: build
+  script:
+    - cd Code
+    - pwd 
+    - python --version
+    - pip --version
+    - echo "Installing requirements..."
+    - pip install -r requirements.txt
+  artifacts:
+    paths:
+      - Code/
+
+test-job:
+  image: python:3.9
+  stage: test
+  script:
+    - cd Code
+    - pwd
+    - python --version
+    - pip --version
+    - echo "Installing requirements..."
+    - pip install -r requirements.txt
+    - echo "Running unit tests..."
+    - python manage.py test studentview
+    - python manage.py test users
+    - echo "Checking the server..."
+    - python manage.py runserver &
+    - sleep 10
+    - curl -sSf http://localhost:8000 > /dev/null && echo "Server is Up"
+    - pkill python
+    - echo "All tests successfully passed."
