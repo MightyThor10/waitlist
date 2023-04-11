@@ -8,7 +8,7 @@ build-job:
   image: python:3.9
   stage: build
   script:
-    - cd Code/waitlist
+    - cd Code
     - pwd 
     - python --version
     - pip --version
@@ -22,13 +22,14 @@ test-job:
   image: python:3.9
   stage: test
   script:
-    - cd Code/waitlist
+    - cd Code
     - pwd
     - python --version
     - pip --version
     - echo "Installing requirements..."
     - pip install -r requirements.txt
     - echo "Running unit tests..."
+    - cd waitlist
     - python manage.py test studentview
     - python manage.py test users
     - echo "Checking the server..."
