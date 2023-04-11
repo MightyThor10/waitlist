@@ -14,6 +14,7 @@ import os
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,12 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8ub7r006_l25z*ojh$9%g9=&8ib49*n3f)*+jjm%rm^8ht(#@&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DATABASE WARNING: don't run with debug turned on in production! (Python Anywhere, git:main)
 DEBUG = True
 
-ALLOWED_HOSTS = ['waitlistwm.pythonanywhere.com']
-
-
-# Application definition
+ALLOWED_HOSTS = ['waitlistwm.pythonanywhere.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -75,20 +74,54 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'waitlist.wsgi.application'
 
+# These settings correspond to the postgres server configuration for WaitlistWM on Python Anywhere
+# See https://www.pythonanywhere.com/user/WaitlistWM/databases/
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+POSTGRES_DB_NAME = 'postgres'
+POSTGRES_SUPER_USER = 'super'
+POSTGRES_SUPER_USER_PW = 'Foo12345'
+POSTGRES_SSH_HOSTNAME = 'WaitlistWM-3129.postgres.pythonanywhere-services.com'
+POSTGRES_SSH_HOST_PORT = 13129
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'super',
-        'PASSWORD': 'Foo12345',
-        'HOST': 'WaitlistWM-3129.postgres.pythonanywhere-services.com',
-        'PORT': '13129'
+# (DEBUG only)
+# Troubleshooting:
+#
+# These settings should match your localhost and the port of the active ssh tunnel
+# ssh -L [ LOCAL_SSH_PORT ]:WaitlistWM-3129.postgres.pythonanywhere-services.com:13129 WaitlistWM@ssh.pythonanywhere.com
+#
+# error: could not listen on port [ LOCAL SSH_PORT ]
+#   - This port is already in use, try a different port number.
+# ssh: ... Connection refused
+#   - Have you created an ssh key and added it to our Python Anywhere server's authorized keys?
+#   - See README.md
+# DisallowedHost: django server starts but requests return DisallowedHost Exception
+#   - Add your non-default [ LOCALHOST ] value to ALLOWED_HOSTS
+
+LOCALHOST = '127.0.0.1'
+LOCAL_SSH_PORT = 5432
+
+if DEBUG == True:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'NAME': POSTGRES_DB_NAME,
+            'USER': POSTGRES_SUPER_USER,
+            'PASSWORD': POSTGRES_SUPER_USER_PW,
+            'HOST': LOCALHOST,
+            'PORT': LOCAL_SSH_PORT
+        },
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': POSTGRES_DB_NAME,
+            'USER': POSTGRES_SUPER_USER,
+            'PASSWORD': POSTGRES_SUPER_USER_PW,
+            'HOST': POSTGRES_SSH_HOSTNAME,
+            'PORT': POSTGRES_SSH_HOST_PORT
+        }
+    }
 
 
 # Password validation
@@ -126,6 +159,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -133,4 +169,3 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'student-home'
-
