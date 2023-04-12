@@ -1,0 +1,25 @@
+{% extends "studentview/base.html" %}
+{% block content %}
+        <h1>Waitlist Details</h1>
+        
+        <legend> <h2> Name: {{ classwaitlist.className }}  - Code: {{ classwaitlist.classCode}} </h2> </legend>
+
+        <legend> <h2> Professor: {{ classwaitlist.professor }} </h2> </legend>
+
+        <legend> <h2> CRN: {{ classwaitlist.crn }} </h2> </legend>
+
+        <legend> <h2> Schedule: {{ classwaitlist.schedule }} </h2> </legend>
+
+        <legend> <h2> Sort By: {{ classwaitlist.sortType }} </h2> </legend>
+        
+        <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
+
+        <h3> Students In Line: </h3>
+
+        {% for studentticket in classwaitlist.studentticket_set.all %}
+
+            <p> {{ studentticket }}</p>
+
+        {% endfor %}
+        
+{% endblock content %}

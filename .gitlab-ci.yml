@@ -14,9 +14,9 @@ build-job:
     - pip --version
     - echo "Installing requirements..."
     - pip install -r requirements.txt
-  # artifacts:
-  #   paths:
-  #     - Code/
+  artifacts:
+    paths:
+      - Code/
 
 test-job:
   image: python:3.9
