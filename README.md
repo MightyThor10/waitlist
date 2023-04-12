@@ -40,13 +40,15 @@ version of the repository. Then, navigate to the base
 directory of the waitlist repository:
 
 
-cd [PATH_TO_REPO]/waitlist
+cd [PATH_TO_REPO]/waitlist/Code
 
-# To activate the virtual environment
-source waitlist-env/bin/activate
+Then create a new virtual environment, activate it, and run 'pip install -r requirements.txt' to get required dependencies
+(Information on creating and activating python virtual environments: https://docs.python.org/3/library/venv.html)
+
+Then run the following command to start the server:
 
 # To start the django server
-python3 Code/manage.py runserver
+python3 manage.py runserver
 
 
 The command prompt should indicate where the development
