@@ -20,6 +20,7 @@ import waitlist.users.views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('waitlist.studentview.urls')),
     path('studenthome/', include('waitlist.studentview.urls')),
     path('user/', include('waitlist.users.urls')),
 ]

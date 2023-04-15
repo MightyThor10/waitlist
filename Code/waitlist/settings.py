@@ -100,28 +100,39 @@ POSTGRES_SSH_HOST_PORT = 13129
 LOCALHOST = '127.0.0.1'
 LOCAL_SSH_PORT = 5432
 
-if DEBUG == True:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',
-            'NAME': POSTGRES_DB_NAME,
-            'USER': POSTGRES_SUPER_USER,
-            'PASSWORD': POSTGRES_SUPER_USER_PW,
-            'HOST': LOCALHOST,
-            'PORT': LOCAL_SSH_PORT
-        },
+### Use the following for the sqlite database
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': POSTGRES_DB_NAME,
-            'USER': POSTGRES_SUPER_USER,
-            'PASSWORD': POSTGRES_SUPER_USER_PW,
-            'HOST': POSTGRES_SSH_HOSTNAME,
-            'PORT': POSTGRES_SSH_HOST_PORT
-        }
-    }
+}
+
+### Use the following for postgres based database
+
+# if DEBUG == True:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#             'NAME': POSTGRES_DB_NAME,
+#             'USER': POSTGRES_SUPER_USER,
+#             'PASSWORD': POSTGRES_SUPER_USER_PW,
+#             'HOST': LOCALHOST,
+#             'PORT': LOCAL_SSH_PORT
+#         },
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': POSTGRES_DB_NAME,
+#             'USER': POSTGRES_SUPER_USER,
+#             'PASSWORD': POSTGRES_SUPER_USER_PW,
+#             'HOST': POSTGRES_SSH_HOSTNAME,
+#             'PORT': POSTGRES_SSH_HOST_PORT
+#         }
+#     }
 
 
 # Password validation
