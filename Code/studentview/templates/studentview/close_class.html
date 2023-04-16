@@ -1,0 +1,14 @@
+{% extends "studentview/base.html" %}
+{% block content %}
+    <h1>Close Class</h1>
+    {% for message in messages %} 
+        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+    {% endfor %} 
+    <form method="post">
+        {% csrf_token %}
+        <label for="classID">Class ID:</label>
+        <input type="text" name="classID" required>
+        <br>
+        <button type="submit">Close Class</button>
+    </form>
+{% endblock content %}

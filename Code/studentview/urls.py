@@ -7,5 +7,6 @@ urlpatterns = [
     path('joinwaitlist/',views.joinWaitlist, name='join-waitlist'),
     path('leavewaitlist/', views.leaveWaitlist, name='leave_waitlist'),
     path('createclass/',views.createWaitlist, name='create-class'),
-    path("<int:pk>/detail/", views.DetailView.as_view(), name='detail')
+    path("<int:pk>/detail/", views.DetailView.as_view(), name='detail'),
+    path('closeclass/', views.close_class, name='close_class'),
 ]
