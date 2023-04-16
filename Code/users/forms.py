@@ -24,6 +24,7 @@ class StudentProfileForm(forms.ModelForm):
         ('SO', 'Sophomore'),
         ('JR', 'Junior'),
         ('SR', 'Senior'),
+        ('NA', 'Not Applicable'),
     ]
     academic_status = forms.ChoiceField(choices=ACADEMIC_STATUS_CHOICES, required=False)
 
