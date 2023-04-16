@@ -3,13 +3,14 @@ from django.contrib.auth.models import User, Group
 
 class ClassWaitlist(models.Model):
     className = models.CharField(max_length=200, name="className")
-    classCode = models.CharField(max_length=200) #ex: CSCI425
+    classCode = models.CharField(max_length=200) 
     crn = models.IntegerField(default=0)
     schedule = models.CharField(max_length=200)
-    sortType = models.CharField(max_length=200) #we should probably change this to an enum eventually
-    term = models.CharField(max_length=200) #we should probably turn this into some kind of custom datatype eventually
-    professor = models.ForeignKey(User, on_delete=models.CASCADE) #dunno if cascade is nessicary.
+    sortType = models.CharField(max_length=200)
+    term = models.CharField(max_length=200)
+    professor = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField("date published")
+    closed = models.BooleanField(default=False)  # Add this line
 
     def __str__(self):
         return self.className

@@ -3,6 +3,7 @@ from django.views import generic
 from .models import ClassWaitlist, StudentTicket
 from django.contrib.auth.models import User, Group
 from django.utils import timezone
+from django.contrib import messages
 
 # Create your views here.
 
@@ -141,6 +142,29 @@ def createWaitlist(request):
             'title': 'join waitlist'
             }
         return render(request,'studentview/create_class.html', context)
+
+
+
+def close_class(request):
+    if request.method == 'POST':
+        class_id = request.POST['classID']
+        user = request.user
+        group_of_user = user.groups.all().first()
+        is_professor = group_of_user and group_of_user.id == 1
+
+        if not is_professor:
+            return redirect('/studenthome/')
+
+        try:
+            class_to_delete = ClassWaitlist.objects.get(id=class_id, professor=user)
+            class_to_delete.delete()
+            messages.success(request, 'The class has been successfully deleted.')
+        except ClassWaitlist.DoesNotExist:
+            messages.error(request, 'The class does not exist or you did not create it.')
+
+        return redirect('/studenthome/')
+
+    return render(request, 'studentview/close_class.html')
 
 class DetailView(generic.DetailView):
     model = ClassWaitlist
