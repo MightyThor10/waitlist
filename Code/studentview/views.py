@@ -48,24 +48,76 @@ def home(request):
 def joinWaitlist(request):
 
     if request.method =='POST':
-        # TODO: Add error checking here, this currently has none lol
         classid = request.POST['classID']
-        waitlist = ClassWaitlist.objects.get(id=classid)
         user = request.user
+        message = ""
+
+        waitlist = ClassWaitlist.objects.filter(id=classid).first()
+
         if waitlist and user:
-            st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
-        response = redirect('/studenthome/')
-        return response
+            existing_ticket = StudentTicket.objects.filter(class_waitlist=waitlist, student=user).first()
+            if existing_ticket:
+                message = "You have already joined this class's waitlist."
+            else:
+                st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user)
+                response = redirect('/studenthome/')
+                return response
+        else:
+            message = "The specified class does not exist."
+
+        context = {
+            'title': 'join waitlist',
+            'message': message,
+            'classes': ClassWaitlist.objects.all(),
+        }
+        return render(request, 'studentview/join_waitlist.html', context)
+
     else:
         classes = ClassWaitlist.objects.all()
 
         context = {
             'title': 'join waitlist',
             'classes': classes
-            }
+        }
+        return render(request, 'studentview/join_waitlist.html', context)
 
-        return render(request,'studentview/join_waitlist.html', context)
+
     
+
+def leaveWaitlist(request):
+    if request.method == 'POST':
+        classid = request.POST['classID']
+        user = request.user
+        message = ""
+
+        if user:
+            existing_ticket = StudentTicket.objects.filter(class_waitlist_id=classid, student=user).first()
+            if existing_ticket:
+                existing_ticket.delete()
+                response = redirect('/studenthome/')
+                return response
+            else:
+                message = "You are not on this class's waitlist."
+        else:
+            message = "Invalid user."
+
+        context = {
+            'title': 'leave waitlist',
+            'message': message,
+            'classes': ClassWaitlist.objects.all(),
+        }
+        return render(request, 'studentview/leave_waitlist.html', context)
+
+    else:
+        classes = ClassWaitlist.objects.all()
+
+        context = {
+            'title': 'leave waitlist',
+            'classes': classes
+        }
+        return render(request, 'studentview/leave_waitlist.html', context)
+
+
 def createWaitlist(request):
 
     if request.method =='POST':
