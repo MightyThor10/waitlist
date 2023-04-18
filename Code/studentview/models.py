@@ -18,9 +18,11 @@ class ClassWaitlist(models.Model):
 
 
 class StudentTicket(models.Model):
-    class_waitlist = models.ForeignKey(ClassWaitlist, on_delete=models.CASCADE) #dunno if cascade is nessicary.
+    class_waitlist = models.ForeignKey(ClassWaitlist, on_delete=models.CASCADE)
     date_joined = models.DateTimeField("date joined")
-    student = models.ForeignKey(User, on_delete=models.CASCADE) #dunno if cascade is nessicary.
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    position = models.IntegerField(default=0)  # Add this line
 
     def __str__(self):
         return str(self.class_waitlist) + ' - ' + str(self.student) + ' : ' + str(self.date_joined)
+
