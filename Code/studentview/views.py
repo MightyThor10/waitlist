@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.views import generic
 from .models import ClassWaitlist, StudentTicket
 from django.contrib.auth.models import User, Group
@@ -173,13 +175,32 @@ class DetailView(generic.DetailView):
     template_name = 'studentview/detail.html'
 
     def get_context_data(self, **kwargs):
+        print(kwargs)
         context = super().get_context_data(**kwargs)
         context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
+        context['ownsClass'] = self.request.user.id == kwargs['object'].professor.pk
         return context
+    
+class EditView(LoginRequiredMixin, generic.UpdateView):
 
-# def detail(request, pk):
-#     class_waitlist = get_object_or_404(ClassWaitlist)
-#     return render(request, "studentview/detail.html", class_waitlist) 
+    model = ClassWaitlist
+    fields = ['className', 'classCode', 'crn', 'schedule', 'sortType', 'term']
+    template_name = 'studentview/edit_waitlist.html'
+
+    def get(self, request, *args, **kwargs):
+        userid = request.user.id
+        classProfessorId = ClassWaitlist.objects.filter(pk=kwargs['pk']).first().professor.pk #there is for sure a better way to do this lol, but this works
+        print(classProfessorId)
+        if userid == classProfessorId:
+            return super().get(request, *args, **kwargs)
+        return render({}, '403') # goes to 404 but making idk how to make it go to a 403 page instead
+        
+
+    def get_success_url(self):
+        print(self.model.id)
+        return "../detail"
+
+    
 
 def move_student(request, ticket_id, direction):
     ticket = get_object_or_404(StudentTicket, id=ticket_id)

@@ -14,6 +14,10 @@
         
         <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
 
+        {% if ownsClass %}
+            <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
+        {% endif %}
+
         <h3> Students In Line: </h3>
 
         {% for studentticket in classwaitlist.studentticket_set.all|dictsort:"position" %}
