@@ -175,8 +175,10 @@ class DetailView(generic.DetailView):
     template_name = 'studentview/detail.html'
 
     def get_context_data(self, **kwargs):
+        print(kwargs)
         context = super().get_context_data(**kwargs)
         context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
+        context['ownsClass'] = self.request.user.id == kwargs['object'].professor.pk
         return context
     
 class EditView(LoginRequiredMixin, generic.UpdateView):
