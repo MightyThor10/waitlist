@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.views import generic
 from .models import ClassWaitlist, StudentTicket
 from django.contrib.auth.models import User, Group
@@ -177,14 +178,16 @@ class DetailView(generic.DetailView):
         context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
         return context
     
-class EditView(generic.DetailView):
+class EditView(generic.UpdateView):
+
     model = ClassWaitlist
+    fields = ['className', 'classCode', 'crn', 'schedule', 'sortType', 'term']
     template_name = 'studentview/edit_waitlist.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
-        return context
+    def get_success_url(self):
+        print(self.model.id)
+        return "../detail"
+
     
 
 def move_student(request, ticket_id, direction):

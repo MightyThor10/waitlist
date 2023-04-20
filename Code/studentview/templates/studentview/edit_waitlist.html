@@ -2,7 +2,7 @@
 {% block content %}
         <h1>Edit Waitlist Details</h1>
 
-        <form action="" method="post">
+        <!-- <form action="" method="post">
 
             {% csrf_token %}
     
@@ -21,6 +21,12 @@
                     <input type="text" class="form-control" id="classTerm" name="classTerm" placeholder="Ex: Spring 2023" value="{{classwaitlist.term}}">
             </div>
             <button type="submit" class="btn btn-primary">Submit Changes</button>
+    </form>
+    <a href="../detail"><button class="btn btn-secondary">Cancel</button></a> -->
+
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" value="Update">
     </form>
     <a href="../detail"><button class="btn btn-secondary">Cancel</button></a>
         
