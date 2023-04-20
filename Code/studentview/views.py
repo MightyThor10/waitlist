@@ -176,10 +176,16 @@ class DetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
         return context
+    
+class EditView(generic.DetailView):
+    model = ClassWaitlist
+    template_name = 'studentview/edit_waitlist.html'
 
-# def detail(request, pk):
-#     class_waitlist = get_object_or_404(ClassWaitlist)
-#     return render(request, "studentview/detail.html", class_waitlist) 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
+        return context
+    
 
 def move_student(request, ticket_id, direction):
     ticket = get_object_or_404(StudentTicket, id=ticket_id)
