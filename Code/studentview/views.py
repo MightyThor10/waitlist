@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import generic
 from .models import ClassWaitlist, StudentTicket
@@ -178,11 +179,20 @@ class DetailView(generic.DetailView):
         context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
         return context
     
-class EditView(generic.UpdateView):
+class EditView(LoginRequiredMixin, generic.UpdateView):
 
     model = ClassWaitlist
     fields = ['className', 'classCode', 'crn', 'schedule', 'sortType', 'term']
     template_name = 'studentview/edit_waitlist.html'
+
+    def get(self, request, *args, **kwargs):
+        userid = request.user.id
+        classProfessorId = ClassWaitlist.objects.filter(pk=kwargs['pk']).first().professor.pk #there is for sure a better way to do this lol, but this works
+        print(classProfessorId)
+        if userid == classProfessorId:
+            return super().get(request, *args, **kwargs)
+        return render({}, '403') # goes to 404 but making idk how to make it go to a 403 page instead
+        
 
     def get_success_url(self):
         print(self.model.id)
