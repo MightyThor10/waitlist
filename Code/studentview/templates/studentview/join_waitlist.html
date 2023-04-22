@@ -1,30 +1,25 @@
 {% extends "studentview/base.html" %}
 
-
-
 {% block content %}
 <h1>Join Waitlist</h1>
 
 <form action="" method="post">
-
-        {% csrf_token %}
-
-        <div class="form-group">
-                <label for="classID">Class ID:</label>
-                <input type="number" class="form-control" id="classID" name="classID" aria-describedby="idhelp" placeholder="Ex: 1">
-                <small id="idhelp" class="form-text text-muted">Consult the table below to find a class and enter its ID to join!</small>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="classID">Class ID:</label>
+        <input type="number" class="form-control" id="classID" name="classID" aria-describedby="idhelp" placeholder="Ex: 1">
+        <small id="idhelp" class="form-text text-muted">Consult the table below to find a class and enter its ID to join!</small>
+    </div>
+    {% if message %}
+    <div class="alert alert-warning" role="alert">
+        {{ message }}
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-<!-- TODO: make a basic form where you input the id of a class and it adds you to it when you submit the form -->
 
 {% for aClass in classes %}
-
-        <p> Class Name: {{ aClass }} - CLASS ID: {{aClass.id}}</p>
-
+    <p> Class Name: {{ aClass }} - CLASS ID: {{aClass.id}}</p>
 {% endfor %}
-
-
-
 
 {% endblock content %}

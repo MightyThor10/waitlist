@@ -3,40 +3,43 @@
 <h1> My Classes</h1>
 <h2> {{message}}</h2>
     {% for class in classes %}
-    <div class = "studentclassbox">
-
+    {% if not class.closed or isProfessor %}
+    <div class="studentclassbox">
         <h2>{{class.className}} - {{class.classCode}}</h2>
         <p>Professor: {{class.professor}}</p>
         <p>{{class.schedule}}</p>
         <p>CRN: {{class.crn}}</p>
         <p>{{class.waitlistposition}}</p>
-        <button onclick="window.location.href='/studenthome/{{class.pk}}/detail';">  Expand Details </button>
-        {% if isStudent %}
-            <a href="{% url 'remove-from-waitlist' class.pk%}" >remove waitlist</a>
-        {% endif %}
+        <button onclick="window.location.href='/studenthome/{{class.pk}}/detail';">Expand Details</button>
     </div>
-
-    {%endfor%}
+    {% endif %}
+    {% endfor %}
 
     {% if user.is_authenticated %}
-
     {% if isProfessor %}
         <a href="/studenthome/createclass">
             <button>
                 Create Waitlist
             </button>
         </a>
+        <a href="/studenthome/closeclass"> 
+            <button>
+                Close Class
+            </button>
+        </a> 
     {% endif %}
 
     {% if isStudent %}
-
         <a href="/studenthome/joinwaitlist">
             <button>
                 Join Waitlist
             </button>
         </a>
+        <a href="/studenthome/leavewaitlist/">
+            <button>
+                Leave Waitlist
+            </button>
+        </a>
     {% endif %}
-
     {% endif %}
-
 {% endblock content %}

@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.core.validators import RegexValidator
+from .models import StudentProfile
 
 domain_validator = RegexValidator(
     regex='@(wm\.edu|email.wm\.edu)$',
@@ -17,3 +18,24 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password1','password2']
 
+class StudentProfileForm(forms.ModelForm):
+    ACADEMIC_STATUS_CHOICES = [
+        ('FR', 'Freshman'),
+        ('SO', 'Sophomore'),
+        ('JR', 'Junior'),
+        ('SR', 'Senior'),
+        ('NA', 'Not Applicable'),
+    ]
+    academic_status = forms.ChoiceField(choices=ACADEMIC_STATUS_CHOICES, required=False)
+
+    class Meta:
+        model = StudentProfile
+        fields = ['preferred_name', 'academic_status', 'major']
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})
