@@ -27,6 +27,8 @@
                 {% if isProfessor %}
                     <a href="{% url 'move_student' ticket_id=studentticket.id direction='up' %}" class="btn btn-sm btn-primary">Move Up</a>
                     <a href="{% url 'move_student' ticket_id=studentticket.id direction='down' %}" class="btn btn-sm btn-primary">Move Down</a>
+                    <a href="" class="btn btn-sm btn-info">Accept</a>
+                    <a href="" class="btn btn-sm btn-warning">Reject</a>
                 {% endif %}
             </p>
 
