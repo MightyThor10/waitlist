@@ -90,6 +90,13 @@ def createWaitlist(request):
             }
         return render(request,'studentview/create_class.html', context)
 
+def removeFromWaitlist(request,waitlist_id):
+    currentUser = request.user
+    print("current user is"+ str(currentUser.pk))
+    ticket = StudentTicket.objects.get(student_id=currentUser.pk,class_waitlist_id=waitlist_id)
+    ticket.delete()
+    return redirect('student-home')
+
 class DetailView(generic.DetailView):
     model = ClassWaitlist
     
@@ -98,4 +105,5 @@ class DetailView(generic.DetailView):
 # def detail(request, pk):
 #     class_waitlist = get_object_or_404(ClassWaitlist)
 #     return render(request, "studentview/detail.html", class_waitlist) 
+
 
