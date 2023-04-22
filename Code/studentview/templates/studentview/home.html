@@ -11,7 +11,7 @@
         <p>CRN: {{class.crn}}</p>
         <p>{{class.waitlistposition}}</p>
         <button onclick="window.location.href='/studenthome/{{class.pk}}/detail';">  Expand Details </button>
-        <a href="{% url 'remove-from-waitlist' class.pk%}" >Delete Event</a>
+        <a href="{% url 'remove-from-waitlist' class.pk%}" >remove waitlist</a>
     </div>
 
     {%endfor%}
