@@ -226,3 +226,8 @@ def move_student(request, ticket_id, direction):
             other_ticket.save()
 
     return redirect('detail', pk=ticket.class_waitlist.id)
+def update_waitlist_status(request, ticket_id, newstatus):
+    ticket = get_object_or_404(StudentTicket, id=ticket_id)
+    ticket.waitlist_status=newstatus
+    ticket.save()
+    return redirect('detail', pk=ticket.class_waitlist.id)

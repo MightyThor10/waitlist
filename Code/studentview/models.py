@@ -22,6 +22,7 @@ class StudentTicket(models.Model):
     date_joined = models.DateTimeField("date joined")
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     position = models.IntegerField(default=0)  # Add this line
+    waitlist_status = models.CharField(max_length=1, default="p" ) #a = accept r = reject p = pending
 
     def __str__(self):
         return str(self.class_waitlist) + ' - ' + str(self.student) + ' : ' + str(self.date_joined)
