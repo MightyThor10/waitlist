@@ -4,6 +4,7 @@ from datetime import datetime
 
 class ClassWaitlist(models.Model):
     className = models.CharField(max_length=200, name="className", verbose_name='Class Name')
+    classDescription = models.TextField(verbose_name='Description', default=' ')
     classCode = models.CharField(max_length=200, verbose_name='Class Code') 
     crn = models.IntegerField(default=0, verbose_name='CRN')
     schedule = models.CharField(max_length=200, verbose_name='Schedule')
