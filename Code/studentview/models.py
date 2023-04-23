@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
+from datetime import datetime
 
 class ClassWaitlist(models.Model):
     className = models.CharField(max_length=200, name="className")
@@ -25,5 +26,5 @@ class StudentTicket(models.Model):
     waitlist_status = models.CharField(max_length=1, default="p" ) #a = accept r = reject p = pending
 
     def __str__(self):
-        return str(self.class_waitlist) + ' - ' + str(self.student) + ' : ' + str(self.date_joined)
+        return str(self.student) + " - " + str(self.student.email) + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))
 
