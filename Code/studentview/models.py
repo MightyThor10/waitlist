@@ -1,13 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
+from datetime import datetime
 
 class ClassWaitlist(models.Model):
-    className = models.CharField(max_length=200, name="className")
-    classCode = models.CharField(max_length=200) 
-    crn = models.IntegerField(default=0)
-    schedule = models.CharField(max_length=200)
-    sortType = models.CharField(max_length=200)
-    term = models.CharField(max_length=200)
+    className = models.CharField(max_length=200, name="className", verbose_name='Class Name')
+    classDescription = models.TextField(verbose_name='Description', default=' ')
+    classCode = models.CharField(max_length=200, verbose_name='Class Code') 
+    crn = models.IntegerField(default=0, verbose_name='CRN')
+    schedule = models.CharField(max_length=200, verbose_name='Schedule')
+    sortType = models.CharField(max_length=200, verbose_name='Sort Type')
+    term = models.CharField(max_length=200, verbose_name='Term')
     professor = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField("date published")
     closed = models.BooleanField(default=False)  # Add this line
@@ -25,5 +27,5 @@ class StudentTicket(models.Model):
     waitlist_status = models.CharField(max_length=1, default="p" ) #a = accept r = reject p = pending
 
     def __str__(self):
-        return str(self.class_waitlist) + ' - ' + str(self.student) + ' : ' + str(self.date_joined)
+        return str(self.student) + " - " + str(self.student.email) + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))
 

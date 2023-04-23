@@ -127,6 +127,7 @@ def createWaitlist(request):
 
     if request.method =='POST':
         name = request.POST['className']
+        desc = request.POST['classDesc']
         code = request.POST['classCode']
         crn = request.POST['classCRN']
         schedule = request.POST['classSchedule']
@@ -136,7 +137,7 @@ def createWaitlist(request):
         user = request.user
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
         
-        cwl = ClassWaitlist.objects.create(className=name, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user)
+        cwl = ClassWaitlist.objects.create(className=name, classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user)
         
         response = redirect('/studenthome/')
         return response
@@ -184,7 +185,7 @@ class DetailView(generic.DetailView):
 class EditView(LoginRequiredMixin, generic.UpdateView):
 
     model = ClassWaitlist
-    fields = ['className', 'classCode', 'crn', 'schedule', 'sortType', 'term']
+    fields = ['className', 'classDescription', 'classCode', 'crn', 'schedule', 'sortType', 'term']
     template_name = 'studentview/edit_waitlist.html'
 
     def get(self, request, *args, **kwargs):
