@@ -210,6 +210,7 @@ class EditWaitlistForm(forms.ModelForm):
         model = ClassWaitlist
         fields = ['className', 'classDescription', 'classCode', 'crn', 'schedule', 'sortType', 'term', 'anonymous_waitlist']
 
+
 class EditView(LoginRequiredMixin, generic.UpdateView):
 
     model = ClassWaitlist
