@@ -19,13 +19,18 @@
                     <input type="text" class="form-control" id="classSort" name="classSort" placeholder="Ex: First Come, First Served" value="{{classwaitlist.sortType}}">
                     <label for="classTerm">Term:</label>
                     <input type="text" class="form-control" id="classTerm" name="classTerm" placeholder="Ex: Spring 2023" value="{{classwaitlist.term}}">
-            </div>
+                   </div>
             <button type="submit" class="btn btn-primary">Submit Changes</button>
     </form>
     <a href="../detail"><button class="btn btn-secondary">Cancel</button></a> -->
 
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
+        
+        <label for="requestMsg">Request Message:</label>
+        <input type="hidden" value="false" id="requestMsg" name="requestMsg">
+        <input type="checkbox" class="form-check-input" value="true" id="requestMsg" name="requestMsg"{% if requestMsg %} checked {% endif %}>
+        <br> 
         <input class="btn btn-primary" type="submit" value="Update">
     </form>
     <a href="../detail"><button class="btn btn-secondary">Cancel</button></a>
