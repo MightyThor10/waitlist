@@ -122,6 +122,25 @@ def leaveWaitlist(request):
         }
         return render(request, 'studentview/leave_waitlist.html', context)
 
+def leave_all_waitlists(request):
+    user = request.user
+    message = ""
+
+    if user:
+        existing_tickets = StudentTicket.objects.filter(student=user)
+        existing_tickets.delete()
+        message = "You have successfully left all waitlists."
+        response = redirect('/studenthome/')
+        return response
+    else:
+        message = "Invalid user."
+
+    context = {
+        'title': 'leave all waitlists',
+        'message': message,
+        'classes': ClassWaitlist.objects.all(),
+    }
+    return render(request, 'studentview/leave_all_waitlists.html', context)
 
 def createWaitlist(request):
 

@@ -13,6 +13,7 @@ urlpatterns = [
     path('closeclass/', views.close_class, name='close_class'),
     path('move_student/<int:ticket_id>/<str:direction>/', views.move_student, name='move_student'),
     path('update_waitlist_status/<int:ticket_id>/<str:newstatus>/', views.update_waitlist_status, name='update_waitlist_status'),
+    path('leaveallwaitlists/', views.leave_all_waitlists, name='leave_all_waitlists'),
 
 
 ]
