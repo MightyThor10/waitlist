@@ -17,6 +17,8 @@
         
         <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
 
+        <legend> <h2> Anonymous: {{ classwaitlist.anonymous_waitlist }} </h2> </legend>
+
         {% if ownsClass %}
             <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
         {% endif %}
@@ -26,7 +28,11 @@
         {% for studentticket in classwaitlist.studentticket_set.all|dictsort:"position" %}
 
             <p>
-                {{ studentticket }}
+                {% if classwaitlist.anonymous_waitlist and not isProfessor and studentticket.student != user %}
+                    Anonymous Student
+                {% else %}
+                    {{ studentticket }}
+                {% endif %}
                 {% if studentticket.student == user %}
 
                     {% if studentticket.waitlist_status == "p" %}
