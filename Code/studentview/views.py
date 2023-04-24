@@ -36,9 +36,7 @@ def home(request):
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
-        message = "Log in to view your classes!"
-    
-    
+        message = "Log in to view your classes!"    
 
     context={
         'classes':classes,
@@ -78,11 +76,15 @@ def joinWaitlist(request):
         return render(request, 'studentview/join_waitlist.html', context)
 
     else:
-        classes = ClassWaitlist.objects.all()
+        
+        searchTerm = request.GET.get('searchTerm', '')
+
+        classes = ClassWaitlist.objects.filter(className__contains=searchTerm)
 
         context = {
             'title': 'join waitlist',
-            'classes': classes
+            'classes': classes,
+            'searchTerm' : searchTerm
         }
         return render(request, 'studentview/join_waitlist.html', context)
 

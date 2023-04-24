@@ -18,6 +18,16 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+<form action="" method="get">
+    {% csrf_token %}
+    <h3>Search Waitlists</h3>
+    <div class="form-group">
+        <label for="searchTerm">Searh By:</label>
+        <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Enter Part of a class name, code, crn, or professor name" value="{{searchTerm}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 {% for aClass in classes %}
     <p> Class Name: {{ aClass }} - CLASS ID: {{aClass.id}}</p>
 {% endfor %}
