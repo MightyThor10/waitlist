@@ -133,6 +133,7 @@ def createWaitlist(request):
         schedule = request.POST['classSchedule']
         sortType = request.POST['classSort']
         term = request.POST['classTerm']
+        requestMsg = request.POST['requestMsg']
         datePosted = timezone.now()
         user = request.user
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)

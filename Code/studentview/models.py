@@ -10,6 +10,7 @@ class ClassWaitlist(models.Model):
     schedule = models.CharField(max_length=200, verbose_name='Schedule')
     sortType = models.CharField(max_length=200, verbose_name='Sort Type')
     term = models.CharField(max_length=200, verbose_name='Term')
+    requestMsg = models.BooleanField(default=False)
     professor = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField("date published")
     closed = models.BooleanField(default=False)  # Add this line
