@@ -1,21 +1,18 @@
 {% extends "studentview/base.html" %}
 {% block content %}
-<div class="row">
-  <div class="mx-auto col-10 col-md-8 col-lg-6">
+  <h1>Hi {{ user.username }}!</h1>
 
-    <h2 style="margin-bottom:30px">Profile Information</h2>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ profile_form.as_p }}
-      <button type="submit" class="btn btn-primary" name="update_profile" style="width:100%">Update Profile</button>
-    </form>
+  <h2>Profile Information</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ profile_form.as_p }}
+    <button type="submit" class="btn btn-primary" name="update_profile">Update Profile</button>
+  </form>
 
-    <h2 style="margin-top:40px;margin-bottom:30px">Change Password</h2>
-    <form method="post">
-      {% csrf_token %}
-      {{ password_form.as_p }}
-      <button type="submit" class="btn btn-primary" name="change_password" style="margin-bottom:50px;width:100%">Change Password</button>
-    </form>
-  </div>
-</div>
+  <h2>Change Password</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ password_form.as_p }}
+    <button type="submit" class="btn btn-primary" name="change_password">Change Password</button>
+  </form>
 {% endblock content %}
