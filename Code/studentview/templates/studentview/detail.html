@@ -17,6 +17,10 @@
         <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
 
         {% if ownsClass %}
+            <legend> <h2> Request Message: {{ classwaitlist.requestMsg }} </h2> </legend>
+        {% endif %}
+
+        {% if ownsClass %}
             <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
         {% endif %}
 
