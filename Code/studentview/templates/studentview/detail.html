@@ -10,7 +10,20 @@
 
         <legend> <h2> Schedule: {{ classwaitlist.schedule }} </h2> </legend>
 
-        <legend> <h2> Sort By: {{ classwaitlist.sortType }} </h2> </legend>
+        {% if classwaitlist.sortType == "fcfs" %}
+            <legend> <h2> Sort By: First Come First Serve </h2> </legend>
+
+        {% elif classwaitlist.sortType == "seniority" %}
+            <legend> <h2> Sort By: Seniority </h2> </legend>
+
+        {% elif classwaitlist.sortType == "random" %}
+            <legend> <h2> Sort By: Randomized </h2> </legend>
+
+        {% else %}
+             <legend> <h2> Sort By: Legacy Class No Sort Function </h2> </legend>
+        {% endif %}
+
+        <a href="{% url 'sort_waitlist' pk=classwaitlist.id sortType=classwaitlist.sortType %}"><button class="btn btn-secondary">Sort Waitlist</button></a>
         
         <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
 

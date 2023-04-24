@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 
+
 class ClassWaitlist(models.Model):
     className = models.CharField(max_length=200, name="className")
     classCode = models.CharField(max_length=200) 

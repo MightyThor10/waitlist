@@ -231,3 +231,9 @@ def update_waitlist_status(request, ticket_id, newstatus):
     ticket.waitlist_status=newstatus
     ticket.save()
     return redirect('detail', pk=ticket.class_waitlist.id)
+
+def sort_waitlist(request, pk, sortType):
+    # if sortType == 'fcfs':
+    # else if sortType == 'seniority':
+    # else if sortType == 'random'
+    return redirect('detail', pk)
