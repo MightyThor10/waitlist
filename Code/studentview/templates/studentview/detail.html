@@ -7,6 +7,8 @@
 
         <legend> <h2> Professor: {{ classwaitlist.professor }} </h2> </legend>
 
+        <legend> <h2> Description: {{ classwaitlist.classDescription }} </h2> </legend>
+
         <legend> <h2> CRN: {{ classwaitlist.crn }} </h2> </legend>
 
         <legend> <h2> Schedule: {{ classwaitlist.schedule }} </h2> </legend>
@@ -25,9 +27,34 @@
 
             <p>
                 {{ studentticket }}
+                {% if studentticket.student == user %}
+
+                    {% if studentticket.waitlist_status == "p" %}
+                        <span style="color:royalblue">Current Spot on Waitlist</span>
+                    {% endif %}
+                    {% if studentticket.waitlist_status == "a" %}
+                        <span style="color:mediumseagreen">Status: Accepted</span>
+                    {% endif %}
+                    {% if studentticket.waitlist_status == "r" %}
+                        <span style="color:mediumvioletred">Status: Rejected</span>
+                    {% endif %}
+                {% endif %}
+
                 {% if isProfessor %}
                     <a href="{% url 'move_student' ticket_id=studentticket.id direction='up' %}" class="btn btn-sm btn-primary">Move Up</a>
                     <a href="{% url 'move_student' ticket_id=studentticket.id direction='down' %}" class="btn btn-sm btn-primary">Move Down</a>
+                    {% if studentticket.waitlist_status == "p" %}
+                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='a' %}" class="btn btn-sm btn-info">Accept</a>
+                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='r' %}" class="btn btn-sm btn-warning">Reject</a>
+                    {% endif %}
+                    {% if studentticket.waitlist_status == "a" %}
+                        <span>Accepted</span>
+                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='p' %}" class="btn btn-sm btn-secondary">Move Back to Waitlist</a>
+                    {% endif %}
+                    {% if studentticket.waitlist_status == "r" %}
+                        <span>Rejected</span>
+                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='p' %}" class="btn btn-sm btn-secondary">Move Back to Waitlist</a>
+                    {% endif %}
                 {% endif %}
             </p>
 
