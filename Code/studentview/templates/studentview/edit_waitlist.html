@@ -1,6 +1,7 @@
 {% extends "studentview/base.html" %}
 {% block content %}
-        <h1>Edit Waitlist Details</h1>
+<div style="padding:40px">
+        <h1 style="margin-bottom:20px">Edit Waitlist Details</h1>
 
         <!-- <form action="" method="post">
 
@@ -26,8 +27,10 @@
 
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
-        <input class="btn btn-primary" type="submit" value="Update">
+        <input class="btn btn-primary" style="width:350px" type="submit" value="Update">
     </form>
-    <a href="../detail"><button class="btn btn-secondary">Cancel</button></a>
+    <a href="../detail"><button class="btn btn-secondary" style="width:350px;margin-top:10px">Cancel</button></a>
+
+</div>
         
 {% endblock content %}
