@@ -3,6 +3,7 @@
 
 
 {% block content %}
+<div style="padding:40px">
 <h1>Create Class Waitlist</h1>
 
 <form action="" method="post">
@@ -25,7 +26,7 @@
                 <label for="classTerm">Term:</label>
                 <input type="text" class="form-control" id="classTerm" name="classTerm" placeholder="Ex: Spring 2023">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" style="margin-top:20px;width:100%">Create Class</button>
 </form>
 
 {% for aClass in classes %}
@@ -33,6 +34,7 @@
         <p> Class Name: {{ aClass }} - CLASS ID: {{aClass.id}}</p>
 
 {% endfor %}
+</div>
 
 
 

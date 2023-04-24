@@ -1,5 +1,6 @@
 {% extends "studentview/base.html" %}
 {% block content %}
+<div style="padding:40px">
         <h1>Waitlist Details</h1>
         
         <legend> <h2> Name: {{ classwaitlist.className }}  - Code: {{ classwaitlist.classCode}} </h2> </legend>
@@ -20,7 +21,7 @@
             <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
         {% endif %}
 
-        <h3> Students In Line: </h3>
+        <h3 style="margin-top:20px"> Students In Line: </h3>
 
         {% for studentticket in classwaitlist.studentticket_set.all|dictsort:"position" %}
 
@@ -58,5 +59,7 @@
             </p>
 
         {% endfor %}
+
+</div>
         
 {% endblock content %}
