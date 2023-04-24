@@ -3,28 +3,6 @@
 <div style="padding:40px">
         <h1 style="margin-bottom:20px">Edit Waitlist Details</h1>
 
-        <!-- <form action="" method="post">
-
-            {% csrf_token %}
-    
-            <div class="form-group">
-                    <label for="className">Name:</label>
-                    <input type="text" class="form-control" id="className" name="className" placeholder="Ex: Entrepreneurship in CS" value="{{classwaitlist.className}}">
-                    <label for="classCode">Code:</label>
-                    <input type="text" class="form-control" id="classCode" name="classCode" placeholder="Ex: CSCI425" value="{{classwaitlist.classCode}}">
-                    <label for="classCRN">CRN:</label>
-                    <input type="number" class="form-control" id="classCRN" name="classCRN" placeholder="Ex: 25064" value="{{classwaitlist.crn}}">
-                    <label for="classSchedule">Schedule:</label>
-                    <input type="text" class="form-control" id="classSchedule" name="classSchedule" placeholder="Ex: MWF, 10am - 11am" value="{{classwaitlist.schedule}}">
-                    <label for="classSort">How Class Will be Sorted:</label>
-                    <input type="text" class="form-control" id="classSort" name="classSort" placeholder="Ex: First Come, First Served" value="{{classwaitlist.sortType}}">
-                    <label for="classTerm">Term:</label>
-                    <input type="text" class="form-control" id="classTerm" name="classTerm" placeholder="Ex: Spring 2023" value="{{classwaitlist.term}}">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Changes</button>
-    </form>
-    <a href="../detail"><button class="btn btn-secondary">Cancel</button></a> -->
-
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
         <input class="btn btn-primary" style="width:350px" type="submit" value="Update">
