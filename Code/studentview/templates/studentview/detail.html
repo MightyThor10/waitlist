@@ -29,7 +29,7 @@
 
             <p>
                 {% if classwaitlist.anonymous_waitlist and not isProfessor and studentticket.student != user %}
-                    Anonymous Student
+                Anonymous Student: {{studentticket.date_joined|date:"d/m/Y, H:i:s"}}
                 {% else %}
                     {{ studentticket }}
                 {% endif %}
