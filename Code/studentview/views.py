@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from django.contrib import messages
 from django import forms
+from django.db.models import Q
 
 # Create your views here.
 
@@ -80,7 +81,7 @@ def joinWaitlist(request):
         
         searchTerm = request.GET.get('searchTerm', '')
 
-        classes = ClassWaitlist.objects.filter(className__contains=searchTerm)
+        classes = ClassWaitlist.objects.filter(Q(className__contains=searchTerm) | Q(crn__contains=searchTerm)| Q(classCode__contains=searchTerm) | Q(professor__username__contains=searchTerm))
 
         context = {
             'title': 'join waitlist',

@@ -18,14 +18,17 @@
     <button style="width:100%;margin-top:10px;" type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-<form action="" method="get">
-    {% csrf_token %}
-    <h3>Search Waitlists</h3>
-    <div class="form-group">
-        <label for="searchTerm">Searh By:</label>
-        <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Enter Part of a class name, code, crn, or professor name" value="{{searchTerm}}">
+<form action="" method="get" style="margin-bottom:30px">
+    <h3 style="text-align:center;margin-bottom:20px">Filter Available Waitlists</h3>
+    <div class="mx-auto col-10 col-md-8 col-lg-6">
+        <div class="form-group">
+            <label for="searchTerm">By Class Name:</label>
+            <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Enter part of a class name, code, crn, or professor name" value="{{searchTerm}}">
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Search</button>
+    <div class="mx-auto col-10 col-md-8 col-lg-6">
+        <button type="submit" style="width:100%;margin-top:10px;" class="btn btn-secondary">Filter</button>
+    </div>
 </form>
 
 
