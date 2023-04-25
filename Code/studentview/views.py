@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from django.contrib import messages
 from django import forms
+from django.db.models import Q
 
 # Create your views here.
 
@@ -37,9 +38,7 @@ def home(request):
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
-        message = "Log in to view your classes!"
-    
-    
+        message = "Log in to view your classes!"    
 
     context={
         'classes':classes,
@@ -79,11 +78,15 @@ def joinWaitlist(request):
         return render(request, 'studentview/join_waitlist.html', context)
 
     else:
-        classes = ClassWaitlist.objects.all()
+        
+        searchTerm = request.GET.get('searchTerm', '')
+
+        classes = ClassWaitlist.objects.filter(Q(className__contains=searchTerm) | Q(crn__contains=searchTerm)| Q(classCode__contains=searchTerm) | Q(professor__username__contains=searchTerm))
 
         context = {
             'title': 'join waitlist',
-            'classes': classes
+            'classes': classes,
+            'searchTerm' : searchTerm
         }
         return render(request, 'studentview/join_waitlist.html', context)
 

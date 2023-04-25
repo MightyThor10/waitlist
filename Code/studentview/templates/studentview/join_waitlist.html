@@ -18,12 +18,25 @@
     <button style="width:100%;margin-top:10px;" type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+<form action="" method="get" style="margin-bottom:30px">
+    <h3 style="text-align:center;margin-bottom:20px">Filter Available Waitlists</h3>
+    <div class="mx-auto col-10 col-md-8 col-lg-6">
+        <div class="form-group">
+            <label for="searchTerm">By Class Name:</label>
+            <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Enter part of a class name, code, crn, or professor name" value="{{searchTerm}}">
+        </div>
+    </div>
+    <div class="mx-auto col-10 col-md-8 col-lg-6">
+        <button type="submit" style="width:100%;margin-top:10px;" class="btn btn-secondary">Filter</button>
+    </div>
+</form>
+
 
 <div style="background-color: #f0f0f0;padding:30px;border-radius:20px;height:400px;overflow-y:auto">
 <h3 style="padding-bottom:20px">Available Classes</h3>
 
 {% for aClass in classes %}
-    <p style="border-bottom: 1px solid grey;padding-bottom:20px;padding-top:5px"> Class Name: {{ aClass }} - CLASS ID: {{aClass.id}}</p>
+    <p style="border-bottom: 1px solid grey;padding-bottom:20px;padding-top:5px">  {{ aClass }} - {{aClass.classCode}} - {{aClass.professor}} - {{aClass.crn}} - CLASS ID: {{aClass.id}}</p>
 {% endfor %}
 </div>
 
