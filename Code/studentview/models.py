@@ -13,6 +13,7 @@ class ClassWaitlist(models.Model):
     professor = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField("date published")
     closed = models.BooleanField(default=False)  # Add this line
+    anonymous_waitlist = models.BooleanField(default=False, verbose_name='Anonymous Waitlist')
 
     def __str__(self):
         return self.className

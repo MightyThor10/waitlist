@@ -1,3 +1,17 @@
+# See README for instructions on installation and running the django server
+
+## What a user can do with our prototype
+
+Our first prototype delivered key functionalities such as student login, signup, viewing courses. We have
+expanded the functionality to support professors moving students' positions on the waitlist. Our prototype
+supports accepting or rejecting students onto waitlists, and for professors to change the details of the
+waitlists they own.
+
+## To run unit tests
+
+python3 [Code]/manage.py test [Code]/users
+python3 [Code]/manage.py test [Code]/studentview
+
 ## Tutorial Information
 
 Tutorial utilized: [https://www.youtube.com/playlist?list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p](https://www.youtube.com/playlist?list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p)

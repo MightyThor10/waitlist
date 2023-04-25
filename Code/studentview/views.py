@@ -6,6 +6,7 @@ from .models import ClassWaitlist, StudentTicket
 from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from django.contrib import messages
+from django import forms
 
 # Create your views here.
 
@@ -124,6 +125,25 @@ def leaveWaitlist(request):
         }
         return render(request, 'studentview/leave_waitlist.html', context)
 
+def leave_all_waitlists(request):
+    user = request.user
+    message = ""
+
+    if user:
+        existing_tickets = StudentTicket.objects.filter(student=user)
+        existing_tickets.delete()
+        message = "You have successfully left all waitlists."
+        response = redirect('/studenthome/')
+        return response
+    else:
+        message = "Invalid user."
+
+    context = {
+        'title': 'leave all waitlists',
+        'message': message,
+        'classes': ClassWaitlist.objects.all(),
+    }
+    return render(request, 'studentview/leave_all_waitlists.html', context)
 
 def createWaitlist(request):
 
@@ -137,9 +157,10 @@ def createWaitlist(request):
         term = request.POST['classTerm']
         datePosted = timezone.now()
         user = request.user
+        anonymous_waitlist = request.POST.get('anonymous_waitlist', 'False') == 'on'
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
         
-        cwl = ClassWaitlist.objects.create(className=name, classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user)
+        cwl = ClassWaitlist.objects.create(className=name, classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
         
         response = redirect('/studenthome/')
         return response
@@ -182,12 +203,20 @@ class DetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
         context['ownsClass'] = self.request.user.id == kwargs['object'].professor.pk
+        context['anonymous_waitlist'] = kwargs['object'].anonymous_waitlist
         return context
     
+
+class EditWaitlistForm(forms.ModelForm):
+    class Meta:
+        model = ClassWaitlist
+        fields = ['className', 'classDescription', 'classCode', 'crn', 'schedule', 'sortType', 'term', 'anonymous_waitlist']
+
+
 class EditView(LoginRequiredMixin, generic.UpdateView):
 
     model = ClassWaitlist
-    fields = ['className', 'classDescription', 'classCode', 'crn', 'schedule', 'sortType', 'term']
+    form_class = EditWaitlistForm
     template_name = 'studentview/edit_waitlist.html'
 
     def get(self, request, *args, **kwargs):
