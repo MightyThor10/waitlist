@@ -47,14 +47,18 @@
     <div class="d-flex flex-row flex-wrap justify-content-center justify-content-md-start my-3">
         {% for class in classes %}
             <div class="studentclassbox {% if class.closed %}closed{% else %}active{% endif %} p-5">
-                <div class="row h5" style="float: right;">{{ class.classCode }}</div>
-                <div class="row text-center h3 mt-1">
+                <div class="d-flex flex-row h5">
+                    <div class="col col-auto" style="margin-left: auto; font-weight: 300;">
+                        {{ class.classCode }}
+                    </div>
+                </div>
+                <div class="row text-center h3 mt-2">
                     <span>{{class.className}}</span>
                 </div>
                 <div class="row text-center mt-1">
                     <span style="font-weight: 300;">{{ class.schedule }}</span>
                 </div>
-                <div class="d-flex flex-row justify-content-left mt-3">
+                <div class="d-flex flex-row mt-4">
                     <div class="col-auto" style="font-weight: 300; margin-right: 4px;">
                         CRN:
                     </div>
