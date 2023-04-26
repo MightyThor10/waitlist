@@ -40,6 +40,10 @@ def home(request):
     if (currentUser.is_anonymous):
         message = "Log in to view your classes!"    
 
+    for c in classes:
+        c.positionInWaitlist = (StudentTicket.objects.get(class_waitlist=c, student=currentUser)).position
+        c.numberInClass = (StudentTicket.objects.filter(class_waitlist=c)).count()
+
     context={
         'classes':classes,
         'message':message,
