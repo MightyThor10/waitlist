@@ -53,22 +53,25 @@ def joinWaitlist(request):
     if request.method =='POST':
         classid = request.POST['classID']
         user = request.user
-        message = ""
+        message = ''
 
-        waitlist = ClassWaitlist.objects.filter(id=classid).first()
-
-        if waitlist and user:
-            existing_ticket = StudentTicket.objects.filter(class_waitlist=waitlist, student=user).first()
-            if existing_ticket:
-                message = "You have already joined this class's waitlist."
-            else:
-                last_position = StudentTicket.objects.filter(class_waitlist=waitlist).order_by('-position').first()
-                new_position = last_position.position + 1 if last_position else 1
-                st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user, position=new_position)
-                response = redirect('/studenthome/')
-                return response
+        if not classid:
+            message = 'You must enter a class id'
         else:
-            message = "The specified class does not exist."
+            waitlist = ClassWaitlist.objects.filter(id=classid).first()
+
+            if waitlist and user:
+                existing_ticket = StudentTicket.objects.filter(class_waitlist=waitlist, student=user).first()
+                if existing_ticket:
+                    message = "You have already joined this class's waitlist."
+                else:
+                    last_position = StudentTicket.objects.filter(class_waitlist=waitlist).order_by('-position').first()
+                    new_position = last_position.position + 1 if last_position else 1
+                    st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user, position=new_position)
+                    response = redirect('/studenthome/')
+                    return response
+            else:
+                message = "The specified class does not exist."
 
         context = {
             'title': 'join waitlist',

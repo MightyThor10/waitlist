@@ -47,21 +47,43 @@
         </nav>
     </header>
 
-
-<div class="column-md-8">
-
-    {% if messages %}
-        {% for message in messages %}
-            <!--    prints out message and the tag of message -->
-
-            <div class ="alert alert-{{message.tags}}">
-                {{ message }}</div>
-        {% endfor %}
-    {% endif%}
-
-
-    {% block content %}{% endblock %} <!--Block of data that will be rewritten when inherited-->
-
+<div class="container" style="max-width: none;">
+    <div class="row">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="col col-1">
+                    <!-- Spacer -->
+                </div>
+                <div class="col col-10">
+                    <!--    prints out message and the tag of message -->
+                    <div class ="alert alert-{{message.tags}}">
+                        {{ message }}
+                    </div>
+                </div>
+                <div class="col col-1">
+                    <!-- Spacer -->
+                </div>
+            {% endfor %}
+        {% endif%}
+    </div>
+    <div class="row">
+        {% block tab_header %}
+            <!-- Empty header overwritten -->
+        {% endblock %}
+    </div>
+    <div class="row">
+        <div class="col d-none d-xl-block col-xl-1 p-0">
+            <!-- Spacer -->
+        </div>
+        <div class="col col-12 col-xl-10">
+            {% block content %}
+                <!-- Empty content overwritten when inherited -->
+            {% endblock %}
+        </div>
+        <div class="col d-none d-xl-block col-xl-1 p-0">
+            <!-- Spacer -->
+        </div>
+    </div>
 </div>
 
 
