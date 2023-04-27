@@ -27,34 +27,39 @@ def home(request):
     isProfessor = False
     isStudent = False
 
-    if (not currentUser.is_anonymous):
-        if (groupOfUser):
-            if (groupOfUser.id == 1):
-                classes = ClassWaitlist.objects.filter(professor=currentUser.pk, archived=False)
+    if currentUser.is_anonymous:
+        message = "Log in to view your classes!"
+    else:
+        if groupOfUser:
+            if groupOfUser.id == 1:
+                classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
                 isProfessor = True
-            elif (groupOfUser.id == 2):
+            elif groupOfUser.id == 2:
                 isStudent = True
+
                 studentTickets = StudentTicket.objects.filter(student=currentUser.pk)
                 classPKs = set()
+
                 for ticket in studentTickets:
                     classPKs.add(ticket.class_waitlist.pk)
+
                 classPKs = list(classPKs)
-                classes = ClassWaitlist.objects.filter(pk__in=classPKs, archived=False)
+                classes = ClassWaitlist.objects.filter(pk__in=classPKs)
+
+                for c in classes:
+                    c.numberInClass = StudentTicket.objects.filter(class_waitlist=c).count()
+                    c.positionInWaitlist = StudentTicket.objects.get(
+                            class_waitlist=c,
+                            student=currentUser
+                        ).position
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
-    if (currentUser.is_anonymous):
-        message = "Log in to view your classes!"
-
-    if isStudent:
-        for c in classes:
-            c.positionInWaitlist = (StudentTicket.objects.get(class_waitlist=c, student=currentUser)).position
-            c.numberInClass = (StudentTicket.objects.filter(class_waitlist=c)).count()
 
     context={
-        'classes':classes,
-        'message':message,
-        'isProfessor':isProfessor,
-        'isStudent':isStudent
+        'classes': classes,
+        'message': message,
+        'isProfessor': isProfessor,
+        'isStudent': isStudent
     }
     return render(request,'studentview/home.html', context)
 
