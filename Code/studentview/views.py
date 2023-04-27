@@ -39,6 +39,14 @@ def home(request):
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
         message = "Log in to view your classes!"    
+    elif isStudent:
+        for c in classes:
+            c.numberInClass = StudentTicket.objects.filter(class_waitlist=c).count()
+            c.positionInWaitlist = StudentTicket.objects.get(
+                    class_waitlist=c,
+                    student=currentUser
+                ).position
+
 
     context={
         'classes':classes,
