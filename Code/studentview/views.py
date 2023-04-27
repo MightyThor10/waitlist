@@ -40,9 +40,10 @@ def home(request):
     if (currentUser.is_anonymous):
         message = "Log in to view your classes!"    
 
-    for c in classes:
-        c.positionInWaitlist = (StudentTicket.objects.get(class_waitlist=c, student=currentUser)).position
-        c.numberInClass = (StudentTicket.objects.filter(class_waitlist=c)).count()
+    if isStudent:
+        for c in classes:
+            c.positionInWaitlist = (StudentTicket.objects.get(class_waitlist=c, student=currentUser)).position
+            c.numberInClass = (StudentTicket.objects.filter(class_waitlist=c)).count()
 
     context={
         'classes':classes,
@@ -110,6 +111,7 @@ def leaveWaitlist(request):
             existing_ticket = StudentTicket.objects.filter(class_waitlist_id=classid, student=user).first()
             if existing_ticket:
                 existing_ticket.delete()
+                audit_student_positions(classid)
                 response = redirect('/studenthome/')
                 return response
             else:
@@ -139,6 +141,9 @@ def leave_all_waitlists(request):
 
     if user:
         existing_tickets = StudentTicket.objects.filter(student=user)
+        for ticket in existing_tickets:
+            ticket.position = 999999 # The idea here is you put the user about to be deleted at the end of the waitlist, reassign positions, then delete the ticket to keep the order straight
+            audit_student_positions(ticket.class_waitlist)
         existing_tickets.delete()
         message = "You have successfully left all waitlists."
         response = redirect('/studenthome/')
@@ -244,6 +249,7 @@ class EditView(LoginRequiredMixin, generic.UpdateView):
 
 def move_student(request, ticket_id, direction):
     ticket = get_object_or_404(StudentTicket, id=ticket_id)
+    audit_student_positions(ticket.class_waitlist)
     if not request.user == ticket.class_waitlist.professor:
         return redirect('/studenthome/')
     if direction == "up":
@@ -265,9 +271,20 @@ def move_student(request, ticket_id, direction):
             ticket.save()
             other_ticket.save()
 
+    audit_student_positions(ticket.class_waitlist)
     return redirect('detail', pk=ticket.class_waitlist.id)
+
 def update_waitlist_status(request, ticket_id, newstatus):
     ticket = get_object_or_404(StudentTicket, id=ticket_id)
+    audit_student_positions(ticket.class_waitlist)
     ticket.waitlist_status=newstatus
     ticket.save()
     return redirect('detail', pk=ticket.class_waitlist.id)
+
+def audit_student_positions(waitlistId):
+    tickets = StudentTicket.objects.filter(class_waitlist=waitlistId).order_by('position')
+    i = 1
+    for ticket in tickets:
+        ticket.position = i
+        i += 1
+        ticket.save()
