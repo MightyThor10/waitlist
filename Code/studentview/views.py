@@ -39,13 +39,6 @@ def home(request):
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
         message = "Log in to view your classes!"    
-    elif isStudent:
-        for c in classes:
-            c.numberInClass = StudentTicket.objects.filter(class_waitlist=c).count()
-            c.positionInWaitlist = StudentTicket.objects.get(
-                    class_waitlist=c,
-                    student=currentUser
-                ).position
 
     context={
         'classes':classes,
@@ -163,7 +156,12 @@ def createWaitlist(request):
         desc = request.POST['classDesc']
         code = request.POST['classCode']
         crn = request.POST['classCRN']
-        schedule = request.POST['classSchedule']
+        crn2 = request.POST['classCRN2']
+        crn3 = request.POST['classCRN3']
+
+        schedule = request.POST['firstSectionSchedule']
+        schedule2 = request.POST['secondSectionSchedule']
+        schedule3 = request.POST['thirdSectionSchedule']
         sortType = request.POST['classSort']
         term = request.POST['classTerm']
         datePosted = timezone.now()
@@ -171,8 +169,13 @@ def createWaitlist(request):
         anonymous_waitlist = request.POST.get('anonymous_waitlist', 'False') == 'on'
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
         
-        cwl = ClassWaitlist.objects.create(className=name, classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
-        
+        cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+        if schedule2 != "" or crn2 != "":
+            cw2 = ClassWaitlist.objects.create(className=name+" Section 2", classDescription=desc, classCode=code, crn=crn2, schedule=schedule2, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+        if schedule3 != "" or crn3 != "":
+            cw3 = ClassWaitlist.objects.create(className=name+" Section 3", classDescription=desc, classCode=code, crn=crn3, schedule=schedule3, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+
+
         response = redirect('/studenthome/')
         return response
 
