@@ -1,0 +1,46 @@
+<div class="d-flex flex-column py-3">
+    <div id="messaging-header" class="d-flex flex-row">
+        <div class="col px-3">
+            <button class="btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#messaging-sidebar-content"
+                    aria-expanded="false" aria-controls="messaging-sidebar-content">
+                <i class="fas fa-xmark"></i>
+            </button>
+        </div>
+        <div class="col col-auto px-3">
+            <button class="btn btn-outline-secondary" type="button">
+                Mark all as unread
+            </button>
+        </div>
+    </div>
+    <div id="messaging-title" class="d-flex flex-row justify-content-left pt-4">
+        <div class="col col-auto h4 px-5">
+            Your Inbox
+        </div>
+    </div>
+    {% for thread in inbox.threads %}
+        <div id="messaging-body" class="row">
+            <div>
+                <div class="row inbox-recipient">
+                    {{ thread.recipient }}
+                </div>
+                <div class="d-flex flex-row justify-content-between inbox-thread-snippet">
+                    <div class="col">
+                        {{ thread.message_snippet }}
+                    </div>
+                    <div class="col col-auto">
+                        {{ thread.last_received }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="row text-center pt-5">
+            <div class="col" style="font-weight: 300;">
+                Send a message to start a thread...
+            </div>
+        </div>
+    {% endfor %}
+    <div id="messaging-button-row" class="d-flex flex-row">
+
+    </div>
+</div>
