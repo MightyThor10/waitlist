@@ -21,7 +21,11 @@
 
         {% if ownsClass %}
             <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
-            <a href="{% url 'archive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Archive Class</button></a>
+            {% if classwaitlist.archived %}
+                <a href="{% url 'unarchive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Un-archive Class</button></a>
+            {% else %}
+                <a href="{% url 'archive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Archive Class</button></a>
+            {% endif %}
         {% endif %}
 
         <h3 style="margin-top:20px"> Students In Line: </h3>

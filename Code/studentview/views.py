@@ -181,6 +181,12 @@ def archive_class(request, class_id):
     response = redirect('/studenthome/')
     return response
     
+def unarchive_class(request, class_id):
+    myClass = ClassWaitlist.objects.get(id=class_id)
+    myClass.archived = False
+    myClass.save()
+    response = redirect('/studenthome/')
+    return response
 
 def leave_all_waitlists(request):
     user = request.user
