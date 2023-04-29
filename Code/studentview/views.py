@@ -100,7 +100,7 @@ def joinWaitlist(request):
         
         searchTerm = request.GET.get('searchTerm', '')
 
-        classes = ClassWaitlist.objects.filter(Q(className__contains=searchTerm) | Q(crn__contains=searchTerm)| Q(classCode__contains=searchTerm) | Q(professor__username__contains=searchTerm))
+        classes = ClassWaitlist.objects.filter((Q(className__contains=searchTerm) | Q(crn__contains=searchTerm)| Q(classCode__contains=searchTerm) | Q(professor__username__contains=searchTerm)), archived=False)
 
         context = {
             'title': 'join waitlist',
