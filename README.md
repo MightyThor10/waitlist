@@ -4,13 +4,13 @@
 ################################
 
 This is the code repository for Waitlist, developed by:
-Andrew Allan
-Ryan Gainor
-Sean Lindell
-Isaac Mast
-Sayyed Hadi Razmjo
-Annemarie Zheng
-Stephen Hoag
+1. Andrew Allan
+2. Ryan Gainor
+3. Sean Lindell
+4. Isaac Mast
+5. Sayyed Hadi Razmjo
+6. Annemarie Zheng
+7. Stephen Hoag
 
 Waitlist is tool meant to remedy the hassle that students
 and professors are met with when course registration rolls
