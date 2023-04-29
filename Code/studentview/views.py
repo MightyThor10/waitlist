@@ -174,6 +174,14 @@ def archive(request):
     }
     return render(request,'studentview/archive.html', context)
 
+def archive_class(request, class_id):
+    myClass = ClassWaitlist.objects.get(id=class_id)
+    myClass.archived = True
+    myClass.save()
+    response = redirect('/studenthome/')
+    return response
+    
+
 def leave_all_waitlists(request):
     user = request.user
     message = ""
