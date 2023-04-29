@@ -14,7 +14,7 @@ class ClassWaitlist(models.Model):
     date_added = models.DateTimeField("date published")
     closed = models.BooleanField(default=False)  # Add this line
     anonymous_waitlist = models.BooleanField(default=False, verbose_name='Anonymous Waitlist')
-
+    archived = models.BooleanField(default=False, verbose_name="Archived")
     def __str__(self):
         return self.className
 
