@@ -289,10 +289,22 @@ class EditView(LoginRequiredMixin, generic.UpdateView):
         print(self.model.id)
         return "../detail"
 
-    
+def move_studentNotification(ticket, notification):
+    if notification == "":
+        return
+    elif notification == "up":
+        subject = 'You have been moved up in a waitlist!'
+        message = f'Dear {ticket.student.first_name} {ticket.student.last_name},\n\n This is an automated message that serves as a confirmation that you have been moved up by the instructor in the following waitlist: \n\n Class Name: {ticket.class_waitlist.className} \n Class Code: {ticket.class_waitlist.classCode} \n CRN: {ticket.class_waitlist.crn} \n  Schedule: {ticket.class_waitlist.schedule} \n Term: {ticket.class_waitlist.term} \n Professor: {ticket.class_waitlist.professor} \n Date Joined: {ticket.class_waitlist.date_added} \n\n You can login to our service to manage your waitlists and check your position. \n\n Best regards, \nThe Waitlist Management System Team'
+    elif notification == "down":
+        subject = 'You have been moved down in a waitlist!'
+        message = f'Dear {ticket.student.first_name} {ticket.student.last_name},\n\n This is an automated message that serves as a confirmation that you have been moved down by the instructor in the following waitlist: \n\n Class Name: {ticket.class_waitlist.className} \n Class Code: {ticket.class_waitlist.classCode} \n CRN: {ticket.class_waitlist.crn} \n  Schedule: {ticket.class_waitlist.schedule} \n Term: {ticket.class_waitlist.term} \n Professor: {ticket.class_waitlist.professor} \n Date Joined: {ticket.class_waitlist.date_added} \n\n You can login to our service to manage your waitlists and check your position. \n\n Best regards, \nThe Waitlist Management System Team'
+    from_email = 'waitlistprojectwm@gmail.com'
+    recipient_list = [ticket.student.email]
+    send_mail(subject, message, from_email, recipient_list)
 
 def move_student(request, ticket_id, direction):
     ticket = get_object_or_404(StudentTicket, id=ticket_id)
+    notification = ""
     audit_student_positions(ticket.class_waitlist)
     if not request.user == ticket.class_waitlist.professor:
         return redirect('/studenthome/')
@@ -305,6 +317,7 @@ def move_student(request, ticket_id, direction):
             ticket.position, other_ticket.position = other_ticket.position, ticket.position
             ticket.save()
             other_ticket.save()
+            notification = "up"
     elif direction == "down":
         other_ticket = StudentTicket.objects.filter(
             class_waitlist=ticket.class_waitlist,
@@ -314,15 +327,30 @@ def move_student(request, ticket_id, direction):
             ticket.position, other_ticket.position = other_ticket.position, ticket.position
             ticket.save()
             other_ticket.save()
-
+        notification = "down"
     audit_student_positions(ticket.class_waitlist)
+    move_studentNotification(ticket, notification)
     return redirect('detail', pk=ticket.class_waitlist.id)
+
+
+def update_waitlist_statusNotification(ticket, newstatus):
+    subject = 'Your waitlist status has been changed!'
+    if newstatus == "p":
+        message = f'Dear {ticket.student.first_name} {ticket.student.last_name},\n\n This is an automated message that serves as a confirmation that your waitlist status has been changed to "Pending" in the following waitlist: \n\n Class Name: {ticket.class_waitlist.className} \n Class Code: {ticket.class_waitlist.classCode} \n CRN: {ticket.class_waitlist.crn} \n  Schedule: {ticket.class_waitlist.schedule} \n Term: {ticket.class_waitlist.term} \n Professor: {ticket.class_waitlist.professor} \n Date Joined: {ticket.class_waitlist.date_added} \n\n You can login to our service to manage your waitlists and check your position. \n\n Best regards, \nThe Waitlist Management System Team'
+    elif newstatus == "a":
+        message = f'Dear {ticket.student.first_name} {ticket.student.last_name},\n\n This is an automated message that serves as a confirmation that your waitlist status has been changed to "Accepted" in the following waitlist: \n\n Class Name: {ticket.class_waitlist.className} \n Class Code: {ticket.class_waitlist.classCode} \n CRN: {ticket.class_waitlist.crn} \n  Schedule: {ticket.class_waitlist.schedule} \n Term: {ticket.class_waitlist.term} \n Professor: {ticket.class_waitlist.professor} \n Date Joined: {ticket.class_waitlist.date_added} \n\n You can login to our service to manage your waitlists. \n\n Best regards, \nThe Waitlist Management System Team'
+    elif newstatus == "r":
+        message = f'Dear {ticket.student.first_name} {ticket.student.last_name},\n\n This is an automated message that serves as a confirmation that your waitlist status has been changed to "Rejected" in the following waitlist: \n\n Class Name: {ticket.class_waitlist.className} \n Class Code: {ticket.class_waitlist.classCode} \n CRN: {ticket.class_waitlist.crn} \n  Schedule: {ticket.class_waitlist.schedule} \n Term: {ticket.class_waitlist.term} \n Professor: {ticket.class_waitlist.professor} \n Date Joined: {ticket.class_waitlist.date_added} \n\n You can login to our service to manage your waitlists. \n\n Best regards, \nThe Waitlist Management System Team'
+    from_email = 'waitlistprojectwm@gmail.com'
+    recipient_list = [ticket.student.email]
+    send_mail(subject, message, from_email, recipient_list)
 
 def update_waitlist_status(request, ticket_id, newstatus):
     ticket = get_object_or_404(StudentTicket, id=ticket_id)
     audit_student_positions(ticket.class_waitlist)
     ticket.waitlist_status=newstatus
     ticket.save()
+    update_waitlist_statusNotification(ticket, newstatus)
     return redirect('detail', pk=ticket.class_waitlist.id)
 
 def audit_student_positions(waitlistId):
