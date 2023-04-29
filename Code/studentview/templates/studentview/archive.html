@@ -1,49 +1,7 @@
 {% extends "studentview/base.html" %}
 {% block content %}
-<h1 style="text-align:center"> My Classes</h1>
+<h1 style="text-align:center"> Archived Classes</h1>
 <div class="container class-list px-0">
-    <div class="row">
-        <div class="col-auto mr-auto">
-            {% if user.is_authenticated %}
-                {% if isProfessor %}
-                    <a href="/studenthome/createclass">
-                        <button type="button" class="btn btn-primary" style="margin-right:10px">
-                            Create Waitlist
-                        </button>
-                    </a>
-                    {% if classes is not empty %}
-                        <a href="/studenthome/closeclass">
-                            <button type="button" class="btn btn-primary" style="margin-left:10px">
-                                Close Class
-                            </button>
-                        </a>
-                    {% endif %}
-                    <a href="/studenthome/archive">
-                        <button type="button" class="btn btn-primary" style="margin-right:10px">
-                            Manage Archived Classes
-                        </button>
-                    </a>
-                {% endif %}
-                {% if isStudent %}
-                    <a href="/studenthome/joinwaitlist">
-                        <button type="button" class="btn btn-primary" style="margin-right:10px">
-                            Join Waitlist
-                        </button>
-                    </a>
-                    <a href="/studenthome/leavewaitlist/">
-                        <button type="button" class="btn btn-primary" style="margin-left:10px">
-                            Leave Waitlist
-                        </button>
-                    </a>
-                    <a href="/studenthome/leaveallwaitlists/">
-                        <button type="button" class="btn btn-primary" style="margin-left:20px">
-                            Leave All
-                        </button>
-                    </a>
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
     {% if message %}
         <div class="row my-3">
             <h2> {{message}}</h2>

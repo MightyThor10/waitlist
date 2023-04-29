@@ -9,6 +9,7 @@ from django.contrib import messages
 from django import forms
 from django.db.models import Q
 from django.core.mail import send_mail
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 
@@ -26,7 +27,7 @@ def home(request):
     if (not currentUser.is_anonymous):
         if (groupOfUser):
             if (groupOfUser.id == 1):
-                classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
+                classes = ClassWaitlist.objects.filter(professor=currentUser.pk, archived=False)
                 isProfessor = True
             elif (groupOfUser.id == 2):
                 isStudent = True
@@ -35,7 +36,7 @@ def home(request):
                 for ticket in studentTickets:
                     classPKs.add(ticket.class_waitlist.pk)
                 classPKs = list(classPKs)
-                classes = ClassWaitlist.objects.filter(pk__in=classPKs)
+                classes = ClassWaitlist.objects.filter(pk__in=classPKs, archived=False)
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
@@ -150,6 +151,28 @@ def leaveWaitlist(request):
             'classes': classes
         }
         return render(request, 'studentview/leave_waitlist.html', context)
+
+def archive(request):
+    currentUser = request.user
+    groupOfUser = currentUser.groups.all().first() #if we ever add more groups than profs and students, change this
+
+    classes = []
+    message =  ""
+
+    if (not currentUser.is_anonymous):
+        if (groupOfUser):
+            if (groupOfUser.id == 1):
+                classes = ClassWaitlist.objects.filter(professor=currentUser.pk, archived=True)
+            else:
+                raise PermissionDenied()
+    if (currentUser.is_anonymous):
+        message = "Log in to view your classes!"
+
+    context={
+        'classes':classes,
+        'message':message,
+    }
+    return render(request,'studentview/archive.html', context)
 
 def leave_all_waitlists(request):
     user = request.user
