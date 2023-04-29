@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django import forms
 from django.db.models import Q
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -53,6 +54,14 @@ def home(request):
     }
     return render(request,'studentview/home.html', context)
 
+
+def joinwaitlistNotification(user, waitlist):
+    subject = 'You have joined a waitlist!'
+    message = f'Dear {user.first_name} {user.last_name},\n\n This is an automated message that serves as a confirmation that you have joined the following waitlist: \n\n Class Name: {waitlist.className} \n Class Code: {waitlist.classCode} \n CRN: {waitlist.crn} \n  Schedule: {waitlist.schedule} \n Term: {waitlist.term} \n Professor: {waitlist.professor} \n Date Joined: {waitlist.date_added} \n\n You can login to our service to manage your waitlists. \n\n Best regards, \nThe Waitlist Management System Team'
+    from_email = 'waitlistprojectwm@gmail.com'
+    recipient_list = [user.email]
+    send_mail(subject, message, from_email, recipient_list)
+
 def joinWaitlist(request):
 
     if request.method =='POST':
@@ -73,6 +82,7 @@ def joinWaitlist(request):
                     last_position = StudentTicket.objects.filter(class_waitlist=waitlist).order_by('-position').first()
                     new_position = last_position.position + 1 if last_position else 1
                     st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user, position=new_position)
+                    joinwaitlistNotification(user, waitlist)
                     response = redirect('/studenthome/')
                     return response
             else:
@@ -99,7 +109,12 @@ def joinWaitlist(request):
         return render(request, 'studentview/join_waitlist.html', context)
 
 
-    
+def leavewaitlistNotification(user, existing_ticket):
+    subject = 'You have left a waitlist!'
+    message = f'Dear {user.first_name} {user.last_name},\n\n This is an automated message that serves as a confirmation that you have left the following waitlist: \n\n Class Name: {existing_ticket.class_waitlist.className} \n Class Code: {existing_ticket.class_waitlist.classCode} \n CRN: {existing_ticket.class_waitlist.crn} \n  Schedule: {existing_ticket.class_waitlist.schedule} \n Term: {existing_ticket.class_waitlist.term} \n Professor: {existing_ticket.class_waitlist.professor} \n Date Joined: {existing_ticket.class_waitlist.date_added} \n\n You can login to our service to manage your waitlists. \n\n Best regards, \nThe Waitlist Management System Team'
+    from_email = 'waitlistprojectwm@gmail.com'
+    recipient_list = [user.email]
+    send_mail(subject, message, from_email, recipient_list)
 
 def leaveWaitlist(request):
     if request.method == 'POST':
@@ -112,6 +127,7 @@ def leaveWaitlist(request):
             if existing_ticket:
                 existing_ticket.delete()
                 audit_student_positions(classid)
+                leavewaitlistNotification(user, existing_ticket)
                 response = redirect('/studenthome/')
                 return response
             else:
@@ -144,6 +160,7 @@ def leave_all_waitlists(request):
         for ticket in existing_tickets:
             ticket.position = 999999 # The idea here is you put the user about to be deleted at the end of the waitlist, reassign positions, then delete the ticket to keep the order straight
             audit_student_positions(ticket.class_waitlist)
+            leavewaitlistNotification(user, ticket)
         existing_tickets.delete()
         message = "You have successfully left all waitlists."
         response = redirect('/studenthome/')
@@ -157,6 +174,13 @@ def leave_all_waitlists(request):
         'classes': ClassWaitlist.objects.all(),
     }
     return render(request, 'studentview/leave_all_waitlists.html', context)
+
+def createWaitlistNotification(user, name, desc, code, crn, schedule, sortType, term, datePosted, anonymous_waitlist):
+    subject = 'Waitlist Created!'
+    message = f'Dear Professor {user.first_name} {user.last_name},\n\n This is an automated message that serves as a confirmation that you have created the following waitlist: \n\n Class Name: {name} \n Class Description: {desc} \n Class Code: {code} \n CRN: {crn} \n  Schedule: {schedule} \n Term: {term} \n Date Posted: {datePosted} \n  Sort Type: {sortType} \n Anonymous Waitlist?: {anonymous_waitlist} \n\n You can login to our service to manage your waitlists. \n\n Best regards, \nThe Waitlist Management System Team'
+    from_email = 'waitlistprojectwm@gmail.com'
+    recipient_list = [user.email]
+    send_mail(subject, message, from_email, recipient_list)
 
 def createWaitlist(request):
 
@@ -179,10 +203,13 @@ def createWaitlist(request):
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
         
         cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+        createWaitlistNotification(user, name, desc, code, crn, schedule, sortType, term, datePosted, anonymous_waitlist)
         if schedule2 != "" or crn2 != "":
             cw2 = ClassWaitlist.objects.create(className=name+" Section 2", classDescription=desc, classCode=code, crn=crn2, schedule=schedule2, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+            createWaitlistNotification(user, name, desc, code, crn2, schedule2, sortType, term, datePosted, anonymous_waitlist)
         if schedule3 != "" or crn3 != "":
             cw3 = ClassWaitlist.objects.create(className=name+" Section 3", classDescription=desc, classCode=code, crn=crn3, schedule=schedule3, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+            createWaitlistNotification(user, name, desc, code, crn3, schedule3, sortType, term, datePosted, anonymous_waitlist)
 
 
         response = redirect('/studenthome/')
@@ -195,6 +222,12 @@ def createWaitlist(request):
         return render(request,'studentview/create_class.html', context)
 
 
+def close_classNotification(user, class_to_delete):
+    subject = 'You have deleted a waitlist!'
+    message = f'Dear Professor {user.first_name} {user.last_name},\n\n This is an automated message that serves as a confirmation that you have deleted the following waitlist: \n\n Class Name: {class_to_delete.className} \n Class Description: {class_to_delete.classDescription} \n Class Code: {class_to_delete.classCode} \n CRN: {class_to_delete.crn} \n  Schedule: {class_to_delete.schedule} \n Term: {class_to_delete.term} \n Professor: {class_to_delete.professor} \n Anonymous Waitlist?: {class_to_delete.anonymous_waitlist} \n\n You can login to our service to manage your waitlists. \n\n Best regards, \nThe Waitlist Management System Team'
+    from_email = 'waitlistprojectwm@gmail.com'
+    recipient_list = [user.email]
+    send_mail(subject, message, from_email, recipient_list)
 
 def close_class(request):
     if request.method == 'POST':
@@ -209,6 +242,7 @@ def close_class(request):
         try:
             class_to_delete = ClassWaitlist.objects.get(id=class_id, professor=user)
             class_to_delete.delete()
+            close_classNotification(user, class_to_delete)
             messages.success(request, 'The class has been successfully deleted.')
         except ClassWaitlist.DoesNotExist:
             messages.error(request, 'The class does not exist or you did not create it.')
