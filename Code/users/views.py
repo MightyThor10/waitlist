@@ -41,6 +41,12 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
+def change_passwordNotification(user):
+    subject = 'IMPORTANT: Your password has been changed'
+    message = f'Dear {user.first_name} {user.last_name},\n\n We are sending you this email to confirm that your password for the Waitlist Management System has been successfully changed. If you did not initiate this change, please contact our support team immediately at waitlistprojectwm@gmail.com. \n\nBest regards,\nThe Waitlist Management System Team'
+    from_email = 'waitlistprojectwm@gmail.com'
+    recipient_list = [user.email]
+    send_mail(subject, message, from_email, recipient_list)
 
 @login_required
 def profile(request):
@@ -59,6 +65,7 @@ def profile(request):
             if password_form.is_valid():
                 user = password_form.save()
                 update_session_auth_hash(request, user)
+                change_passwordNotification(user)
                 messages.success(request, 'Your password has been changed!')
                 return redirect('profile')
 
