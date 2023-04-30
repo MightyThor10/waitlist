@@ -11,7 +11,7 @@ from django import forms
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
-from Code.users import models as usermodels
+from Code.users.models import StudentProfile
 
 
 # Create your views here.
@@ -439,7 +439,7 @@ def sort_waitlist(request, pk, sortType):
         unspecified = []
 
         for ticket in tickets:
-            profile = usermodels.StudentProfile.objects.get(user_id=ticket.student_id)
+            profile = StudentProfile.objects.get(user_id=ticket.student_id)
             if profile.academic_status == 'senior':
                 seniors.append(ticket)
             elif profile.academic_status == 'junior':
