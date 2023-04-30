@@ -14,33 +14,34 @@
             <input type="text" class="form-control" id="classDesc" name="classDesc" placeholder="Write about course requirements and who will be prioritized for admission">
             <label for="classCode">Code:</label>
             <input type="text" class="form-control" id="classCode" name="classCode" placeholder="Ex: CSCI425">
-            <label for="classCRN">Section #1 CRN:</label>
+            <label for="classCRN">CRN:</label>
             <input type="number" class="form-control" id="classCRN" name="classCRN" placeholder="Ex: 25064">
-            <label for="classCRN">Section #2 CRN (Optional):</label>
-            <input type="number" class="form-control" id="classCRN2" name="classCRN2" placeholder="Ex: 25064">
-            <label for="classCRN">Section #3 CRN (Optional):</label>
-            <input type="number" class="form-control" id="classCRN3" name="classCRN3" placeholder="Ex: 25064">
-            <label for="classSchedule">Section #1 Schedule:</label>
+            <label for="classCRN" class="collapse multi-collapse">Section #2 CRN (Optional):</label>
+            <input type="number" class="form-control collapse multi-collapse" id="classCRN2" name="classCRN2" placeholder="Ex: 25064">
+            <label for="classCRN" class="collapse multi-collapse">Section #3 CRN (Optional):</label>
+            <input type="number" class="form-control collapse multi-collapse" id="classCRN3" name="classCRN3" placeholder="Ex: 25064">
+            <label for="classSchedule">Schedule:</label>
             <input type="text" class="form-control" id="firstSectionSchedule" name="firstSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
-            <label for="classSchedule">Section #2 Schedule (Optional):</label>
-            <input type="text" class="form-control" id="secondSectionSchedule" name="secondSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
-            <label for="classSchedule">Section #3 Schedule (Optional):</label>
-            <input type="text" class="form-control" id="thirdSectionSchedule" name="thirdSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
+            <label for="classSchedule" class="collapse multi-collapse">Section #2 Schedule (Optional):</label>
+            <input type="text" class="form-control collapse multi-collapse" id="secondSectionSchedule" name="secondSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
+            <label for="classSchedule" class="collapse multi-collapse">Section #3 Schedule (Optional):</label>
+            <input type="text" class="form-control collapse multi-collapse" id="thirdSectionSchedule" name="thirdSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
             <label for="classSort">How Class Will be Sorted:</label>
             <input type="text" class="form-control" id="classSort" name="classSort" placeholder="Ex: First Come, First Served">
             <label for="classTerm">Term:</label>
             <input type="text" class="form-control" id="classTerm" name="classTerm" placeholder="Ex: Spring 2023">
             <label for="anonymous_waitlist">Anonymous Waitlist:</label>
             <input type="checkbox" id="anonymous_waitlist" name="anonymous_waitlist"><br>
-            <label for="request_year">Request Academic Year from Student:</label>
-            <input type="checkbox" id="request_academic_status" name="request_academic_status"><br>
-            <label for="request_major">Request Major from Student:</label>
-            <input type="checkbox" id="request_major" name="request_major"><br>
+            <label for="request_year" class="collapse multi-collapse">Request Academic Year from Student:</label>
+            <input type="checkbox" id="request_academic_status" name="request_academic_status" class="collapse multi-collapse"><br>
+            <label for="request_major" class="collapse multi-collapse">Request Major from Student:</label>
+            <input type="checkbox" id="request_major" name="request_major" class="collapse multi-collapse"><br>
             <!--<label for="request_msg">Request Message from Student:</label>
             <input type="checkbox" id="request_msg" name="request_msg">-->
 
         </div>
         <button type="submit" class="btn btn-primary" style="margin-top:20px;width:100%">Create Waitlist(s)</button>
+        <button type="button" class="btn btn-secondary" style="margin-top:20px;width:100%" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Show/Hide Advanced Options</button>
     </form>
 
     {% for aClass in classes %}
