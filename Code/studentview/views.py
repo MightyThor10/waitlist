@@ -1,3 +1,5 @@
+from random import shuffle
+
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
@@ -397,3 +399,22 @@ def audit_student_positions(waitlistId):
         ticket.position = i
         i += 1
         ticket.save()
+def sort_waitlist(request, pk, sortType):
+    tickets = list(StudentTicket.objects.filter(class_waitlist_id=pk).order_by('date_joined'))
+    if sortType == 'fcfs':
+        i = 1
+        for ticket in tickets:
+            ticket.position =i
+            i += 1
+            ticket.save()
+    elif sortType == 'seniority':
+
+    elif sortType == 'random':
+        shuffle(tickets)
+        i = 1
+        for ticket in tickets:
+            ticket.position =i
+            i += 1
+            ticket.save()
+    return redirect('detail', pk)
+

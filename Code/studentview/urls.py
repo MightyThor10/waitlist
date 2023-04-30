@@ -16,5 +16,6 @@ urlpatterns = [
     path('leaveallwaitlists/', views.leave_all_waitlists, name='leave_all_waitlists'),
     path('archive/',views.archive, name='waitlist-archive'),
     path('archive_class/<int:class_id>', views.archive_class, name='archive_class'),
-    path('unarchive_class/<int:class_id>', views.unarchive_class, name='unarchive_class')
+    path('unarchive_class/<int:class_id>', views.unarchive_class, name='unarchive_class'),
+    path('sort_waitlist/<int:pk>/<str:sortType>/', views.sort_waitlist, name='sort_waitlist'),
 ]

@@ -27,8 +27,11 @@
             <label for="classSchedule">Section #3 Schedule (Optional):</label>
             <input type="text" class="form-control" id="thirdSectionSchedule" name="thirdSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
             <label for="classSort">How Class Will be Sorted:</label>
-            <input type="text" class="form-control" id="classSort" name="classSort" placeholder="Ex: First Come, First Served">
-            <label for="classTerm">Term:</label>
+            <select class="form-control" id="classSort" name="classSort">
+                <option value="fcfs">First Come First Serve</option>
+                <option value="seniority">By Seniority</option>
+                <option value="random">Randomized</option>
+            </select>
             <input type="text" class="form-control" id="classTerm" name="classTerm" placeholder="Ex: Spring 2023">
             <label for="anonymous_waitlist">Anonymous Waitlist:</label>
             <input type="checkbox" id="anonymous_waitlist" name="anonymous_waitlist">
