@@ -208,17 +208,17 @@ def createWaitlist(request):
         anonymous_waitlist = request.POST.get('anonymous_waitlist', 'False') == 'on'
         request_academic_status = request.POST.get('request_academic_status', 'False') == 'on'
         request_major = request.POST.get('request_major', 'False') == 'on'
-        request_msg = request.POST.get('request_msg', 'False') == 'on'
+        #request_msg = request.POST.get('request_msg', 'False') == 'on'
 
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
 
-        cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+        cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
         createWaitlistNotification(user, name, desc, code, crn, schedule, sortType, term, datePosted, anonymous_waitlist)
         if schedule2 != "" or crn2 != "":
-            cw2 = ClassWaitlist.objects.create(className=name+" Section 2", classDescription=desc, classCode=code, crn=crn2, schedule=schedule2, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+            cw2 = ClassWaitlist.objects.create(className=name+" Section 2", classDescription=desc, classCode=code, crn=crn2, schedule=schedule2, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
             createWaitlistNotification(user, name, desc, code, crn2, schedule2, sortType, term, datePosted, anonymous_waitlist)
         if schedule3 != "" or crn3 != "":
-            cw3 = ClassWaitlist.objects.create(className=name+" Section 3", classDescription=desc, classCode=code, crn=crn3, schedule=schedule3, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
+            cw3 = ClassWaitlist.objects.create(className=name+" Section 3", classDescription=desc, classCode=code, crn=crn3, schedule=schedule3, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
             createWaitlistNotification(user, name, desc, code, crn3, schedule3, sortType, term, datePosted, anonymous_waitlist)
 
 
