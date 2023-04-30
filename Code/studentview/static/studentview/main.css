@@ -102,15 +102,14 @@ ul {
     min-width: 400px;
 }
 
-#inbox {
-    max-height: 700px;
-    overflow-y: scroll;
-}
-
 .inbox-row .list-group-item {
     border-left: 0;
     border-right: 0;
     border-radius: 0;
+}
+
+.inbox-row:not(:first-child) .list-group-item {
+    border-top: 0;
 }
 
 .inbox-row .list-group-item:hover {
