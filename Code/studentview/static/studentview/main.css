@@ -47,10 +47,14 @@ ul {
     Messaging sidebar styling
 */
 
+/* #messaging-sidebar {
+    padding-right: 0.75rem;
+} */
+
 #messaging-sidebar-button, #messaging-sidebar-container {
     background-color: #fff;
     background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
+    border: 1px solid rgba(0,0,0,.25);
     border-radius: 0.4rem;
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
@@ -66,7 +70,7 @@ ul {
     background-color: lightgray;
 }
 
-/* Styling for messaging icon */
+/* FontAwesome data-count for unread messages */
 .fas[data-count]{
     position:relative;
 }
@@ -88,13 +92,51 @@ ul {
 
 #messaging-sidebar-container {
     border-radius: 0.5rem;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
     padding-left: 0;
-    margin-bottom: 0.5em;
+    margin-bottom: 1em;
 }
 
 #messaging-sidebar-content {
     min-width: 400px;
 }
+
+#inbox {
+    max-height: 700px;
+    overflow-y: scroll;
+}
+
+.inbox-row .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+}
+
+.inbox-row .list-group-item:hover {
+    cursor: pointer;
+}
+
+.inbox-row .list-group-item:hover:not(.unread) {
+    background-color: lightgray;
+}
+
+.inbox-row .list-group-item.unread {
+    background-color: #7da5ccd0;
+}
+
+.inbox-row .list-group-item.unread:hover {
+    background-color: lightsteelblue;
+}
+
+/* Alter standard bootstrap checkbox input */
+[id^="thread_select"] {
+    border: 2px solid lightslategray !important;
+    border-radius: 10px !important;
+    clip-path: circle(43% at 50% 50%);
+}
+
+/* End messaging sidebar styling */
 
 .content-section {
     background: #ffffff;
@@ -160,4 +202,15 @@ a.article-title:hover {
      flex-direction: column;
      width: 315px;
      margin: 20px;
+}
+
+/* .studentclassbox.active {
+
+} */
+.studentclassbox.closed {
+    opacity: 50%;
+}
+.studentclassbox.addclassbox {
+    opacity: 50%;
+    border: 5px dashed #5f788a;
 }

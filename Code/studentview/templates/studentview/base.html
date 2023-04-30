@@ -53,7 +53,7 @@
         </nav>
     </header>
 
-<div class="container-fluid d-flex h-100" style="padding-right: 0;">
+<div class="container-fluid d-flex h-100 pb-3" style="padding-right: 0;">
     <div id="page-flex-row" class="d-flex flex-row">
         <!-- Main page content -->
         <div id="main-page-content" class="col">
@@ -94,23 +94,25 @@
                 </div>
             </div>
         </div>
-        <!-- Messaging sidebar for non-anonymous users -->
-        <div id="messaging-sidebar" class="col col-auto">
-            <div class="row h-100">
-                <div class="col col-auto mt-auto px-0" style="margin-bottom: 2rem;">
-                    <button id="messaging-sidebar-button" class="btn collapsed px-3" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#messaging-sidebar-content" aria-expanded="false" aria-controls="messaging-sidebar-content">
-                            <i class="fas fa-envelope fa-2x"{% if inbox.unread_messages %} data-count="{{ inbox.unread_messages }}"{% endif %}></i>
-                        </span>
-                    </button>
-                </div>
-                <div id="messaging-sidebar-container" class="col">
-                    <div id="messaging-sidebar-content" class="container-fluid collapse">
-                        {% include "messaging/messaging_sidebar.html" %}
+        {% if isStudent or isProfessor %}
+            <!-- Messaging sidebar for non-anonymous users -->
+            <div id="messaging-sidebar" class="col col-auto">
+                <div class="row h-100">
+                    <div class="col col-auto mt-auto px-0" style="margin-bottom: 2rem;">
+                        <button id="messaging-sidebar-button" class="btn collapsed px-3" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#messaging-sidebar-content" aria-expanded="false" aria-controls="messaging-sidebar-content">
+                                <i class="fas fa-envelope fa-2x"{% if inbox.unread_messages %} data-count="{{ inbox.unread_messages }}"{% endif %}></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div id="messaging-sidebar-container" class="col h-100">
+                        <div id="messaging-sidebar-content" class="container-fluid collapse h-100 px-0">
+                            {% include "messaging/messaging_sidebar.html" %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 </div>
 
