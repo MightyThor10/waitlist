@@ -5,7 +5,7 @@ from datetime import datetime
 class ClassWaitlist(models.Model):
     className = models.CharField(max_length=200, name="className", verbose_name='Class Name')
     classDescription = models.TextField(verbose_name='Description', default=' ')
-    classCode = models.CharField(max_length=200, verbose_name='Class Code') 
+    classCode = models.CharField(max_length=200, verbose_name='Class Code')
     crn = models.IntegerField(default=0, verbose_name='CRN')
     schedule = models.CharField(max_length=200, verbose_name='Schedule')
     sortType = models.CharField(max_length=200, verbose_name='Sort Type')
@@ -34,6 +34,9 @@ class StudentTicket(models.Model):
     student_major = models.CharField(max_length=100, verbose_name='Major', default='')
     msg = models.CharField(max_length=200, verbose_name='Message for Professor', default='')
     def __str__(self):
-        return str(self.student) + " - " + str(self.student.email) + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))
-
-
+        return_msg = str(self.student) + " - " + str(self.student.email)
+        if self.student_major != '':
+            return_msg += " - " + str(self.student_major) + " Major"
+        if self.student_academic_status != '':
+            return_msg += " - " + str(self.student_academic_status)
+        return return_msg + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))

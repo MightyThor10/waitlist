@@ -10,6 +10,7 @@ from django import forms
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
+from users.models import StudentProfile
 
 # Create your views here.
 
@@ -40,7 +41,7 @@ def home(request):
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
     if (currentUser.is_anonymous):
-        message = "Log in to view your classes!"    
+        message = "Log in to view your classes!"
 
     if isStudent:
         for c in classes:
@@ -85,9 +86,9 @@ def joinWaitlist(request):
                     status = ''
                     major = ''
                     if waitlist.request_academic_status:
-                        status = user.academic_status
+                        status = StudentProfile.objects.filter(user=user).first().academic_status
                     if waitlist.request_major:
-                        major = user.major
+                        major = StudentProfile.objects.filter(user=user).first().major
                     st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user, position=new_position, student_academic_status=status, student_major=major)
                     joinwaitlistNotification(user, waitlist)
                     response = redirect('/studenthome/')
@@ -103,7 +104,7 @@ def joinWaitlist(request):
         return render(request, 'studentview/join_waitlist.html', context)
 
     else:
-        
+
         searchTerm = request.GET.get('searchTerm', '')
 
         classes = ClassWaitlist.objects.filter((Q(className__contains=searchTerm) | Q(crn__contains=searchTerm)| Q(classCode__contains=searchTerm) | Q(professor__username__contains=searchTerm)), archived=False)
@@ -248,7 +249,7 @@ def createWaitlist(request):
         request_msg = request.POST.get('request_msg', 'False') == 'on'
 
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
-        
+
         cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
         createWaitlistNotification(user, name, desc, code, crn, schedule, sortType, term, datePosted, anonymous_waitlist)
         if schedule2 != "" or crn2 != "":
@@ -309,7 +310,7 @@ class DetailView(generic.DetailView):
         context['ownsClass'] = self.request.user.id == kwargs['object'].professor.pk
         context['anonymous_waitlist'] = kwargs['object'].anonymous_waitlist
         return context
-    
+
 
 class EditWaitlistForm(forms.ModelForm):
     class Meta:
@@ -330,7 +331,7 @@ class EditView(LoginRequiredMixin, generic.UpdateView):
         if userid == classProfessorId:
             return super().get(request, *args, **kwargs)
         return render({}, '403') # goes to 404 but making idk how to make it go to a 403 page instead
-        
+
 
     def get_success_url(self):
         print(self.model.id)
