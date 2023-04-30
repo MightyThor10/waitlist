@@ -5,6 +5,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="Code.django_setup.urls.users" />
+          <option value="Code.studentview.views.users" />
         </list>
       </option>
     </inspection_tool>
