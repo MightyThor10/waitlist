@@ -445,7 +445,6 @@ def sort_waitlist(request, pk, sortType):
 
     elif sortType == 'random':
         shuffle(tickets)
-    return redirect('detail', pk)
 
     i = 1
     for ticket in tickets:
