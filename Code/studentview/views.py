@@ -10,11 +10,9 @@ from django import forms
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
+from messaging.models import Message
 from users.models import StudentProfile
 from random import shuffle
-from users.models import StudentProfile
-
-# Create your views here.
 
 
 def home(request):
@@ -26,6 +24,8 @@ def home(request):
     message =  ""
     isProfessor = False
     isStudent = False
+    inbox = []
+    unread_messages = 0
 
     if currentUser.is_anonymous:
         message = "Log in to view your classes!"
@@ -55,7 +55,45 @@ def home(request):
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
 
-    context={
+        user_messages = Message.objects.filter(
+                Q(sender=currentUser) | Q(receiver=currentUser)
+            ).order_by('send_date')
+
+        inbox_userIDs = (
+            set(user_messages.values_list('sender', flat=True).distinct()) |
+            set(user_messages.values_list('receiver', flat=True).distinct()))
+        inbox_userIDs.discard(currentUser.id)
+
+        for thread_userID in inbox_userIDs:
+            unread = False
+            thread_messages = user_messages.filter(
+                Q(sender=thread_userID) | Q(receiver=thread_userID))
+
+            thread_userObj = User.objects.get(id=thread_userID)
+            if thread_userObj.groups.all().first() == 2:
+                thread_user_pref_name = StudentProfile.objects.get(id=thread_userID).preferred_name
+            else:
+                thread_user_pref_name = thread_userObj.get_full_name()
+
+            for msg in thread_messages:
+                if msg.read_date:
+                    break
+                else:
+                    unread = True
+                    unread_messages += 1
+                    break
+
+            inbox.append({
+                'name': thread_user_pref_name,
+                'nameID': thread_userID,
+                'subject': msg.subject,
+                'message_snippet': msg.body,
+                'last_received': msg.getInboxDate(),
+                'unread': unread,
+                'thread': thread_messages
+            })
+
+    context= {
         'classes': classes,
         'message': message,
         'isProfessor': isProfessor,

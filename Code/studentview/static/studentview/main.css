@@ -78,15 +78,15 @@ ul {
 .fas[data-count]:after{
     position: absolute;
     right: -0.75em;
-    top: -.65em;
+    top: -.5em;
     content: attr(data-count);
-    padding: .4em;
+    padding: 0.2em;
     border-radius: 10em;
     line-height: .9em;
     color: white;
     background: rgba(255,0,0,.9);
     text-align: center;
-    min-width: 2em;
+    min-width: 1.6em;
     font: bold .4em sans-serif;
 }
 

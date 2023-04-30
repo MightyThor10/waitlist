@@ -101,7 +101,7 @@
                     <div class="col col-auto mt-auto px-0" style="margin-bottom: 2rem;">
                         <button id="messaging-sidebar-button" class="btn collapsed px-3" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#messaging-sidebar-content" aria-expanded="false" aria-controls="messaging-sidebar-content">
-                                <i class="fas fa-envelope fa-2x"{% if inbox.unread_messages %} data-count="{{ inbox.unread_messages }}"{% endif %}></i>
+                                <i class="fas fa-envelope fa-2x"{% if unread_messages %} data-count="{{ unread_messages }}"{% endif %}></i>
                             </span>
                         </button>
                     </div>

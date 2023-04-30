@@ -1,4 +1,5 @@
 <div class="row d-flex flex-column h-100 py-3">
+    <!-- Close messaging sidebar container -->
     <div class="col col-12">
         <div id="messaging-header" class="d-flex flex-row justify-content-left">
             <div class="col px-3">
@@ -8,6 +9,9 @@
                 </button>
             </div>
         </div>
+    </div>
+    <!-- Messaging sidebar title/buttons container -->
+    <div class="col col-12">
         <div id="messaging-title" class="d-flex flex-row justify-content-left pt-3">
             <div class="col col-auto h3 px-4">
                 <i class="fa-solid fa-envelopes-bulk fa-lg mx-3"></i>
@@ -33,6 +37,7 @@
             </div>
         </div>
     </div>
+    <!-- Messaging sidebar inbox container -->
     <div id="inbox" class="col col-12 overflow-auto" style="flex: 1;">
         {% for thread in inbox %}
             <div class="inbox-row d-flex flex-row flex-wrap">
@@ -84,10 +89,14 @@
             </div>
         {% endfor %}
     </div>
-    <div class="col col-12">
-        <div id="messaging-button-row" class="d-flex flex-row justify-content-center mt-2">
+    <!-- Messaging sidebar footer container -->
+    <div id="messaging-footer" class="col col-12 mt-2 mb-1">
+        <div class="d-flex flex-row justify-content-center">
             <div class="col col-auto">
-                You have {{ unread_messages }} unread messages.
+                You have {{ unread_messages }} unread message{{ unread_messages|pluralize }}.
+            </div>
+        </div>
+            <div class="col col-auto">
             </div>
         </div>
     {% empty %}
