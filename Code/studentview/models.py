@@ -26,7 +26,7 @@ class StudentTicket(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     position = models.IntegerField(default=0)  # Add this line
     waitlist_status = models.CharField(max_length=1, default="p" ) #a = accept r = reject p = pending
-
+    msg = models.CharField(max_length=200, verbose_name='Message for Professor', default='')
     def __str__(self):
         return str(self.student) + " - " + str(self.student.email) + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))
 
