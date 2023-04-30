@@ -11,7 +11,7 @@ from django import forms
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
-from ..users.models import StudentProfile
+from Code.users.models import StudentProfile
 
 
 # Create your views here.
