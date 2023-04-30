@@ -271,7 +271,7 @@ class DetailView(generic.DetailView):
 class EditWaitlistForm(forms.ModelForm):
     class Meta:
         model = ClassWaitlist
-        fields = ['className', 'classDescription', 'classCode', 'crn', 'schedule', 'sortType', 'term', 'anonymous_waitlist']
+        fields = ['className', 'classDescription', 'classCode', 'crn', 'schedule', 'sortType', 'term', 'anonymous_waitlist', 'request_academic_status', 'request_major', 'request_msg']
 
 
 class EditView(LoginRequiredMixin, generic.UpdateView):
