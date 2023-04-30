@@ -440,13 +440,13 @@ def sort_waitlist(request, pk, sortType):
 
         for ticket in tickets:
             profile = StudentProfile.objects.get(user_id=ticket.student_id)
-            if profile.academic_status == 'SR':
+            if profile.academic_status == 'senior':
                 seniors.append(ticket)
-            elif profile.academic_status == 'JR':
+            elif profile.academic_status == 'junior':
                 juniors.append(ticket)
-            elif profile.academic_status == 'SO':
+            elif profile.academic_status == 'sophomore':
                 sophomores.append(ticket)
-            elif profile.academic_status == 'FR':
+            elif profile.academic_status == 'freshman':
                 freshman.append(ticket)
             else:
                 unspecified.append(ticket)
