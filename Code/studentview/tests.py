@@ -56,6 +56,26 @@ class HomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "You are not logged in as a professor or a student!")
 
+class ArchivedClassTest(TestCase):
+
+    def test_home_view_no_login(self):
+        user = User.objects.create_user(username='test_professor', password='testpassword')
+        class_waitlist = ClassWaitlist.objects.create(
+            className="Test Class",
+            classCode="TEST101",
+            crn=12345,
+            schedule="MWF 10:00-11:00",
+            sortType="FIFO",
+            term="Fall 2023",
+            professor=user,
+            date_added="2023-04-10",
+            archived=True,
+        )
+        response = self.client.get(reverse('waitlist-archive'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Archived Classes")
+
+
 class JoinWaitlistViewTests(TestCase):
 
     def test_join_waitlist_view(self):
