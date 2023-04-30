@@ -30,3 +30,9 @@ class StudentTicket(models.Model):
     def __str__(self):
         return str(self.student) + " - " + str(self.student.email) + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))
 
+
+class WaitlistForm(models.Model):
+    name = models.CharField(max_length=100, blank=True, verbose_name='Name')
+    academic_status = models.CharField(max_length=20, blank=True, verbose_name='Academic Status')
+    major = models.CharField(max_length=100, blank=True, verbose_name='Major')
+    msg = models.CharField(max_length=200, verbose_name='Message for Professor')
