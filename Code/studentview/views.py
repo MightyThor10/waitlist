@@ -250,11 +250,7 @@ def createWaitlist(request):
 
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
 
-<<<<<<< HEAD
         cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
-=======
-        cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
->>>>>>> eb31a7e... added Major and Academic Status to join request
         createWaitlistNotification(user, name, desc, code, crn, schedule, sortType, term, datePosted, anonymous_waitlist)
         if schedule2 != "" or crn2 != "":
             cw2 = ClassWaitlist.objects.create(className=name+" Section 2", classDescription=desc, classCode=code, crn=crn2, schedule=schedule2, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
