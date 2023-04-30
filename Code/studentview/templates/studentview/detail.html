@@ -2,7 +2,7 @@
 {% block content %}
 <div style="padding:40px">
         <h1>Waitlist Details</h1>
-        
+
         <legend> <h2> Name: {{ classwaitlist.className }}  - Code: {{ classwaitlist.classCode}} </h2> </legend>
 
         <legend> <h2> Professor: {{ classwaitlist.professor }} </h2> </legend>
@@ -14,10 +14,16 @@
         <legend> <h2> Schedule: {{ classwaitlist.schedule }} </h2> </legend>
 
         <legend> <h2> Sort By: {{ classwaitlist.sortType }} </h2> </legend>
-        
+
         <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
 
         <legend> <h2> Anonymous: {{ classwaitlist.anonymous_waitlist }} </h2> </legend>
+
+        <legend> <h2> Request Major: {{ classwaitlist.request_major }} </h2> </legend>
+
+        <legend> <h2> Request Year: {{ classwaitlist.request_year }} </h2> </legend>
+
+        <legend> <h2> Request Message: {{ classwaitlist.request_msg }} </h2> </legend>
 
         {% if ownsClass %}
             <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
@@ -67,5 +73,5 @@
         {% endfor %}
 
 </div>
-        
+
 {% endblock content %}
