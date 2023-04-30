@@ -129,3 +129,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'student-home'
 
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'waitlistprojectwm@gmail.com'
+EMAIL_HOST_PASSWORD = 'Wj4OKE0QFpfyBnwR'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

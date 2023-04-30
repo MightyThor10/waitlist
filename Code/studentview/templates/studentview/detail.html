@@ -1,10 +1,13 @@
 {% extends "studentview/base.html" %}
 {% block content %}
+<div style="padding:40px">
         <h1>Waitlist Details</h1>
         
         <legend> <h2> Name: {{ classwaitlist.className }}  - Code: {{ classwaitlist.classCode}} </h2> </legend>
 
         <legend> <h2> Professor: {{ classwaitlist.professor }} </h2> </legend>
+
+        <legend> <h2> Description: {{ classwaitlist.classDescription }} </h2> </legend>
 
         <legend> <h2> CRN: {{ classwaitlist.crn }} </h2> </legend>
 
@@ -27,16 +30,27 @@
         
         <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
 
+        <legend> <h2> Anonymous: {{ classwaitlist.anonymous_waitlist }} </h2> </legend>
+
         {% if ownsClass %}
             <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
+            {% if classwaitlist.archived %}
+                <a href="{% url 'unarchive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Un-archive Class</button></a>
+            {% else %}
+                <a href="{% url 'archive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Archive Class</button></a>
+            {% endif %}
         {% endif %}
 
-        <h3> Students In Line: </h3>
+        <h3 style="margin-top:20px"> Students In Line: </h3>
 
         {% for studentticket in classwaitlist.studentticket_set.all|dictsort:"position" %}
 
             <p>
-                {{ studentticket }}
+                {% if classwaitlist.anonymous_waitlist and not isProfessor and studentticket.student != user %}
+                Anonymous Student: {{studentticket.date_joined|date:"d/m/Y, H:i:s"}}
+                {% else %}
+                    {{ studentticket }}
+                {% endif %}
                 {% if studentticket.student == user %}
 
                     {% if studentticket.waitlist_status == "p" %}
@@ -69,5 +83,7 @@
             </p>
 
         {% endfor %}
+
+</div>
         
 {% endblock content %}

@@ -1,46 +1,111 @@
 {% extends "studentview/base.html" %}
 {% block content %}
-<h1> My Classes</h1>
-<h2> {{message}}</h2>
-    {% for class in classes %}
-    {% if not class.closed or isProfessor %}
-    <div class="studentclassbox">
-        <h2>{{class.className}} - {{class.classCode}}</h2>
-        <p>Professor: {{class.professor}}</p>
-        <p>{{class.schedule}}</p>
-        <p>CRN: {{class.crn}}</p>
-        <p>{{class.waitlistposition}}</p>
-        <p>Class ID:{{class.pk}}</p>
-        <button onclick="window.location.href='/studenthome/{{class.pk}}/detail';">Expand Details</button>
+<h1 style="text-align:center"> My Classes</h1>
+<div class="container class-list px-0">
+    <div class="row">
+        <div class="col-auto mr-auto">
+            {% if user.is_authenticated %}
+                {% if isProfessor %}
+                    <a href="/studenthome/createclass">
+                        <button type="button" class="btn btn-primary" style="margin-right:10px">
+                            Create Waitlist
+                        </button>
+                    </a>
+                    {% if classes is not empty %}
+                        <a href="/studenthome/closeclass">
+                            <button type="button" class="btn btn-primary" style="margin-left:10px">
+                                Close Class
+                            </button>
+                        </a>
+                    {% endif %}
+                    <a href="/studenthome/archive">
+                        <button type="button" class="btn btn-primary" style="margin-right:10px">
+                            Manage Archived Classes
+                        </button>
+                    </a>
+                {% endif %}
+                {% if isStudent %}
+                    <a href="/studenthome/joinwaitlist">
+                        <button type="button" class="btn btn-primary" style="margin-right:10px">
+                            Join Waitlist
+                        </button>
+                    </a>
+                    <a href="/studenthome/leavewaitlist/">
+                        <button type="button" class="btn btn-primary" style="margin-left:10px">
+                            Leave Waitlist
+                        </button>
+                    </a>
+                    <a href="/studenthome/leaveallwaitlists/">
+                        <button type="button" class="btn btn-primary" style="margin-left:20px">
+                            Leave All
+                        </button>
+                    </a>
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
+    {% if message %}
+        <div class="row my-3">
+            <h2> {{message}}</h2>
+        </div>
     {% endif %}
-    {% endfor %}
-
-    {% if user.is_authenticated %}
-    {% if isProfessor %}
-        <a href="/studenthome/createclass">
-            <button>
-                Create Waitlist
-            </button>
-        </a>
-        <a href="/studenthome/closeclass"> 
-            <button>
-                Close Class
-            </button>
-        </a> 
-    {% endif %}
-
-    {% if isStudent %}
-        <a href="/studenthome/joinwaitlist">
-            <button>
-                Join Waitlist
-            </button>
-        </a>
-        <a href="/studenthome/leavewaitlist/">
-            <button>
-                Leave Waitlist
-            </button>
-        </a>
-    {% endif %}
-    {% endif %}
+    <div class="d-flex flex-row flex-wrap justify-content-center justify-content-md-start my-3">
+        {% for class in classes %}
+            <div class="studentclassbox {% if class.closed %}closed{% else %}active{% endif %} p-5">
+                <div class="d-flex flex-row h5">
+                    <div class="col col-auto" style="margin-left: auto; font-weight: 300;">
+                        {{ class.classCode }}
+                    </div>
+                </div>
+                <div class="row text-center h3 mt-2">
+                    <span>{{class.className}}</span>
+                </div>
+                <div class="row text-center mt-1">
+                    <span style="font-weight: 300;">{{ class.schedule }}</span>
+                </div>
+                <div class="d-flex flex-row mt-4">
+                    <div class="col-auto" style="font-weight: 300; margin-right: 4px;">
+                        CRN:
+                    </div>
+                    <div class="col">
+                        {{ class.crn }}
+                    </div>
+                </div>
+                <div class="d-flex flex-row justify-content-left mt-3">
+                    <div class="col-auto mr-1" style="font-weight: 300; margin-right: 4px;">
+                        Professor:
+                    </div>
+                    <div class="col-auto">
+                        {{ class.professor }}
+                    </div>
+                </div>
+                {% if isProfessor %}
+                    <div class="d-flex flex-row justify-content-left mt-3">
+                        <div class="col-auto" style="font-weight: 300; margin-right: 4px;">
+                            Anonymous:
+                        </div>
+                        <div class="col">
+                            {{ class.anonymous_waitlist|yesno:"Yes,No" }}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if isStudent %}
+                    <div class="d-flex flex-row justify-content-left mt-3">
+                        <div class="col-auto" style="font-weight: 300; margin-right: 4px;">
+                            Waitlist position:
+                        </div>
+                        <div class="col">
+                            {{ class.positionInWaitlist }} / {{ class.numberInClass }}
+                        </div>
+                    </div>
+                {% endif %}
+                <br>
+                <div class="d-flex flex-row justify-content-center mt-auto">
+                    <button class="btn btn-secondary mt-3" onclick="window.location.href='/studenthome/{{class.pk}}/detail';">Expand Details</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+    
 {% endblock content %}

@@ -1,0 +1,69 @@
+{% extends "studentview/base.html" %}
+{% block content %}
+<h1 style="text-align:center"> Archived Classes</h1>
+<div class="container class-list px-0">
+    {% if message %}
+        <div class="row my-3">
+            <h2> {{message}}</h2>
+        </div>
+    {% endif %}
+    <div class="d-flex flex-row flex-wrap justify-content-center justify-content-md-start my-3">
+        {% for class in classes %}
+            <div class="studentclassbox {% if class.closed %}closed{% else %}active{% endif %} p-5">
+                <div class="d-flex flex-row h5">
+                    <div class="col col-auto" style="margin-left: auto; font-weight: 300;">
+                        {{ class.classCode }}
+                    </div>
+                </div>
+                <div class="row text-center h3 mt-2">
+                    <span>{{class.className}}</span>
+                </div>
+                <div class="row text-center mt-1">
+                    <span style="font-weight: 300;">{{ class.schedule }}</span>
+                </div>
+                <div class="d-flex flex-row mt-4">
+                    <div class="col-auto" style="font-weight: 300; margin-right: 4px;">
+                        CRN:
+                    </div>
+                    <div class="col">
+                        {{ class.crn }}
+                    </div>
+                </div>
+                <div class="d-flex flex-row justify-content-left mt-3">
+                    <div class="col-auto mr-1" style="font-weight: 300; margin-right: 4px;">
+                        Professor:
+                    </div>
+                    <div class="col-auto">
+                        {{ class.professor }}
+                    </div>
+                </div>
+                {% if isProfessor %}
+                    <div class="d-flex flex-row justify-content-left mt-3">
+                        <div class="col-auto" style="font-weight: 300; margin-right: 4px;">
+                            Anonymous:
+                        </div>
+                        <div class="col">
+                            {{ class.anonymous_waitlist|yesno:"Yes,No" }}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if isStudent %}
+                    <div class="d-flex flex-row justify-content-left mt-3">
+                        <div class="col-auto" style="font-weight: 300; margin-right: 4px;">
+                            Waitlist position:
+                        </div>
+                        <div class="col">
+                            {{ class.positionInWaitlist }} / {{ class.numberInClass }}
+                        </div>
+                    </div>
+                {% endif %}
+                <br>
+                <div class="d-flex flex-row justify-content-center mt-auto">
+                    <button class="btn btn-secondary mt-3" onclick="window.location.href='/studenthome/{{class.pk}}/detail';">Expand Details</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+    
+{% endblock content %}
