@@ -81,7 +81,13 @@ def joinWaitlist(request):
                 else:
                     last_position = StudentTicket.objects.filter(class_waitlist=waitlist).order_by('-position').first()
                     new_position = last_position.position + 1 if last_position else 1
-                    st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user, position=new_position)
+                    status = ''
+                    major = ''
+                    if waitlist.request_academic_status:
+                        status = user.academic_status
+                    if waitlist.request_major:
+                        major = user.major
+                    st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user, position=new_position, student_academic_status=status, student_major=major)
                     joinwaitlistNotification(user, waitlist)
                     response = redirect('/studenthome/')
                     return response
