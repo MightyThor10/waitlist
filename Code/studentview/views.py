@@ -75,18 +75,22 @@ def joinWaitlist(request):
             waitlist = ClassWaitlist.objects.filter(id=classid).first()
 
             if waitlist and user:
+                status = ''
+                major = ''
+                if waitlist.request_academic_status:
+                    status = StudentProfile.objects.filter(user=user).first().academic_status
+                    if status == '':
+                        message = "You must set an Academic Status in your profile to join this class. "
+                if waitlist.request_major:
+                    major = StudentProfile.objects.filter(user=user).first().major
+                    if major == '':
+                        message += "You must set a Major in your profile to join this class. "
                 existing_ticket = StudentTicket.objects.filter(class_waitlist=waitlist, student=user).first()
                 if existing_ticket:
                     message = "You have already joined this class's waitlist."
-                else:
+                elif message=='':
                     last_position = StudentTicket.objects.filter(class_waitlist=waitlist).order_by('-position').first()
                     new_position = last_position.position + 1 if last_position else 1
-                    status = ''
-                    major = ''
-                    if waitlist.request_academic_status:
-                        status = StudentProfile.objects.filter(user=user).first().academic_status
-                    if waitlist.request_major:
-                        major = StudentProfile.objects.filter(user=user).first().major
                     st = StudentTicket.objects.create(class_waitlist=waitlist, date_joined=timezone.now(), student=user, position=new_position, student_academic_status=status, student_major=major)
                     joinwaitlistNotification(user, waitlist)
                     response = redirect('/studenthome/')
