@@ -237,7 +237,7 @@ def createWaitlist(request):
         datePosted = timezone.now()
         user = request.user
         anonymous_waitlist = request.POST.get('anonymous_waitlist', 'False') == 'on'
-        request_academic_status = request.POST.get('request_year', 'False') == 'on'
+        request_academic_status = request.POST.get('request_academic_status', 'False') == 'on'
         request_major = request.POST.get('request_major', 'False') == 'on'
         request_msg = request.POST.get('request_msg', 'False') == 'on'
 
