@@ -34,6 +34,14 @@ def home(request):
             if groupOfUser.id == 1:
                 classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
                 isProfessor = True
+                # Generate unique list of users in professor's waitlists
+                messageable_users = list(set((
+                        ticket.student.id, ticket.student.get_full_name()
+                        # StudentProfile.objects.get(id=ticket.student.id).preferred_name
+                    ) for ticket in (
+                        c.studentticket_set.all().first() for c in classes if c.studentticket_set.count())
+                ))
+
             elif groupOfUser.id == 2:
                 isStudent = True
 
@@ -93,11 +101,20 @@ def home(request):
                 'thread': thread_messages
             })
 
-    context= {
+    recipient_placeholder = (-1, "Select recipient...")
+    if messageable_users:
+        messageable_users.insert(0, recipient_placeholder)
+    else:
+        messageable_users = [recipient_placeholder]
+
+    context = {
         'classes': classes,
         'message': message,
         'isProfessor': isProfessor,
-        'isStudent': isStudent
+        'isStudent': isStudent,
+        'inbox': inbox,
+        'unread_messages': unread_messages,
+        'messageable_users': messageable_users
     }
     return render(request,'studentview/home.html', context)
 
