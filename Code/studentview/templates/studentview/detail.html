@@ -25,6 +25,8 @@
         {% else %}
              <legend> <h2> Sort By: Legacy Class No Sort Function </h2> </legend>
         {% endif %}
+
+        <a href="{% url 'sort_waitlist' pk=classwaitlist.id sortType=classwaitlist.sortType %}"><button class="btn btn-secondary">Sort Waitlist</button></a>
         
         <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
 
@@ -32,7 +34,6 @@
 
         {% if ownsClass %}
             <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
-            <a href="{% url 'sort_waitlist' pk=classwaitlist.id sortType=classwaitlist.sortType %}"><button class="btn btn-secondary">Sort Waitlist</button></a>
             {% if classwaitlist.archived %}
                 <a href="{% url 'unarchive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Un-archive Class</button></a>
             {% else %}
