@@ -11,6 +11,8 @@ from django.db.models import Q
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
 from users.models import StudentProfile
+from random import shuffle
+from users.models import StudentProfile
 
 # Create your views here.
 
@@ -412,3 +414,42 @@ def audit_student_positions(waitlistId):
         ticket.position = i
         i += 1
         ticket.save()
+
+def sort_waitlist(request, pk, sortType):
+    tickets = list(StudentTicket.objects.filter(class_waitlist_id=pk).order_by('date_joined'))
+    if sortType == 'fcfs':
+        # tickets are sorted just need to renumber which all of them need
+        pass
+
+    elif sortType == 'seniority':
+        seniors = []
+        juniors = []
+        sophomores = []
+        freshman = []
+        unspecified = []
+
+        for ticket in tickets:
+            profile = StudentProfile.objects.get(user_id=ticket.student_id)
+            if profile.academic_status == 'SR':
+                seniors.append(ticket)
+            elif profile.academic_status == 'JR':
+                juniors.append(ticket)
+            elif profile.academic_status == 'SO':
+                sophomores.append(ticket)
+            elif profile.academic_status == 'FR':
+                freshman.append(ticket)
+            else:
+                unspecified.append(ticket)
+        #     iterate through by seniority
+        tickets = seniors + juniors + sophomores + freshman + unspecified
+
+    elif sortType == 'random':
+        shuffle(tickets)
+    return redirect('detail', pk)
+
+    i = 1
+    for ticket in tickets:
+        ticket.position = i
+        i += 1
+        ticket.save()
+    return redirect('detail', pk)
