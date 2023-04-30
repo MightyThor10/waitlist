@@ -13,7 +13,10 @@ class ClassWaitlist(models.Model):
     professor = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField("date published")
     closed = models.BooleanField(default=False)  # Add this line
-    anonymous_waitlist = models.BooleanField(default=False, verbose_name='Anonymous Waitlist')
+    anonymous_waitlist = models.BooleanField(default=False, verbose_name='Anonymous Waitlist') 
+    request_academic_status = models.BooleanField(default=False, verbose_name='Request Academic Status')
+    request_major = models.BooleanField(default=False, verbose_name='Request Major')
+    request_msg = models.BooleanField(default=False, verbose_name='Request Message')   
 
     def __str__(self):
         return self.className
@@ -33,9 +36,3 @@ class StudentTicket(models.Model):
         return str(self.student) + " - " + str(self.student.email) + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))
 
 
-
-class WaitlistForm(models.Model):
-    class_name = models.CharField(max_length=100, blank=True, verbose_name='Class Name')
-    academic_status = models.BooleanField(default=False, verbose_name='Academic Status')
-    major = models.BooleanField(default=False, verbose_name='Major')
-    msg = models.BooleanField(default=False, verbose_name='Message for Professor')
