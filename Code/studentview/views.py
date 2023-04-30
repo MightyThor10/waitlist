@@ -237,6 +237,10 @@ def createWaitlist(request):
         datePosted = timezone.now()
         user = request.user
         anonymous_waitlist = request.POST.get('anonymous_waitlist', 'False') == 'on'
+        request_academic_status = request.POST.get('request_year', 'False') == 'on'
+        request_major = request.POST.get('request_major', 'False') == 'on'
+        request_msg = request.POST.get('request_msg', 'False') == 'on'
+
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
         
         cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist)
