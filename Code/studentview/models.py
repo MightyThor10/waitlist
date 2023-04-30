@@ -25,14 +25,17 @@ class StudentTicket(models.Model):
     date_joined = models.DateTimeField("date joined")
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     position = models.IntegerField(default=0)  # Add this line
-    waitlist_status = models.CharField(max_length=1, default="p" ) #a = accept r = reject p = pending
+    waitlist_status = models.CharField(max_length=1, default="p") #a = accept r = reject p = pending
+    student_academic_status = models.CharField(max_length=20, verbose_name='Academic Status', default = '')
+    student_major = models.CharField(max_length=100, verbose_name='Major', default='')
     msg = models.CharField(max_length=200, verbose_name='Message for Professor', default='')
     def __str__(self):
         return str(self.student) + " - " + str(self.student.email) + ' : ' + str(self.date_joined.strftime("%d/%m/%Y, %H:%M:%S"))
 
 
+
 class WaitlistForm(models.Model):
-    name = models.CharField(max_length=100, blank=True, verbose_name='Name')
-    academic_status = models.CharField(max_length=20, blank=True, verbose_name='Academic Status')
-    major = models.CharField(max_length=100, blank=True, verbose_name='Major')
-    msg = models.CharField(max_length=200, verbose_name='Message for Professor')
+    class_name = models.CharField(max_length=100, blank=True, verbose_name='Class Name')
+    academic_status = models.BooleanField(default=False, verbose_name='Academic Status')
+    major = models.BooleanField(default=False, verbose_name='Major')
+    msg = models.BooleanField(default=False, verbose_name='Message for Professor')
