@@ -27,6 +27,8 @@ Database: SQLite
 
 Bootstrap
 
+Hosting: Pythonanywhere
+
 
 ## Instructions on how to download and start using this platform locally
 
