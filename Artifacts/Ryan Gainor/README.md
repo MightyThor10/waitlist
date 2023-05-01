@@ -12,3 +12,7 @@ https://nces.ed.gov/programs/coe/indicator/cha
 https://www.bls.gov/ooh/education-training-and-library/postsecondary-teachers.htm
 https://www.linkedin.com/pulse/universities-spend-16bn-each-year-technology-hardly-any-barosevcic/
 https://www.youtube.com/watch?v=rHux0gMZ3Eg
+
+
+Project 7:
+I went in to every single webpage file we had and made a good deal of stylistic changes. No page had any real spacing or centering so I added this for every page. I also improved the styling of the buttons and the class cards on the home page. In the "Join Waitlist" page I revamped the course list segment adding a stylized box and scroll capabilities. I also worked on development of the functionality of the app itself. I added a new feature where professors could create different waitlists for sections of the same class very easily. All they had to do was enter the CRN and Schedule for the new sections. Furthermore I did most of the work for the slide deck, researching customer segment, revenue sources, cost and funding, etc and incorporating it into the slide deck. 

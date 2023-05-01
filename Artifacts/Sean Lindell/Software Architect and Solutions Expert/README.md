@@ -14,3 +14,17 @@ I also helped coordinating the project development by maintaining an understandi
 promptly answering question and helping with organization of members as the Solution Expert.
 
 I also filled out my own most crititcal issue as the solution expert.
+
+For Project 7 (Sprint 3):
+
+I created the archiving feature for waitlists including a page to view archived lists, buttons to archive/unarchive them, and hiding archived lists from most queries
+
+I made some styling changes including the home buttons, displaying the student's position in the waitlist on the home page cards and displaying class ids on the detail page.
+
+I did bugfixing of the psoitioning system and some of the features implimented by other team members this sprint.
+
+I added filtering classes on the join class page
+
+I got the website working properly on PythonAnywhere
+
+and I fixed some style merge issues present from the last sprint.
