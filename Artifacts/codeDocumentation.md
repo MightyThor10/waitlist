@@ -5,18 +5,17 @@
 Our first prototype delivered key functionalities such as student login, signup, viewing courses. We have
 expanded the functionality to support professors moving students' positions on the waitlist. Our prototype
 supports accepting or rejecting students onto waitlists, and for professors to change the details of the
-waitlists they own.
+waitlists they own using advanced features. They can also choose to make their waitlist anonymous or not and sort students based on 
+different algorithms. We have also made some changes to the UI to make it more appealing to the users. Please download and run our project locally or test it live on the pythonanywhere link given in the main readme. 
 
 ## To run unit tests
 
-python3 [Code]/manage.py test [Code]/users
-python3 [Code]/manage.py test [Code]/studentview
+1. python3 [Code]/manage.py test [Code]/users
+2. python3 [Code]/manage.py test [Code]/studentview
 
 ## Tutorial Information
 
 Tutorial utilized: [https://www.youtube.com/playlist?list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p](https://www.youtube.com/playlist?list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p)
-
-Currently on part 5 of tutorial
 
 Notes: the blog he mentions in the video is synonymous to the studentview application
 
