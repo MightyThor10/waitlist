@@ -58,5 +58,5 @@ Open the address in a browser to view the Waitlist platform.
 ## Waitlist live version
 To use a live version of our project, please navigate to https://waitlistwm.pythonanywhere.com/
 
-More documentation under Artifacts folder.
+
 
