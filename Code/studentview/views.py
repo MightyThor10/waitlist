@@ -10,6 +10,8 @@ from django import forms
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
+
+from messaging.forms import MessageForm
 from messaging.models import Message
 from users.models import StudentProfile
 from random import shuffle
@@ -26,6 +28,8 @@ def home(request):
     isStudent = False
     inbox = []
     unread_messages = 0
+    messageable_users = None
+    messageForm = None
 
     if currentUser.is_anonymous:
         message = "Log in to view your classes!"
@@ -63,6 +67,8 @@ def home(request):
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
 
+        message_form = MessageForm(currentUser, messageable_users)
+        print(message_form.fields['receiver'].choices)
         user_messages = Message.objects.filter(
                 Q(sender=currentUser) | Q(receiver=currentUser)
             ).order_by('send_date')
@@ -94,19 +100,13 @@ def home(request):
             inbox.append({
                 'name': thread_user_pref_name,
                 'nameID': thread_userID,
-                'subject': msg.subject,
                 'message_snippet': msg.body,
                 'last_received': msg.getInboxDate(),
                 'unread': unread,
                 'thread': thread_messages
             })
 
-    recipient_placeholder = (-1, "Select recipient...")
-    if messageable_users:
-        messageable_users.insert(0, recipient_placeholder)
-    else:
-        messageable_users = [recipient_placeholder]
-
+    print(message_form.fields)
     context = {
         'classes': classes,
         'message': message,
@@ -114,7 +114,8 @@ def home(request):
         'isStudent': isStudent,
         'inbox': inbox,
         'unread_messages': unread_messages,
-        'messageable_users': messageable_users
+        'messageable_users': messageable_users,
+        'message_form': message_form
     }
     return render(request,'studentview/home.html', context)
 

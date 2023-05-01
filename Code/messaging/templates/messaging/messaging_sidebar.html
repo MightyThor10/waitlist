@@ -1,4 +1,5 @@
-<form class="form-horizontal h-100">
+<form id="message-form" class="form-horizontal h-100" action="/messaging/send/" method="POST">
+{% csrf_token %}
     <div class="row d-flex flex-column h-100 py-3">
         <!-- Close messaging sidebar container -->
         <div class="col col-12">
@@ -54,13 +55,7 @@
                     <label for="compose-input-user" class="control-label" style="font-weight: 300;">To:</label>
                 </div>
                 <div class="col" style="padding-right: 0.25rem;">
-                    <select id="compose-input-user" class="form-control">
-                        {% for user in messageable_users %}
-                            <option value="{{ user.0 }}">
-                                {{ user.1 }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                    {{ message_form.receiver }}
                 </div>
             </div>
         </div>
@@ -83,20 +78,20 @@
                                     <div class="col col-11 p-0">
                                         <div class="d-flex flex-row">
                                             <div class="col" style="padding-left: 1rem;">
-                                                <div class="my-1">
-                                                    {{ thread.name }}
+                                                <div class="mt-2" style="font-weight: 300;">
+                                                    {{ thread.last_received }}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="d-flex flex-row">
                                             <div class="col" style="padding-left: 1rem;">
                                                 <div class="my-1">
-                                                    {{ thread.subject }}
+                                                    {{ thread.name }}
                                                 </div>
                                             </div>
                                             <div class="col col-auto">
                                                 <div class="my-1" style="padding-right: 1.5rem; font-weight: 300;">
-                                                    {{ thread.last_received }}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -122,8 +117,9 @@
         <!-- Messaging sidebar footer container -->
         <div id="messaging-footer" class="col col-12 compose collapse mt-2 mb-1">
             <div class="input-group w-auto px-3">
-                <input type="text" class="form-control" placeholder="Send message&hellip;"
-                    aria-label="Compose message input" aria-described-by="send-message-btn">
+                {% comment %} <input type="text" class="form-control" placeholder="Send message&hellip;"
+                    aria-label="Compose message input" aria-described-by="send-message-btn"> {% endcomment %}
+                {{ message_form.body }}
                 <button id="send-message-btn" type="submit" class="btn btn-primary">
                     <i class="fas fa-paper-plane"></i>
                 </button>
@@ -150,15 +146,23 @@
 </form>
 
 <script>
-    // Ease the transition to compose message
-    var compose_header = document.getElementById("compose-header");
-    console.log("We here...");
+    document.getElementsByClassName("inbox-row").addEventListener("click", function (e) {
 
+    });
+    // Handle asynchronous form submit
+    document.getElementById("message-form").addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    //compose_header.addEventListener("show.bs.collapse", function() {
-    //    this.setAttribute("style", "visibility: visible;");
-    //});
-    //compose_header.addEventListener("hide.bs.collapse", function() {
-    //    this.setAttribute("style", "visibility: hidden;");
-    //});
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '/messaging/send/', true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        xhr.send(JSON.stringify("Testing agh"));
+
+        xhr.onload = function () {
+            if(xhr.status === 201) {
+                console.log("Post successfully created");
+            }
+        }
+    });
 </script>

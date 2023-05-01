@@ -19,16 +19,8 @@ class Message(models.Model):
     receiver = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name='receiver_messages',
-        null=True, blank=True,
         verbose_name='Recipient')
 
-    parent_msg = models.ForeignKey(
-        'self', on_delete=models.CASCADE,
-        related_name='next_messages',
-        null=True, blank=True,
-        verbose_name='Parent message')
-
-    subject = models.CharField(verbose_name='Subject', max_length=128, blank=True)
     body = models.TextField(verbose_name='Body')
 
     send_date = models.DateTimeField(verbose_name='sent at', auto_now_add=True)
