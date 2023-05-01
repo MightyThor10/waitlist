@@ -1,7 +1,6 @@
-################################
-########### Waitlist ###########
-############ README ############
-################################
+# Waitlist Management Platform
+
+##### Welcome to our MVP for a waitlist management platform designed for college students and professors to seamlessly control their course waitlists in a one-stop-shop platform. 
 
 This is the code repository for Waitlist, developed by:
 1. Andrew Allan
@@ -19,36 +18,31 @@ to list their classes and enable the waitlist when desired.
 Students have a similarly streamlined interface where all
 their waitlist needs are met.
 
-################################
-###### Technologies used: ######
-################################
+
+## Tech Stack 
 
 Web Framework: Django
 
-Database: SQLite (TBD)
-
-Other libraries:
+Database: SQLite
 
 Bootstrap
 
-################################
-########## References ##########
-################################
+
+## Instructions on how to download and start using this platform locally
 
 First, make sure you are working with an up-to-date
-version of the repository. Then, navigate to the base
+version of the repository. For running the project locally, please clone the project. Then, navigate to the base
 directory of the waitlist repository:
 
 
-cd [PATH_TO_REPO]/waitlist/Code
+```cd [PATH_TO_REPO]/waitlist/Code```
 
-Then create a new virtual environment, activate it, and run 'pip install -r requirements.txt' to get required dependencies
+Then create a new virtual environment, activate it, and run ```pip install -r requirements.txt``` to get required dependencies
 (Information on creating and activating python virtual environments: https://docs.python.org/3/library/venv.html)
 
-Then run the following command to start the server:
+Upon successfully installing the dependencies, run the following command to start the server:
 
-# To start the django server
-python3 manage.py runserver
+```python3 manage.py runserver```
 
 
 The command prompt should indicate where the development
@@ -56,7 +50,11 @@ server was started, which should match this address:
 
 http://127.0.0.1:8000/
 
-Open the address in a browser to view Waitlist.
+Open the address in a browser to view the Waitlist platform.
+
+
+## Waitlist live version
+To use a live version of our project, please navigate to https://waitlistwm.pythonanywhere.com/
 
 More documentation under Artifacts folder.
 
