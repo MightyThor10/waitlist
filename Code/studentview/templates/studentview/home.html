@@ -2,48 +2,47 @@
 {% block content %}
 <h1 style="text-align:center"> My Classes</h1>
 <div class="container class-list px-0">
-    <div class="row">
-        <div class="col-auto mr-auto">
-            {% if user.is_authenticated %}
-                {% if isProfessor %}
-                    <a href="/studenthome/createclass">
-                        <button type="button" class="btn btn-primary" style="margin-right:10px">
-                            Create Waitlist
-                        </button>
+    {% if user.is_authenticated %}
+        {% if isProfessor %}
+            <div class="row my-3">
+                <div class="col text-center">
+                    <a href="/studenthome/createclass" type="button" class="btn btn-primary" style="width: 200px;">
+                        Create Waitlist
                     </a>
-                    {% if classes is not empty %}
-                        <a href="/studenthome/closeclass">
-                            <button type="button" class="btn btn-primary" style="margin-left:10px">
-                                Close Class
-                            </button>
-                        </a>
-                    {% endif %}
-                    <a href="/studenthome/archive">
-                        <button type="button" class="btn btn-primary" style="margin-right:10px">
-                            Manage Archived Classes
-                        </button>
+                </div>
+            {% if classes is not empty %}
+                <div class="col text-center">
+                    <a href="/studenthome/closeclass" type="button" class="btn btn-primary" style="width: 200px;">
+                        Close Class
                     </a>
-                {% endif %}
-                {% if isStudent %}
-                    <a href="/studenthome/joinwaitlist">
-                        <button type="button" class="btn btn-primary" style="margin-right:10px">
-                            Join Waitlist
-                        </button>
-                    </a>
-                    <a href="/studenthome/leavewaitlist/">
-                        <button type="button" class="btn btn-primary" style="margin-left:10px">
-                            Leave Waitlist
-                        </button>
-                    </a>
-                    <a href="/studenthome/leaveallwaitlists/">
-                        <button type="button" class="btn btn-primary" style="margin-left:20px">
-                            Leave All
-                        </button>
-                    </a>
-                {% endif %}
+                </div>
             {% endif %}
-        </div>
-    </div>
+                <div class="col text-center">
+                    <a href="/studenthome/archive" type="button" class="btn btn-primary" style="width: 200px;">
+                        Archived Classes
+                    </a>
+                </div>
+        {% endif %}
+        {% if isStudent %}
+            <div class="row my-3">
+                <div class="col text-center">
+                    <a href="/studenthome/joinwaitlist" type="button" class="btn btn-primary" style="width: 200px;">
+                        Join Waitlist
+                    </a>
+                </div>
+                <div class="col text-center">
+                    <a href="/studenthome/leavewaitlist/" type="button" class="btn btn-primary" style="width: 200px;">
+                        Leave Waitlist
+                    </a>
+                </div>
+                <div class="col text-center">
+                    <a href="/studenthome/leaveallwaitlists/" type="button" class="btn btn-primary" style="width: 200px;">
+                        Leave All
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
     {% if message %}
         <div class="row my-3">
             <h2> {{message}}</h2>
