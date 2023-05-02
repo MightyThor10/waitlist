@@ -102,10 +102,12 @@ def home(request):
                     unread_messages += 1
                     break
 
+            message_snippet = (msg.body[:60] + '...') if len(msg.body) > 75 else msg.body
+
             inbox.append({
                 'name': thread_user_pref_name,
                 'nameID': thread_userID,
-                'message_snippet': msg.body,
+                'message_snippet': message_snippet,
                 'last_received': msg.getInboxDate(),
                 'unread': unread,
                 'thread': thread_messages
