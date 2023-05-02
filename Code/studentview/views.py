@@ -64,11 +64,16 @@ def home(request):
                             class_waitlist=c,
                             student=currentUser
                         ).position
+
+                # Generate unique list of professors who run the students' waitlists
+                messageable_users = list(set((
+                        c.professor.id, c.professor.get_full_name()
+                    ) for c in classes))
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
 
         message_form = MessageForm(currentUser, messageable_users)
-        print(message_form.fields['receiver'].choices)
+
         user_messages = Message.objects.filter(
                 Q(sender=currentUser) | Q(receiver=currentUser)
             ).order_by('send_date')
@@ -106,7 +111,6 @@ def home(request):
                 'thread': thread_messages
             })
 
-    print(message_form.fields)
     context = {
         'classes': classes,
         'message': message,

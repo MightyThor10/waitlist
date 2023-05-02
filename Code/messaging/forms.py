@@ -17,7 +17,10 @@ class MessageForm(forms.ModelForm):
 
         self.fields['sender'] = sender.id
 
-        self.fields['body'].widget.attrs.update({ 'rows': 5 })
+        self.fields['body'].widget.attrs.update({
+            'rows': 5, 'cols': 50,
+            'placeholder': 'Send message...',
+        })
 
     # Constructor for composed messages (recipient choicefield)
     def __init__(self, sender=None, users=None, *args, **kwargs):
@@ -34,7 +37,10 @@ class MessageForm(forms.ModelForm):
         else:
             self.fields['receiver'].choices = [self.RECIPIENT_PLACEHOLDER]
 
-        self.fields['body'].widget.attrs.update({ 'rows': 5 })
+        self.fields['body'].widget.attrs.update({
+            'rows': 5, 'cols': 50,
+            'placeholder': 'Send message...',
+        })
         self.fields['receiver'].widget.attrs.update({
             'id': 'compose-input-user',
             'class': 'form-select'})
