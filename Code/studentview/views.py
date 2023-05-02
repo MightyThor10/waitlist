@@ -29,7 +29,7 @@ def home(request):
     inbox = []
     unread_messages = 0
     messageable_users = None
-    messageForm = None
+    message_form = None
 
     if currentUser.is_anonymous:
         message = "Log in to view your classes!"
