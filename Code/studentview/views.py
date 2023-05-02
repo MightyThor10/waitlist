@@ -85,8 +85,10 @@ def home(request):
 
         for thread_userID in inbox_userIDs:
             unread = False
+            thread = []
             thread_messages = user_messages.filter(
-                Q(sender=thread_userID) | Q(receiver=thread_userID))
+                    Q(sender=thread_userID) | Q(receiver=thread_userID)
+                ).order_by('send_date')
 
             thread_userObj = User.objects.get(id=thread_userID)
             if thread_userObj.groups.all().first() == 2:
@@ -95,12 +97,15 @@ def home(request):
                 thread_user_pref_name = thread_userObj.get_full_name()
 
             for msg in thread_messages:
-                if msg.read_date:
-                    break
-                else:
+                thread.append({
+                    'received': msg.receiver == request.user,
+                    'body': msg.body,
+                    'send_date': msg.send_date,
+                    'read_date': msg.read_date
+                })
+                if not unread and not msg.read_date:
                     unread = True
                     unread_messages += 1
-                    break
 
             message_snippet = (msg.body[:60] + '...') if len(msg.body) > 75 else msg.body
 
@@ -110,7 +115,7 @@ def home(request):
                 'message_snippet': message_snippet,
                 'last_received': msg.getInboxDate(),
                 'unread': unread,
-                'thread': thread_messages
+                'thread': thread
             })
 
     context = {

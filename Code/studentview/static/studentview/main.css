@@ -128,6 +128,27 @@ ul {
     background-color: lightsteelblue;
 }
 
+.inbox-thread {
+    height: 100%;
+}
+
+.thread-msg {
+    border: 1px solid rgb(119, 119, 119);
+    border-radius: 4px;
+    max-width: 400px;
+    color: white;
+}
+
+.thread-msg.sent {
+    background-color: #0d6efd;
+    margin-left: 4rem;
+}
+
+.thread-msg.received {
+    background-color: rgb(102, 103, 107);
+    margin-right: 4rem;
+}
+
 #messaging-footer > .input-group {
     padding-top: 1rem;
 }
