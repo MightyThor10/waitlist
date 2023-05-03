@@ -144,12 +144,21 @@
 </form>
 
 <script>
-    // Allow select inputs to be selected
+    // Allow select inputs to be selected and update select/clear all btn accordingly
     var select_thread_inputs = document.querySelectorAll('[id^="thread_select"]');
     for (i=0; i < select_thread_inputs.length; i++) {
         select_thread_inputs[i].addEventListener("click", function(e) {
             e.stopPropagation();
-        })
+
+            var total_inputs = document.querySelectorAll('[id^="thread_select"]');
+            var checked_inputs = document.querySelectorAll('[id^="thread_select"]:checked');
+
+            if (checked_inputs.length == total_inputs.length) {
+                document.getElementById("select-all").innerText = "Clear all";
+            } else {
+                document.getElementById("select-all").innerText = "Select all";
+            }
+        });
     }
 
     // Add select all functionality
@@ -204,7 +213,8 @@
             // Show thread name title field
             document.getElementById("thread-name" + target_val).style.display = "block";
             // Show thread
-            document.getElementById("thread" + target_val).style.display = "block";
+            var thread_view = document.getElementById("thread" + target_val);
+            thread_view.style.display = "block";
             // Set recipient form field value to selected user
             document.getElementById("compose-input-user").value = target_val;
 
@@ -212,6 +222,8 @@
             for (c=0; c < collapse_elements.length; c++) {
                 collapse_elements[c].classList.toggle("show");
             }
+            // Scroll message window to bottom
+            document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
 
             if (document.getElementById("inbox-thread" + target_val).classList.contains("unread")) {
                 // Send AJAX POST to mark message thread as read
