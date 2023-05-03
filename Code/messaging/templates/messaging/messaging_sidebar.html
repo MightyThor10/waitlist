@@ -69,7 +69,7 @@
                 <div class="inbox-row d-flex flex-row flex-wrap" value="{{ thread.nameID }}">
                     <div class="col-12 d-flex flex-column">
                         <ul class="list-group">
-                            <li class="list-group-item border-left-0{% if thread.unread %} unread{% endif %} no-gutters py-2"
+                            <li id="inbox-thread{{ thread.nameID }}"class="list-group-item border-left-0{% if thread.unread %} unread{% endif %} no-gutters py-2"
                                     data-toggle="tooltip" data-placement="left" title="{{ thread.unread|yesno:"Unread message,Message" }} from {{ thread.name }}">
                                 <div class="row">
                                     <div class="col col-1 d-flex flex-column p-0">
@@ -135,7 +135,7 @@
         <!-- Messaging sidebar compose footer -->
         <div id="compose-footer" class="col col-12 compose collapse show mt-2 mb-1">
             <div class="row text-center">
-                <div class="col">
+                <div id="unread-msgs-text" class="col">
                     You have {{ unread_messages }} unread message{{ unread_messages|pluralize }}.
                 </div>
             </div>
@@ -169,7 +169,7 @@
         }
     });
 
-    // Add event listener for when the user returns to inbox
+    // Add event listener to close threads when the user returns to inbox
     var thread_container = document.getElementById("view-thread-container");
     thread_container.addEventListener("hidden.bs.collapse", function(e) {
             var compose_new_field = document.getElementsByClassName("compose-new");
@@ -187,7 +187,7 @@
             // Reset recipient form field to placeholder value
             document.getElementById("compose-input-user").value = -1;
     });
-    // Add click handler for inbox row collapse
+    // Add click handler for inbox row collapse to show thread and mark as read
     var val;
     var inbox_rows = document.getElementsByClassName("inbox-row")
     for (i=0; i < inbox_rows.length; i++) {
@@ -212,6 +212,38 @@
             for (c=0; c < collapse_elements.length; c++) {
                 collapse_elements[c].classList.toggle("show");
             }
+
+            if (document.getElementById("inbox-thread" + target_val).classList.contains("unread")) {
+                // Send AJAX POST to mark message thread as read
+                let xhr = new XMLHttpRequest();
+
+                xhr.open('POST', '/messaging/read/', true);
+                xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+
+                xhr.send(JSON.stringify({ 'nameID': target_val }));
+
+                xhr.onload = function () {
+                    if(xhr.status === 201) {
+                        // Thread successfully marked as read
+                        var response_data = JSON.parse(xhr.response);
+                        // Update inbox entry styling
+                        document.getElementById("inbox-thread" + response_data['nameID']).classList.remove("unread");
+                        // Update unread message count
+                        var unread_count = document.getElementById("unread-count").getAttribute("data-count");
+
+                        if (unread_count--) {
+                            document.getElementById("unread-msgs-text").innerText =
+                                `You have ${unread_count} unread message${unread_count !== 1 ? 's': ''}.`
+                            if (unread_count) {
+                                document.getElementById("unread-count").setAttribute("data-count", unread_count);
+                            } else {
+                                document.getElementById("unread-count").removeAttribute("data-count");
+                            }
+                        }
+                    }
+                }
+            }
         });
     }
     // Handle asynchronous form submit
@@ -231,7 +263,8 @@
         xhr.send(JSON.stringify(form_data));
 
         xhr.onload = function () {
-            if(xhr.status === 201) {
+            if(xhr.status === 200) {
+                // Message sent successfully
                 console.log("Post successfully created");
             }
         }

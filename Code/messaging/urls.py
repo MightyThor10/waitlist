@@ -4,5 +4,6 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    path('send/', views.sendMessage)
+    path('send/', views.sendMessage),
+    path('read/', views.readThread),
 ]
