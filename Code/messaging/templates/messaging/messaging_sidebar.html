@@ -156,67 +156,68 @@
             // Reset recipient form field to placeholder value
             document.getElementById("compose-input-user").value = -1;
     });
+    var inbox_row_click_handler = function (e) {
+        e.preventDefault();
+        // Hide recipient fields
+        var compose_new_field = document.getElementsByClassName("compose-new");
+        compose_new_field[0].style.display = "none";
+        compose_new_field[1].style.display = "none";
+        compose_new_field[2].style.display = "none";
+
+        var target_val = e.target.closest('.inbox-row').getAttribute('value');
+        // Show thread name title field
+        document.getElementById("thread-name" + target_val).style.display = "block";
+        // Show thread
+        var thread_view = document.getElementById("thread" + target_val);
+        thread_view.style.display = "block";
+        // Set recipient form field value to selected user
+        document.getElementById("compose-input-user").value = target_val;
+
+        var collapse_elements = document.getElementsByClassName("compose");
+        for (c=0; c < collapse_elements.length; c++) {
+            collapse_elements[c].classList.toggle("show");
+        }
+        // Scroll message window to bottom
+        document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
+
+        if (document.getElementById("inbox-thread" + target_val).classList.contains("unread")) {
+            // Send AJAX POST to mark message thread as read
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/messaging/read/', true);
+            xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+
+            xhr.send(JSON.stringify({ 'nameID': target_val }));
+
+            xhr.onload = function () {
+                if(xhr.status === 201) {
+                    // Thread successfully marked as read
+                    var response_data = JSON.parse(xhr.response);
+                    // Update inbox entry styling
+                    document.getElementById("inbox-thread" + response_data['nameID']).classList.remove("unread");
+                    // Update unread message count
+                    var unread_count = document.getElementById("unread-count").getAttribute("data-count");
+
+                    if (unread_count--) {
+                        document.getElementById("unread-msgs-text").innerText =
+                            `You have ${unread_count} unread message${unread_count !== 1 ? 's': ''}.`
+                        if (unread_count) {
+                            document.getElementById("unread-count").setAttribute("data-count", unread_count);
+                        } else {
+                            document.getElementById("unread-count").removeAttribute("data-count");
+                        }
+                    }
+                }
+            }
+        }
+    };
     // Add click handler for inbox row collapse to show thread and mark as read
     var val;
     var inbox_rows = document.getElementsByClassName("inbox-row")
     for (i=0; i < inbox_rows.length; i++) {
         val = inbox_rows[i].getAttribute('value');
-        inbox_rows[i].addEventListener("click", function (e) {
-            e.preventDefault();
-            // Hide recipient fields
-            var compose_new_field = document.getElementsByClassName("compose-new");
-            compose_new_field[0].style.display = "none";
-            compose_new_field[1].style.display = "none";
-            compose_new_field[2].style.display = "none";
-
-            var target_val = e.target.closest('.inbox-row').getAttribute('value');
-            // Show thread name title field
-            document.getElementById("thread-name" + target_val).style.display = "block";
-            // Show thread
-            var thread_view = document.getElementById("thread" + target_val);
-            thread_view.style.display = "block";
-            // Set recipient form field value to selected user
-            document.getElementById("compose-input-user").value = target_val;
-
-            var collapse_elements = document.getElementsByClassName("compose");
-            for (c=0; c < collapse_elements.length; c++) {
-                collapse_elements[c].classList.toggle("show");
-            }
-            // Scroll message window to bottom
-            document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
-
-            if (document.getElementById("inbox-thread" + target_val).classList.contains("unread")) {
-                // Send AJAX POST to mark message thread as read
-                let xhr = new XMLHttpRequest();
-
-                xhr.open('POST', '/messaging/read/', true);
-                xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-
-                xhr.send(JSON.stringify({ 'nameID': target_val }));
-
-                xhr.onload = function () {
-                    if(xhr.status === 201) {
-                        // Thread successfully marked as read
-                        var response_data = JSON.parse(xhr.response);
-                        // Update inbox entry styling
-                        document.getElementById("inbox-thread" + response_data['nameID']).classList.remove("unread");
-                        // Update unread message count
-                        var unread_count = document.getElementById("unread-count").getAttribute("data-count");
-
-                        if (unread_count--) {
-                            document.getElementById("unread-msgs-text").innerText =
-                                `You have ${unread_count} unread message${unread_count !== 1 ? 's': ''}.`
-                            if (unread_count) {
-                                document.getElementById("unread-count").setAttribute("data-count", unread_count);
-                            } else {
-                                document.getElementById("unread-count").removeAttribute("data-count");
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        inbox_rows[i].addEventListener("click", inbox_row_click_handler);
     }
     // Handle asynchronous form submit
     document.getElementById("message-form").addEventListener("submit", function (e) {
@@ -244,7 +245,10 @@
                         <i class="fa-solid fa-spinner fa-spin"></i> \
                     </div> \
                 </div>';
-        thread_view.insertAdjacentHTML("beforeend", placeholderHtml);
+        if (thread_view) {
+            // Last thing could add, open new/navigate to existing thread from compose screen
+            thread_view.insertAdjacentHTML("beforeend", placeholderHtml);
+        }
 
         // Scroll message window to bottom
         document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
@@ -263,6 +267,9 @@
                 // Delete inbox row with updated HTML from response, add new one to top
                 document.getElementById("inbox-thread" + response_data['receiverID']).closest(".inbox-row").remove()
                 document.getElementById("inbox").insertAdjacentHTML("afterbegin", response_data['inbox_thread_html']);
+                // Restore click handler to new element
+                document.getElementById("inbox-thread" + response_data['receiverID']).closest(".inbox-row").addEventListener("click", inbox_row_click_handler);
+
             } else {
                 // Message send failed
                 processing_icon.parentNode.parentNode.remove();
