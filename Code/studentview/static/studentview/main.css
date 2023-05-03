@@ -1,11 +1,47 @@
+:root {
+    --banner-gradient-1: #5100e7;
+    --banner-gradient-2: #3b4a5a;
+}
+
+.navbar {
+    background-image: linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%);
+    border-radius: 20px 100px 20px;
+}
+
+.site-header .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    transition: color 0.3s ease-in-out;
+}
+
+.site-header .navbar-brand:hover {
+    color: #000000;
+}
+
+.site-header .navbar-nav .nav-link {
+    color: #ffffff;
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+.site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+}
+
 html, body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
-    background: #fafafa;
+    background: radial-gradient(circle closest-side, #B0E0E6, #d5f8f9);
     color: #333333;
     margin-top: 4rem;
     overflow-x: hidden;
@@ -21,6 +57,7 @@ body > * {
 
 h1, h2, h3, h4, h5, h6 {
     color: #444444;
+    font-weight: 500;
 }
 
 ul {
@@ -33,6 +70,7 @@ ul {
 
 .site-header .navbar-nav .nav-link {
     color: #cbd5db;
+    transition: color 0.3s;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -40,16 +78,40 @@ ul {
 }
 
 .site-header .navbar-nav .nav-link.active {
-    font-weight: 500;
+    font-weight: 600;
+}
+         
+         
+.btn {
+    background-image: linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%);
+    margin: 10px;
+    padding: 15px 15px; /* Adjust horizontal padding here */
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
 }
 
-/*
-    Messaging sidebar styling
-*/
+.btn:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
 
-/* #messaging-sidebar {
-    padding-right: 0.75rem;
-} */
+ 
+ 
+
+
+
+
+
+
+
+
+/* Messaging sidebar styling */
 
 #messaging-sidebar-button, #messaging-sidebar-container {
     background-color: #fff;
@@ -64,13 +126,13 @@ ul {
 #messaging-sidebar-button {
     padding-top: 0.55rem;
     padding-bottom: 0.45rem;
+    transition: background-color 0.3s;
 }
 
 #messaging-sidebar-button:hover {
-    background-color: lightgray;
+    background-color: #e0e0e0;
 }
 
-/* FontAwesome data-count for unread messages */
 .fas[data-count]{
     position:relative;
 }
@@ -117,7 +179,7 @@ ul {
 }
 
 .inbox-row .list-group-item:hover:not(.unread) {
-    background-color: lightgray;
+    background-color: #e0e0e0;
 }
 
 .inbox-row .list-group-item.unread {
@@ -125,7 +187,7 @@ ul {
 }
 
 .inbox-row .list-group-item.unread:hover {
-    background-color: lightsteelblue;
+    background-color: #b0c4de;
 }
 
 .inbox-thread {
@@ -136,112 +198,118 @@ ul {
     border: 1px solid rgb(119, 119, 119);
     border-radius: 4px;
     max-width: 400px;
-    color: white;
+    color: white
+    ;
 }
 
 .thread-msg.sent {
-    background-color: #0d6efd;
-    margin-left: 4rem;
+background-color: #0d6efd;
+margin-left: 4rem;
 }
 
 .thread-msg.received {
-    background-color: rgb(102, 103, 107);
-    margin-right: 4rem;
+background-color: rgb(102, 103, 107);
+margin-right: 4rem;
 }
 
 #messaging-footer > .input-group {
-    padding-top: 1rem;
+padding-top: 1rem;
 }
 
 label.control-label {
-    padding-right: 0.5em;
-    padding-top: 7px;
-    margin-bottom: 0;
-    text-align: right;
+padding-right: 0.5em;
+padding-top: 7px;
+margin-bottom: 0;
+text-align: right;
 }
 
 /* Alter standard bootstrap checkbox input */
 [id^="thread_select"] {
-    border: 2px solid lightslategray !important;
-    border-radius: 10px !important;
-    clip-path: circle(43% at 50% 50%);
+border: 2px solid lightslategray !important;
+border-radius: 10px !important;
+clip-path: circle(43% at 50% 50%);
 }
 
 /* End messaging sidebar styling */
 
 .content-section {
-    background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-    margin-bottom: 20px;
+background: #ffffff;
+padding: 20px 30px;
+border: 1px solid #e0e0e0;
+border-radius: 5px;
+margin-bottom: 20px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .article-title {
-    color: #444444;
+color: #444444;
 }
 
 a.article-title:hover {
-    color: #428bca;
-    text-decoration: none;
+color: #428bca;
+text-decoration: none;
 }
 
 .article-content {
-    white-space: pre-line;
+white-space: pre-line;
 }
 
 .article-img {
-    height: 65px;
-    width: 65px;
-    margin-right: 16px;
+height: 65px;
+width: 65px;
+margin-right: 16px;
 }
 
 .article-metadata {
-    padding-bottom: 1px;
-    margin-bottom: 4px;
-    border-bottom: 1px solid #e3e3e3
+padding-bottom: 1px;
+margin-bottom: 4px;
+border-bottom: 1px solid #e3e3e3;
 }
 
 .article-metadata a:hover {
-    color: #333;
-    text-decoration: none;
+color: #333;
+text-decoration: none;
 }
 
 .article-svg {
-    width: 25px;
-    height: 25px;
-    vertical-align: middle;
+width: 25px;
+height: 25px;
+vertical-align: middle;
 }
 
 .account-img {
-    height: 125px;
-    width: 125px;
-    margin-right: 20px;
-    margin-bottom: 16px;
+height: 125px;
+width: 125px;
+margin-right: 20px;
+margin-bottom: 16px;
 }
 
 .account-heading {
-    font-size: 2.5rem;
+font-size: 2.5rem;
 }
-/*new css specs created by Annemarie Zheng*/
+
+/* New css specs created by Annemarie Zheng */
 
 .studentclassbox {
-     box-sizing: border-box;
-     border-radius: 0.5rem;
-     box-shadow: 0px 0px 5px grey;
-     display: flex;
-     flex-direction: column;
-     width: 315px;
-     margin: 20px;
+box-sizing: border-box;
+border-radius: 0.5rem;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+display: flex;
+flex-direction: column;
+width: 315px;
+margin: 20px;
 }
 
-/* .studentclassbox.active {
-
-} */
 .studentclassbox.closed {
-    opacity: 50%;
+opacity: 0.5;
 }
+
 .studentclassbox.addclassbox {
-    opacity: 50%;
-    border: 5px dashed #5f788a;
+opacity: 0.5;
+border: 5px dashed #5f788a;
+transition: border 0.3s;
+}
+
+.studentclassbox.addclassbox:hover {
+border: 5px dashed #428bca;
 }
