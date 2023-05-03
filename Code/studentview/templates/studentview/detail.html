@@ -2,56 +2,56 @@
 {% block content %}
 
 <div class="container" style="padding: 40px;">
-    <h1>Waitlist Details</h1>
+    <h1><b>Waitlist Details</b></h1>
 
     <div class="row mt-4">
         <div class="col-md-6">
-            <h3>Name: {{ classwaitlist.className }} - Code: {{ classwaitlist.classCode }}</h3>
+            <h3><b>Name:</b> {{ classwaitlist.className }} - Code: {{ classwaitlist.classCode }}</h3>
         </div>
         <div class="col-md-6">
-            <h4>Professor: {{ classwaitlist.professor }}</h4>
+            <h4><b>Professor:</b> {{ classwaitlist.professor.first_name }} {{ classwaitlist.professor.last_name }} </h4>
         </div>
     </div>
 
     <div class="row mt-4">
         <div class="col-md-6">
-            <h4>Description: {{ classwaitlist.classDescription }}</h4>
+            <h4><b>Description:</b> {{ classwaitlist.classDescription }}</h4>
         </div>
         <div class="col-md-6">
-            <h4>CRN: {{ classwaitlist.crn }}</h4>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <h4>Waitlist ID: {{ classwaitlist.id }}</h4>
-        </div>
-        <div class="col-md-6">
-            <h4>Schedule: {{ classwaitlist.schedule }}</h4>
+            <h4><b>CRN:</b> {{ classwaitlist.crn }}</h4>
         </div>
     </div>
 
     <div class="row mt-4">
         <div class="col-md-6">
-            <h4>Sort By: {{ classwaitlist.sortType }}</h4>
+            <h4><b>Waitlist ID:</b> {{ classwaitlist.id }}</h4>
         </div>
         <div class="col-md-6">
-            <h4>Term: {{ classwaitlist.term }}</h4>
-        </div>
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <h4>Anonymous: {{ classwaitlist.anonymous_waitlist }}</h4>
-        </div>
-        <div class="col-md-6">
-            <h4>Request Major: {{ classwaitlist.request_major }}</h4>
+            <h4><b>Schedule:</b> {{ classwaitlist.schedule }}</h4>
         </div>
     </div>
 
     <div class="row mt-4">
         <div class="col-md-6">
-            <h4>Request Academic Status: {{ classwaitlist.request_academic_status }}</h4>
+            <h4><b>Sort By:</b> {{ classwaitlist.sortType }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4><b>Term:</b> {{ classwaitlist.term }}</h4>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4><b>Anonymous:</b> {{ classwaitlist.anonymous_waitlist }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4><b>Request Major:</b> {{ classwaitlist.request_major }}</h4>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4><b>Request Academic Status:</b> {{ classwaitlist.request_academic_status }}</h4>
         </div>
     </div>
 
@@ -59,11 +59,13 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <a href="../edit" class="btn btn-secondary">Edit Details</a>
-            <a href="{% url 'sort_waitlist' pk=classwaitlist.id sortType=classwaitlist.sortType %}" class="btn btn-secondary">Sort Waitlist</a>
+            {% if classwaitlist.sortType == 'FCFS' or classwaitlist.sortType == 'Seniority' or classwaitlist.sortType == 'Random' %}
+                <a href="{% url 'sort_waitlist' pk=classwaitlist.id sortType=classwaitlist.sortType %}" class="btn btn-secondary">Sort Waitlist</a>
+            {% endif %}
             {% if classwaitlist.archived %}
                 <a href="{% url 'unarchive_class' class_id=classwaitlist.id %}" class="btn btn-secondary">Un-archive Class</a>
             {% else %}
-                <a href="{% url 'archive_class' class_id=classwaitlist.id %}" class="btn btn-secondary">Archive Class</a>
+                <a href="{% url 'archive_class' class_id=classwaitlist.id %}" class="btn btn-secondary" data-toggle="tooltip" title="Archived classes don't show up to students anymore, but they can be un-archived by you at any time">Archive Class</a>
             {% endif %}
         </div>
     </div>

@@ -36,7 +36,7 @@ def home(request):
     else:
         if groupOfUser:
             if groupOfUser.id == 1:
-                classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
+                classes = ClassWaitlist.objects.filter(professor=currentUser.pk, archived=False)
                 isProfessor = True
                 # Generate unique list of users in professor's waitlists
                 messageable_users = list(set((
@@ -49,11 +49,12 @@ def home(request):
             elif groupOfUser.id == 2:
                 isStudent = True
 
-                studentTickets = StudentTicket.objects.filter(student=currentUser.pk)
+                studentTickets = StudentTicket.objects.filter(student=currentUser)
                 classPKs = set()
 
                 for ticket in studentTickets:
-                    classPKs.add(ticket.class_waitlist.pk)
+                    if(not ClassWaitlist.objects.get(id=ticket.class_waitlist.pk).archived):
+                        classPKs.add(ticket.class_waitlist.pk)
 
                 classPKs = list(classPKs)
                 classes = ClassWaitlist.objects.filter(pk__in=classPKs)
@@ -320,7 +321,7 @@ def createWaitlist(request):
         name = request.POST['className']
         desc = request.POST['classDesc']
         code = request.POST['classCode']
-        crn = request.POST['classCRN']
+        crn = request.POST['classCRN'] or 0
         crn2 = request.POST['classCRN2']
         crn3 = request.POST['classCRN3']
 
@@ -337,8 +338,10 @@ def createWaitlist(request):
         #request_msg = request.POST.get('request_msg', 'False') == 'on'
 
         # StudentTicket.objects.create(class_waitlist=waitlist, date_joined= timezone.now(), student=user)
-
-        cwl = ClassWaitlist.objects.create(className=name+" Section 1", classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
+        mainNameString = name
+        if not (schedule2 == '' and crn2 == '' and schedule3 == '' and crn3 == ''):
+            mainNameString +=  " Section 1"
+        cwl = ClassWaitlist.objects.create(className=mainNameString, classDescription=desc, classCode=code, crn=crn, schedule=schedule, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
         createWaitlistNotification(user, name, desc, code, crn, schedule, sortType, term, datePosted, anonymous_waitlist)
         if schedule2 != "" or crn2 != "":
             cw2 = ClassWaitlist.objects.create(className=name+" Section 2", classDescription=desc, classCode=code, crn=crn2, schedule=schedule2, sortType=sortType, term=term, date_added=datePosted, professor=user, anonymous_waitlist=anonymous_waitlist, request_academic_status=request_academic_status, request_major=request_major)
@@ -392,7 +395,6 @@ class DetailView(generic.DetailView):
     template_name = 'studentview/detail.html'
 
     def get_context_data(self, **kwargs):
-        print(kwargs)
         context = super().get_context_data(**kwargs)
         context['isProfessor'] = self.request.user.groups.filter(name='Professor').exists()
         context['ownsClass'] = self.request.user.id == kwargs['object'].professor.pk
@@ -415,14 +417,12 @@ class EditView(LoginRequiredMixin, generic.UpdateView):
     def get(self, request, *args, **kwargs):
         userid = request.user.id
         classProfessorId = ClassWaitlist.objects.filter(pk=kwargs['pk']).first().professor.pk #there is for sure a better way to do this lol, but this works
-        print(classProfessorId)
         if userid == classProfessorId:
             return super().get(request, *args, **kwargs)
         return render({}, '403') # goes to 404 but making idk how to make it go to a 403 page instead
 
 
     def get_success_url(self):
-        print(self.model.id)
         return "../detail"
 
 def move_studentNotification(ticket, notification):
@@ -499,11 +499,11 @@ def audit_student_positions(waitlistId):
 
 def sort_waitlist(request, pk, sortType):
     tickets = list(StudentTicket.objects.filter(class_waitlist_id=pk).order_by('date_joined'))
-    if sortType == 'fcfs':
+    if sortType == 'FCFS':
         # tickets are sorted just need to renumber which all of them need
         pass
 
-    elif sortType == 'seniority':
+    elif sortType == 'Seniority':
         seniors = []
         juniors = []
         sophomores = []
@@ -525,7 +525,7 @@ def sort_waitlist(request, pk, sortType):
         #     iterate through by seniority
         tickets = seniors + juniors + sophomores + freshman + unspecified
 
-    elif sortType == 'random':
+    elif sortType == 'Random':
         shuffle(tickets)
 
     i = 1

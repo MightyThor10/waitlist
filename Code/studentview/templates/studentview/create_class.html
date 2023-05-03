@@ -16,30 +16,31 @@
             <input type="text" class="form-control" id="classCode" name="classCode" placeholder="Ex: CSCI425">
             <label for="classCRN">CRN:</label>
             <input type="number" class="form-control" id="classCRN" name="classCRN" placeholder="Ex: 25064">
-            <label for="classCRN" class="collapse multi-collapse">Section #2 CRN (Optional):</label>
+            <label for="classCRN" class="collapse multi-collapse" data-toggle="tooltip" title="If filled out, an additional copy of this waitlist will be created with this CRN/schedule pair.">Section #2 CRN (Optional):</label>
             <input type="number" class="form-control collapse multi-collapse" id="classCRN2" name="classCRN2" placeholder="Ex: 25064">
-            <label for="classCRN" class="collapse multi-collapse">Section #3 CRN (Optional):</label>
+            <label for="classCRN" class="collapse multi-collapse" data-toggle="tooltip" title="If filled out, an additional copy of this waitlist will be created with this CRN/schedule pair.">Section #3 CRN (Optional):</label>
             <input type="number" class="form-control collapse multi-collapse" id="classCRN3" name="classCRN3" placeholder="Ex: 25064">
             <label for="classSchedule">Schedule:</label>
             <input type="text" class="form-control" id="firstSectionSchedule" name="firstSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
-            <label for="classSchedule" class="collapse multi-collapse">Section #2 Schedule (Optional):</label>
+            <label for="classSchedule" class="collapse multi-collapse" data-toggle="tooltip" title="If filled out, an additional copy of this waitlist will be created with this CRN/schedule pair.">Section #2 Schedule (Optional):</label>
             <input type="text" class="form-control collapse multi-collapse" id="secondSectionSchedule" name="secondSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
-            <label for="classSchedule" class="collapse multi-collapse">Section #3 Schedule (Optional):</label>
+            <label for="classSchedule" class="collapse multi-collapse" data-toggle="tooltip" title="If filled out, an additional copy of this waitlist will be created with this CRN/schedule pair.">Section #3 Schedule (Optional):</label>
             <input type="text" class="form-control collapse multi-collapse" id="thirdSectionSchedule" name="thirdSectionSchedule" placeholder="Ex: MWF, 10am - 11am">
-            <label for="className">Sort Type:</label>
+            <label for="className" data-toggle="tooltip" title="There will be a button that allows you to sort with this method, but you will still be able to sort your waitlist manually">Sort Type:</label>
             <select class="form-control" id="classSort" name="classSort">
-                <option value="fcfs">First Come First Serve</option>
-                <option value="seniority">By Seniority</option>
-                <option value="random">Randomized</option>
+                <option value="None">None</option>
+                <option value="FCFS">First Come First Serve</option>
+                <option value="Seniority">Seniority</option>
+                <option value="Random">Randomized</option>
             </select>
 
             <label for="classTerm">Term:</label>
             <input type="text" class="form-control" id="classTerm" name="classTerm" placeholder="Ex: Spring 2023">
-            <label for="anonymous_waitlist">Anonymous Waitlist:</label>
+            <label for="anonymous_waitlist" data-toggle="tooltip" title="If checked, a student's identifying information will not be displayed to other students. It will still be displayed to you.">Anonymous Waitlist:</label>
             <input type="checkbox" id="anonymous_waitlist" name="anonymous_waitlist"><br>
-            <label for="request_year" class="collapse multi-collapse">Request Academic Year from Student:</label>
+            <label for="request_year" class="collapse multi-collapse" data-toggle="tooltip" title="Students will need to have entered their academic year to join your class, and their academic year will be displayed to you to help inform how they should be prioritized">Request Academic Year from Student:</label>
             <input type="checkbox" id="request_academic_status" name="request_academic_status" class="collapse multi-collapse"><br>
-            <label for="request_major" class="collapse multi-collapse">Request Major from Student:</label>
+            <label for="request_major" class="collapse multi-collapse" data-toggle="tooltip" title="Students will need to have entered their major to join your class, and their major will be displayed to you to help inform how they should be prioritized">Request Major from Student:</label>
             <input type="checkbox" id="request_major" name="request_major" class="collapse multi-collapse"><br>
             <!--<label for="request_msg">Request Message from Student:</label>
             <input type="checkbox" id="request_msg" name="request_msg">-->

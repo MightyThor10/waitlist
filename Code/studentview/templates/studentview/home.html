@@ -1,6 +1,6 @@
 {% extends "studentview/base.html" %}
 {% block content %}
-<h1 style="text-align:center"> My Classes</h1>
+<h1 style="text-align:center" class="mt-3"> My Classes</h1>
 <div class="container class-list px-0">
     {% if user.is_authenticated %}
         {% if isProfessor %}
@@ -12,13 +12,13 @@
                 </div>
                 {% if classes is not empty %}
                     <div class="col text-center">
-                        <a href="/studenthome/closeclass" type="button" class="btn btn-primary" style="width: 200px;">
+                        <a href="/studenthome/closeclass" type="button" class="btn btn-primary" style="width: 200px;" data-toggle="tooltip" title="Closing a class deletes it permanently!">
                             Close Class
                         </a>
                     </div>
                 {% endif %}
                 <div class="col text-center">
-                    <a href="/studenthome/archive" type="button" class="btn btn-primary" style="width: 200px;">
+                    <a href="/studenthome/archive" type="button" class="btn btn-primary" style="width: 200px;" data-toggle="tooltip" title="View and un-archive your classes that you previously closed.">
                         Archived Classes
                     </a>
                 </div>
@@ -76,7 +76,7 @@
                         Professor:
                     </div>
                     <div class="col-auto">
-                        {{ class.professor }}
+                        {{ class.professor.first_name }} {{ class.professor.last_name }}
                     </div>
                 </div>
                 {% if isProfessor %}
