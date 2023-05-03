@@ -53,18 +53,18 @@ def sendMessage(request):
                           send_date=datetime.now())
         message.save()
 
-        thread = Message.objects.filter((
-                Q(sender=receiverID) & Q(receiver=request.user)) | (
-                Q(sender=receiverID) & Q(receiver=request.user))).order_by('send_date')
+        thread = [{
+            'thread': {
+                'body': message.body,
+                'received': receiverID == request.user.id
+            }
+        }]
 
-        for msg in thread:
-            msg.received = receiverID == request.user.id
-
-        parms = {
-            'thread': thread,
-            'message': 'Message sent successfully!'
+        data = {
+            'message_body': message.body,
+            'receiverID': receiverID
         }
 
-        return redirect('/studenthome/')#render(request, 'messaging/message_thread.html', parms)
+        return JsonResponse(data, status=201)
     else:
         raise NotImplementedError('Nothing to receive from this view.')
