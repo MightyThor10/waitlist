@@ -29,7 +29,9 @@ def readThread(request):
             msg.read_date = read_date
             msg.save()
 
-        return JsonResponse({ 'nameID': nameID}, status=201)
+        return JsonResponse({ 'nameID': nameID,
+                              'read_count': thread_messages.count()
+                            }, status=201)
     else:
         raise NotImplementedError('Nothing to receive from this view.')
 

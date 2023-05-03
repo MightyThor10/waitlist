@@ -199,7 +199,12 @@
                     // Update unread message count
                     var unread_count = document.getElementById("unread-count").getAttribute("data-count");
 
-                    if (unread_count--) {
+                    if (unread_count) {
+                        if (unread_count <= response_data['read_count']) {
+                            unread_count = 0;
+                        } else {
+                            unread_count = unread_count - response_data['read_count'];
+                        }
                         document.getElementById("unread-msgs-text").innerText =
                             `You have ${unread_count} unread message${unread_count !== 1 ? 's': ''}.`
                         if (unread_count) {
