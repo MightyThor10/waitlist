@@ -293,7 +293,7 @@ font-size: 2.5rem;
 .studentclassbox {
 box-sizing: border-box;
 border-radius: 0.5rem;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
 display: flex;
 flex-direction: column;
 width: 315px;
