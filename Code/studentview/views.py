@@ -109,14 +109,23 @@ def home(request):
 
             message_snippet = (msg.body[:60] + '...') if len(msg.body) > 75 else msg.body
 
-            inbox.append({
+            entry_dict = {
                 'name': thread_user_pref_name,
                 'nameID': thread_userID,
                 'message_snippet': message_snippet,
                 'last_received': msg.getInboxDate(),
                 'unread': unread,
                 'thread': thread
-            })
+            }
+            # Insert inbox entry into inbox based on most recent msg's send date
+            if inbox:
+                thread_date = thread_messages.first().send_date
+                for i, entry in enumerate(inbox):
+                    if thread_date > entry['thread'][0]['send_date'] or i == len(inbox) - 1:
+                        inbox.insert(i, entry_dict)
+                        break
+            else:
+                inbox = [entry_dict]
 
     context = {
         'classes': classes,
