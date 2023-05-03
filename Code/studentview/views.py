@@ -72,60 +72,61 @@ def home(request):
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
 
-        message_form = MessageForm(currentUser, messageable_users)
+        if messageable_users:
+            message_form = MessageForm(currentUser, messageable_users)
 
-        user_messages = Message.objects.filter(
-                Q(sender=currentUser) | Q(receiver=currentUser)
-            ).order_by('send_date')
-
-        inbox_userIDs = (
-            set(user_messages.values_list('sender', flat=True).distinct()) |
-            set(user_messages.values_list('receiver', flat=True).distinct()))
-        inbox_userIDs.discard(currentUser.id)
-
-        for thread_userID in inbox_userIDs:
-            unread = False
-            thread = []
-            thread_messages = user_messages.filter(
-                    Q(sender=thread_userID) | Q(receiver=thread_userID)
+            user_messages = Message.objects.filter(
+                    Q(sender=currentUser) | Q(receiver=currentUser)
                 ).order_by('send_date')
 
-            thread_userObj = User.objects.get(id=thread_userID)
-            if thread_userObj.groups.all().first() == 2:
-                thread_user_pref_name = StudentProfile.objects.get(id=thread_userID).preferred_name
-            else:
-                thread_user_pref_name = thread_userObj.get_full_name()
+            inbox_userIDs = (
+                set(user_messages.values_list('sender', flat=True).distinct()) |
+                set(user_messages.values_list('receiver', flat=True).distinct()))
+            inbox_userIDs.discard(currentUser.id)
 
-            for msg in thread_messages:
-                thread.append({
-                    'received': msg.receiver == request.user,
-                    'body': msg.body,
-                    'send_date': msg.send_date,
-                    'read_date': msg.read_date
-                })
-                if not (unread or msg.read_date or msg.sender == request.user):
-                    unread = True
-                    unread_messages += 1
+            for thread_userID in inbox_userIDs:
+                unread = False
+                thread = []
+                thread_messages = user_messages.filter(
+                        Q(sender=thread_userID) | Q(receiver=thread_userID)
+                    ).order_by('send_date')
 
-            message_snippet = (msg.body[:60] + '...') if len(msg.body) > 75 else msg.body
+                thread_userObj = User.objects.get(id=thread_userID)
+                if thread_userObj.groups.all().first() == 2:
+                    thread_user_pref_name = StudentProfile.objects.get(id=thread_userID).preferred_name
+                else:
+                    thread_user_pref_name = thread_userObj.get_full_name()
 
-            entry_dict = {
-                'name': thread_user_pref_name,
-                'nameID': thread_userID,
-                'message_snippet': message_snippet,
-                'last_received': msg.getInboxDate(),
-                'unread': unread,
-                'thread': thread
-            }
-            # Insert inbox entry into inbox based on most recent msg's send date
-            if inbox:
-                thread_date = thread_messages.first().send_date
-                for i, entry in enumerate(inbox):
-                    if thread_date > entry['thread'][0]['send_date'] or i == len(inbox) - 1:
-                        inbox.insert(i, entry_dict)
-                        break
-            else:
-                inbox = [entry_dict]
+                for msg in thread_messages:
+                    thread.append({
+                        'received': msg.receiver == request.user,
+                        'body': msg.body,
+                        'send_date': msg.send_date,
+                        'read_date': msg.read_date
+                    })
+                    if not (unread or msg.read_date or msg.sender == request.user):
+                        unread = True
+                        unread_messages += 1
+
+                message_snippet = (msg.body[:60] + '...') if len(msg.body) > 75 else msg.body
+
+                entry_dict = {
+                    'name': thread_user_pref_name,
+                    'nameID': thread_userID,
+                    'message_snippet': message_snippet,
+                    'last_received': msg.getInboxDate(),
+                    'unread': unread,
+                    'thread': thread
+                }
+                # Insert inbox entry into inbox based on most recent msg's send date
+                if inbox:
+                    thread_date = thread_messages.first().send_date
+                    for i, entry in enumerate(inbox):
+                        if thread_date > entry['thread'][0]['send_date'] or i == len(inbox) - 1:
+                            inbox.insert(i, entry_dict)
+                            break
+                else:
+                    inbox = [entry_dict]
 
     context = {
         'classes': classes,
