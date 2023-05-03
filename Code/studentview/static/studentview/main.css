@@ -291,25 +291,34 @@ font-size: 2.5rem;
 /* New css specs created by Annemarie Zheng */
 
 .studentclassbox {
-box-sizing: border-box;
-border-radius: 0.5rem;
-box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
-display: flex;
-flex-direction: column;
-width: 315px;
-margin: 20px;
-}
-
-.studentclassbox.closed {
-opacity: 0.5;
-}
-
-.studentclassbox.addclassbox {
-opacity: 0.5;
-border: 5px dashed #5f788a;
-transition: border 0.3s;
-}
-
-.studentclassbox.addclassbox:hover {
-border: 5px dashed #428bca;
-}
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+    display: flex;
+    flex-direction: column;
+    width: 315px;
+    margin: 20px;
+    /* Add transition for the hover effect */
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .studentclassbox:hover {
+    /* Apply hover effect */
+    transform: translateY(-10px);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 40px 100px;
+  }
+  
+  .studentclassbox.closed {
+    opacity: 0.5;
+  }
+  
+  .studentclassbox.addclassbox {
+    opacity: 0.5;
+    border: 5px dashed #5f788a;
+    transition: border 0.3s;
+  }
+  
+  .studentclassbox.addclassbox:hover {
+    border: 5px dashed #428bca;
+  }
+  
