@@ -1,85 +1,118 @@
 {% extends "studentview/base.html" %}
 {% block content %}
-<div style="padding:40px">
-        <h1>Waitlist Details</h1>
 
-        <legend> <h2> Name: {{ classwaitlist.className }}  - Code: {{ classwaitlist.classCode}} </h2> </legend>
+<div class="container" style="padding: 40px;">
+    <h1>Waitlist Details</h1>
 
-        <legend> <h2> Professor: {{ classwaitlist.professor }} </h2> </legend>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h3>Name: {{ classwaitlist.className }} - Code: {{ classwaitlist.classCode }}</h3>
+        </div>
+        <div class="col-md-6">
+            <h4>Professor: {{ classwaitlist.professor }}</h4>
+        </div>
+    </div>
 
-        <legend> <h2> Description: {{ classwaitlist.classDescription }} </h2> </legend>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4>Description: {{ classwaitlist.classDescription }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>CRN: {{ classwaitlist.crn }}</h4>
+        </div>
+    </div>
 
-        <legend> <h2> CRN: {{ classwaitlist.crn }} </h2> </legend>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4>Waitlist ID: {{ classwaitlist.id }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Schedule: {{ classwaitlist.schedule }}</h4>
+        </div>
+    </div>
 
-        <legend> <h2> Waitlist ID: {{ classwaitlist.id }} </h2> </legend>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4>Sort By: {{ classwaitlist.sortType }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Term: {{ classwaitlist.term }}</h4>
+        </div>
+    </div>
 
-        <legend> <h2> Schedule: {{ classwaitlist.schedule }} </h2> </legend>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4>Anonymous: {{ classwaitlist.anonymous_waitlist }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Request Major: {{ classwaitlist.request_major }}</h4>
+        </div>
+    </div>
 
-        <legend> <h2> Sort By: {{ classwaitlist.sortType }} </h2> </legend>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h4>Request Academic Status: {{ classwaitlist.request_academic_status }}</h4>
+        </div>
+    </div>
 
-        <legend> <h2> Term: {{ classwaitlist.term }} </h2> </legend>
-
-        <legend> <h2> Anonymous: {{ classwaitlist.anonymous_waitlist }} </h2> </legend>
-
-        <legend> <h2> Request Major: {{ classwaitlist.request_major }} </h2> </legend>
-
-        <legend> <h2> Request Academic Status: {{ classwaitlist.request_academic_status }} </h2> </legend>
-
-        <!--<legend> <h2> Request Message: {{ classwaitlist.request_msg }} </h2> </legend>-->
-
-        {% if ownsClass %}
-            <a href="../edit"><button class="btn btn-secondary">Edit Details</button></a>
-            <a href="{% url 'sort_waitlist' pk=classwaitlist.id sortType=classwaitlist.sortType %}"><button class="btn btn-secondary">Sort Waitlist</button></a>
+    {% if ownsClass %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a href="../edit" class="btn btn-secondary">Edit Details</a>
+            <a href="{% url 'sort_waitlist' pk=classwaitlist.id sortType=classwaitlist.sortType %}" class="btn btn-secondary">Sort Waitlist</a>
             {% if classwaitlist.archived %}
-                <a href="{% url 'unarchive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Un-archive Class</button></a>
+                <a href="{% url 'unarchive_class' class_id=classwaitlist.id %}" class="btn btn-secondary">Un-archive Class</a>
             {% else %}
-                <a href="{% url 'archive_class' class_id=classwaitlist.id %}"><button class="btn btn-secondary">Archive Class</button></a>
+                <a href="{% url 'archive_class' class_id=classwaitlist.id %}" class="btn btn-secondary">Archive Class</a>
             {% endif %}
-        {% endif %}
+        </div>
+    </div>
+    {% endif %}
 
-        <h3 style="margin-top:20px"> Students In Line: </h3>
+    <h3 class="mt-4">Students In Line:</h3>
 
         {% for studentticket in classwaitlist.studentticket_set.all|dictsort:"position" %}
-
-            <p>
-                {% if classwaitlist.anonymous_waitlist and not isProfessor and studentticket.student != user %}
-                Anonymous Student: {{studentticket.date_joined|date:"d/m/Y, H:i:s"}}
-                {% else %}
-                    {{ studentticket }}
-                {% endif %}
-                {% if studentticket.student == user %}
-
-                    {% if studentticket.waitlist_status == "p" %}
-                        <span style="color:royalblue">Current Spot on Waitlist</span>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <p>
+                    {% if classwaitlist.anonymous_waitlist and not isProfessor and studentticket.student != user %}
+                        Anonymous Student: {{studentticket.date_joined|date:"d/m/Y, H:i:s"}}
+                    {% else %}
+                        {{ studentticket }}
                     {% endif %}
-                    {% if studentticket.waitlist_status == "a" %}
-                        <span style="color:mediumseagreen">Status: Accepted</span>
+    
+                    {% if studentticket.student == user %}
+                        {% if studentticket.waitlist_status == "p" %}
+                            <span class="text-primary">Current Spot on Waitlist</span>
+                        {% endif %}
+                        {% if studentticket.waitlist_status == "a" %}
+                            <span class="text-success">Status: Accepted</span>
+                        {% endif %}
+                        {% if studentticket.waitlist_status == "r" %}
+                            <span class="text-danger">Status: Rejected</span>
+                        {% endif %}
                     {% endif %}
-                    {% if studentticket.waitlist_status == "r" %}
-                        <span style="color:mediumvioletred">Status: Rejected</span>
+    
+                    {% if isProfessor %}
+                        <a href="{% url 'move_student' ticket_id=studentticket.id direction='up' %}" class="btn btn-sm btn-primary">Move Up</a>
+                        <a href="{% url 'move_student' ticket_id=studentticket.id direction='down' %}" class="btn btn-sm btn-primary">Move Down</a>
+                        {% if studentticket.waitlist_status == "p" %}
+                            <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='a' %}" class="btn btn-sm btn-info">Accept</a>
+                            <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='r' %}" class="btn btn-sm btn-warning">Reject</a>
+                        {% endif %}
+                        {% if studentticket.waitlist_status == "a" %}
+                            <span>Accepted</span>
+                            <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='p' %}" class="btn btn-sm btn-secondary">Move Back to Waitlist</a>
+                        {% endif %}
+                        {% if studentticket.waitlist_status == "r" %}
+                            <span>Rejected</span>
+                            <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='p' %}" class="btn btn-sm btn-secondary">Move Back to Waitlist</a>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-
-                {% if isProfessor %}
-                    <a href="{% url 'move_student' ticket_id=studentticket.id direction='up' %}" class="btn btn-sm btn-primary">Move Up</a>
-                    <a href="{% url 'move_student' ticket_id=studentticket.id direction='down' %}" class="btn btn-sm btn-primary">Move Down</a>
-                    {% if studentticket.waitlist_status == "p" %}
-                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='a' %}" class="btn btn-sm btn-info">Accept</a>
-                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='r' %}" class="btn btn-sm btn-warning">Reject</a>
-                    {% endif %}
-                    {% if studentticket.waitlist_status == "a" %}
-                        <span>Accepted</span>
-                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='p' %}" class="btn btn-sm btn-secondary">Move Back to Waitlist</a>
-                    {% endif %}
-                    {% if studentticket.waitlist_status == "r" %}
-                        <span>Rejected</span>
-                        <a href="{% url 'update_waitlist_status' ticket_id=studentticket.id newstatus='p' %}" class="btn btn-sm btn-secondary">Move Back to Waitlist</a>
-                    {% endif %}
-                {% endif %}
-            </p>
-
-        {% endfor %}
-
-</div>
-
-{% endblock content %}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    {% endblock content %}
+    
