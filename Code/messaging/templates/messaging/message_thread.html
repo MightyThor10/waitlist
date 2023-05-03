@@ -1,0 +1,7 @@
+{% for msg in thread.thread %}
+    <div class="d-flex flex-row justify-content-{{ msg.received|yesno:"start,end" }} py-2">
+        <div class="col col-auto thread-msg {{ msg.received|yesno:"received,sent" }} p-2">
+            {{ msg.body }}
+        </div>
+    </div>
+{% endfor %}
