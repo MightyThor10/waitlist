@@ -15,6 +15,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <link rel="shortcut icon" href="#">
 
+    <script src="https://unpkg.com/@popperjs/core@2"></script>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- The above and below script tags are needed to enable tooltips! -->
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'studentview/main.css' %}">
     <title>Waitlist</title>
