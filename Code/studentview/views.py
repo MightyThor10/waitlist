@@ -499,11 +499,11 @@ def audit_student_positions(waitlistId):
 
 def sort_waitlist(request, pk, sortType):
     tickets = list(StudentTicket.objects.filter(class_waitlist_id=pk).order_by('date_joined'))
-    if sortType == 'fcfs':
+    if sortType == 'FCFS':
         # tickets are sorted just need to renumber which all of them need
         pass
 
-    elif sortType == 'seniority':
+    elif sortType == 'Seniority':
         seniors = []
         juniors = []
         sophomores = []
@@ -525,7 +525,7 @@ def sort_waitlist(request, pk, sortType):
         #     iterate through by seniority
         tickets = seniors + juniors + sophomores + freshman + unspecified
 
-    elif sortType == 'random':
+    elif sortType == 'Random':
         shuffle(tickets)
 
     i = 1
