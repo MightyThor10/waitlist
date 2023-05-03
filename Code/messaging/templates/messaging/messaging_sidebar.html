@@ -66,47 +66,7 @@
         <!-- Messaging sidebar inbox container -->
         <div id="inbox" class="col col-12 compose collapse collapse-horizontal show" style="flex: 1; overflow-y: auto; overflow-x: hidden;">
             {% for thread in inbox %}
-                <div class="inbox-row d-flex flex-row flex-wrap" value="{{ thread.nameID }}">
-                    <div class="col-12 d-flex flex-column">
-                        <ul class="list-group">
-                            <li id="inbox-thread{{ thread.nameID }}"class="list-group-item border-left-0{% if thread.unread %} unread{% endif %} no-gutters py-2"
-                                    data-toggle="tooltip" data-placement="left" title="{{ thread.unread|yesno:"Unread message,Message" }} from {{ thread.name }}">
-                                <div class="row">
-                                    <div class="col col-1 d-flex flex-column p-0">
-                                        <input id="thread_select{{ thread.nameID }}" class="form-check-input m-auto" type="checkbox" value=""
-                                            data-toggle="tooltip" data-placement="left" title="Select this thread.">
-                                    </div>
-                                    <div class="col col-11 p-0">
-                                        <div class="d-flex flex-row">
-                                            <div class="col" style="padding-left: 1rem;">
-                                                <div class="mt-2" style="font-weight: 300;">
-                                                    {{ thread.last_received }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-row">
-                                            <div class="col" style="padding-left: 1rem;">
-                                                <div class="my-1">
-                                                    {{ thread.name }}
-                                                </div>
-                                            </div>
-                                            <div class="col col-auto">
-                                                <div class="my-1" style="padding-right: 1.5rem; font-weight: 300;">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-row justify-content-left">
-                                            <div class="col col-auto mb-2" style="padding-left: 1rem; padding-right: 3rem; font-weight: 300;">
-                                                {{ thread.message_snippet }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                {% include 'messaging/inbox_thread.html' %}
             {% empty %}
                 <div class="row text-center pt-5">
                     <div class="col text-nowrap" style="font-weight: 300;">
@@ -290,18 +250,22 @@
         document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
 
         xhr.onload = function () {
+            var processing_icon = document.querySelectorAll(".new.thread-msg >i")[0];
             if(xhr.status === 201) {
                 // Message sent successfully
                 var response_data = JSON.parse(xhr.response);
                 // Clear message input
                 document.getElementById("id_body").value = "";
                 // Replace processing icon with message body
-                var processing_icon = document.querySelectorAll(".new.thread-msg >i")[0];
                 processing_icon.outerHTML = response_data['message_body'];
                 // Scroll message window to bottom in case text is more than one line
                 document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
+                // Delete inbox row with updated HTML from response, add new one to top
+                document.getElementById("inbox-thread" + response_data['receiverID']).closest(".inbox-row").remove()
+                document.getElementById("inbox").insertAdjacentHTML("afterbegin", response_data['inbox_thread_html']);
             } else {
                 // Message send failed
+                processing_icon.parentNode.parentNode.remove();
             }
         }
 

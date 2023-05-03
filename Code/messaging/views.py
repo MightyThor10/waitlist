@@ -5,7 +5,10 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from .models import Message
+
+from users.models import StudentProfile
 
 
 def readThread(request):
@@ -53,14 +56,31 @@ def sendMessage(request):
                           send_date=datetime.now())
         message.save()
 
-        thread = [{
-            'thread': {
-                'body': message.body,
-                'received': receiverID == request.user.id
-            }
-        }]
+
+        thread = []
+
+        thread_userObj = User.objects.get(id=receiverID)
+        if thread_userObj.groups.all().first() == 2:
+            thread_user_pref_name = StudentProfile.objects.get(id=receiverID).preferred_name
+        else:
+            thread_user_pref_name = thread_userObj.get_full_name()
+
+        message_snippet = (message.body[:60] + '...') if len(message.body) > 75 else message.body
+
+        entry_dict = {
+            'name': thread_user_pref_name,
+            'nameID': receiverID,
+            'message_snippet': message_snippet,
+            'last_received': message.getInboxDate(),
+            'unread': False,
+            'thread': thread
+        }
+        inbox_thread_html = render_to_string('messaging/inbox_thread.html', {
+            'thread': entry_dict
+        })
 
         data = {
+            'inbox_thread_html': inbox_thread_html,
             'message_body': message.body,
             'receiverID': receiverID
         }
