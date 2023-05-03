@@ -12,13 +12,13 @@
                 </div>
                 {% if classes is not empty %}
                     <div class="col text-center">
-                        <a href="/studenthome/closeclass" type="button" class="btn btn-primary" style="width: 200px;">
+                        <a href="/studenthome/closeclass" type="button" class="btn btn-primary" style="width: 200px;" data-toggle="tooltip" title="Closing a class deletes it permanently!">
                             Close Class
                         </a>
                     </div>
                 {% endif %}
                 <div class="col text-center">
-                    <a href="/studenthome/archive" type="button" class="btn btn-primary" style="width: 200px;" data-toggle="tooltip" data-placement="left" title="View and un-archive your classes that you previously closed.">
+                    <a href="/studenthome/archive" type="button" class="btn btn-primary" style="width: 200px;" data-toggle="tooltip" title="View and un-archive your classes that you previously closed.">
                         Archived Classes
                     </a>
                 </div>

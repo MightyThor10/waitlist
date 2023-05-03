@@ -7,7 +7,7 @@
     {% endfor %} 
     <form method="post">
         {% csrf_token %}
-        <input type="text" name="classID" placeholder="Class ID" style="padding:5px;margin-bottom:20px;width:250px;" required>
+        <input type="text" name="classID" placeholder="Class ID" style="padding:5px;margin-bottom:20px;width:250px;" required data-toggle="tooltip" title="You can get a class ID from that class's details page">
         <br>
         <button type="submit" style="width:250px" class="btn btn-primary">Close Class</button>
     </form>

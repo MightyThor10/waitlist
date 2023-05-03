@@ -49,11 +49,12 @@ def home(request):
             elif groupOfUser.id == 2:
                 isStudent = True
 
-                studentTickets = StudentTicket.objects.filter(student=currentUser.pk, archived=False)
+                studentTickets = StudentTicket.objects.filter(student=currentUser)
                 classPKs = set()
 
                 for ticket in studentTickets:
-                    classPKs.add(ticket.class_waitlist.pk)
+                    if(not ClassWaitlist.objects.get(id=ticket.class_waitlist.pk).archived):
+                        classPKs.add(ticket.class_waitlist.pk)
 
                 classPKs = list(classPKs)
                 classes = ClassWaitlist.objects.filter(pk__in=classPKs)
