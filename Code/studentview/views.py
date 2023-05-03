@@ -36,7 +36,7 @@ def home(request):
     else:
         if groupOfUser:
             if groupOfUser.id == 1:
-                classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
+                classes = ClassWaitlist.objects.filter(professor=currentUser.pk, archived=False)
                 isProfessor = True
                 # Generate unique list of users in professor's waitlists
                 messageable_users = list(set((
@@ -49,7 +49,7 @@ def home(request):
             elif groupOfUser.id == 2:
                 isStudent = True
 
-                studentTickets = StudentTicket.objects.filter(student=currentUser.pk)
+                studentTickets = StudentTicket.objects.filter(student=currentUser.pk, archived=False)
                 classPKs = set()
 
                 for ticket in studentTickets:

@@ -63,7 +63,7 @@
             {% if classwaitlist.archived %}
                 <a href="{% url 'unarchive_class' class_id=classwaitlist.id %}" class="btn btn-secondary">Un-archive Class</a>
             {% else %}
-                <a href="{% url 'archive_class' class_id=classwaitlist.id %}" class="btn btn-secondary">Archive Class</a>
+                <a href="{% url 'archive_class' class_id=classwaitlist.id %}" class="btn btn-secondary" data-toggle="tooltip" data-placement="left" title="Archived classes don't show up to students anymore, but they can be un-archived by you at any time">Archive Class</a>
             {% endif %}
         </div>
     </div>
