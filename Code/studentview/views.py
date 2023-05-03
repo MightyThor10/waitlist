@@ -103,7 +103,7 @@ def home(request):
                     'send_date': msg.send_date,
                     'read_date': msg.read_date
                 })
-                if not unread and not msg.read_date:
+                if not (unread or msg.read_date or msg.sender == request.user):
                     unread = True
                     unread_messages += 1
 
