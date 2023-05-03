@@ -1,7 +1,22 @@
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 body {
     background: #fafafa;
     color: #333333;
-    margin-top: 5rem;
+    margin-top: 4rem;
+    overflow-x: hidden;
+}
+
+body > * {
+    flex-shrink: 0;
+}
+
+#page-flex-row {
+  flex-grow: 1;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -27,6 +42,132 @@ ul {
 .site-header .navbar-nav .nav-link.active {
     font-weight: 500;
 }
+
+/*
+    Messaging sidebar styling
+*/
+
+/* #messaging-sidebar {
+    padding-right: 0.75rem;
+} */
+
+#messaging-sidebar-button, #messaging-sidebar-container {
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.25);
+    border-radius: 0.4rem;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-right: 0;
+}
+
+#messaging-sidebar-button {
+    padding-top: 0.55rem;
+    padding-bottom: 0.45rem;
+}
+
+#messaging-sidebar-button:hover {
+    background-color: lightgray;
+}
+
+/* FontAwesome data-count for unread messages */
+.fas[data-count]{
+    position:relative;
+}
+
+.fas[data-count]:after{
+    position: absolute;
+    right: -0.75em;
+    top: -.5em;
+    content: attr(data-count);
+    padding: 0.2em;
+    border-radius: 10em;
+    line-height: .9em;
+    color: white;
+    background: rgba(255,0,0,.9);
+    text-align: center;
+    min-width: 1.6em;
+    font: bold .4em sans-serif;
+}
+
+#messaging-sidebar-container {
+    border-radius: 0.5rem;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-left: 0;
+    margin-bottom: 1em;
+}
+
+#messaging-sidebar-content {
+    min-width: 400px;
+}
+
+.inbox-row .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+}
+
+.inbox-row:not(:first-child) .list-group-item {
+    border-top: 0;
+}
+
+.inbox-row .list-group-item:hover {
+    cursor: pointer;
+}
+
+.inbox-row .list-group-item:hover:not(.unread) {
+    background-color: lightgray;
+}
+
+.inbox-row .list-group-item.unread {
+    background-color: #7da5ccd0;
+}
+
+.inbox-row .list-group-item.unread:hover {
+    background-color: lightsteelblue;
+}
+
+.inbox-thread {
+    height: 100%;
+}
+
+.thread-msg {
+    border: 1px solid rgb(119, 119, 119);
+    border-radius: 4px;
+    max-width: 400px;
+    color: white;
+}
+
+.thread-msg.sent {
+    background-color: #0d6efd;
+    margin-left: 4rem;
+}
+
+.thread-msg.received {
+    background-color: rgb(102, 103, 107);
+    margin-right: 4rem;
+}
+
+#messaging-footer > .input-group {
+    padding-top: 1rem;
+}
+
+label.control-label {
+    padding-right: 0.5em;
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: right;
+}
+
+/* Alter standard bootstrap checkbox input */
+[id^="thread_select"] {
+    border: 2px solid lightslategray !important;
+    border-radius: 10px !important;
+    clip-path: circle(43% at 50% 50%);
+}
+
+/* End messaging sidebar styling */
 
 .content-section {
     background: #ffffff;
@@ -92,4 +233,15 @@ a.article-title:hover {
      flex-direction: column;
      width: 315px;
      margin: 20px;
+}
+
+/* .studentclassbox.active {
+
+} */
+.studentclassbox.closed {
+    opacity: 50%;
+}
+.studentclassbox.addclassbox {
+    opacity: 50%;
+    border: 5px dashed #5f788a;
 }

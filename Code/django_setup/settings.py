@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'waitlist.apps.WaitlistConfig',
     'studentview.apps.StudentviewConfig',
     'users.apps.UsersConfig',
+    'messaging.apps.MessagingConfig',
     'crispy_forms',
     'crispy_bootstrap4',
 ]

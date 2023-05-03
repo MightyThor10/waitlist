@@ -10,11 +10,11 @@ from django import forms
 from django.db.models import Q
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
+
+from messaging.forms import MessageForm
+from messaging.models import Message
 from users.models import StudentProfile
 from random import shuffle
-from users.models import StudentProfile
-
-# Create your views here.
 
 
 def home(request):
@@ -26,35 +26,117 @@ def home(request):
     message =  ""
     isProfessor = False
     isStudent = False
+    inbox = []
+    unread_messages = 0
+    messageable_users = None
+    message_form = None
 
-    if (not currentUser.is_anonymous):
-        if (groupOfUser):
-            if (groupOfUser.id == 1):
-                classes = ClassWaitlist.objects.filter(professor=currentUser.pk, archived=False)
+    if currentUser.is_anonymous:
+        message = "Log in to view your classes!"
+    else:
+        if groupOfUser:
+            if groupOfUser.id == 1:
+                classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
                 isProfessor = True
-            elif (groupOfUser.id == 2):
+                # Generate unique list of users in professor's waitlists
+                messageable_users = list(set((
+                        ticket.student.id, ticket.student.get_full_name()
+                        # StudentProfile.objects.get(id=ticket.student.id).preferred_name
+                    ) for ticket in (
+                        c.studentticket_set.all().first() for c in classes if c.studentticket_set.count())
+                ))
+
+            elif groupOfUser.id == 2:
                 isStudent = True
+
                 studentTickets = StudentTicket.objects.filter(student=currentUser.pk)
                 classPKs = set()
+
                 for ticket in studentTickets:
                     classPKs.add(ticket.class_waitlist.pk)
+
                 classPKs = list(classPKs)
-                classes = ClassWaitlist.objects.filter(pk__in=classPKs, archived=False)
+                classes = ClassWaitlist.objects.filter(pk__in=classPKs)
+
+                for c in classes:
+                    c.numberInClass = StudentTicket.objects.filter(class_waitlist=c).count()
+                    c.positionInWaitlist = StudentTicket.objects.get(
+                            class_waitlist=c,
+                            student=currentUser
+                        ).position
+
+                # Generate unique list of professors who run the students' waitlists
+                messageable_users = list(set((
+                        c.professor.id, c.professor.get_full_name()
+                    ) for c in classes))
         else:
             message = "You are not logged in as a professor or a student! This is a legacy account. Please make a new one"
-    if (currentUser.is_anonymous):
-        message = "Log in to view your classes!"
 
-    if isStudent:
-        for c in classes:
-            c.positionInWaitlist = (StudentTicket.objects.get(class_waitlist=c, student=currentUser)).position
-            c.numberInClass = (StudentTicket.objects.filter(class_waitlist=c)).count()
+        if messageable_users:
+            message_form = MessageForm(currentUser, messageable_users)
 
-    context={
-        'classes':classes,
-        'message':message,
-        'isProfessor':isProfessor,
-        'isStudent':isStudent
+            user_messages = Message.objects.filter(
+                    Q(sender=currentUser) | Q(receiver=currentUser)
+                ).order_by('send_date')
+
+            inbox_userIDs = (
+                set(user_messages.values_list('sender', flat=True).distinct()) |
+                set(user_messages.values_list('receiver', flat=True).distinct()))
+            inbox_userIDs.discard(currentUser.id)
+
+            for thread_userID in inbox_userIDs:
+                unread = False
+                thread = []
+                thread_messages = user_messages.filter(
+                        Q(sender=thread_userID) | Q(receiver=thread_userID)
+                    ).order_by('send_date')
+
+                thread_userObj = User.objects.get(id=thread_userID)
+                if thread_userObj.groups.all().first() == 2:
+                    thread_user_pref_name = StudentProfile.objects.get(id=thread_userID).preferred_name
+                else:
+                    thread_user_pref_name = thread_userObj.get_full_name()
+
+                for msg in thread_messages:
+                    thread.append({
+                        'received': msg.receiver == request.user,
+                        'body': msg.body,
+                        'send_date': msg.send_date,
+                        'read_date': msg.read_date
+                    })
+                    if not (unread or msg.read_date or msg.sender == request.user):
+                        unread = True
+                        unread_messages += 1
+
+                message_snippet = (msg.body[:60] + '...') if len(msg.body) > 75 else msg.body
+
+                entry_dict = {
+                    'name': thread_user_pref_name,
+                    'nameID': thread_userID,
+                    'message_snippet': message_snippet,
+                    'last_received': msg.getInboxDate(),
+                    'unread': unread,
+                    'thread': thread
+                }
+                # Insert inbox entry into inbox based on most recent msg's send date
+                if inbox:
+                    thread_date = thread_messages.first().send_date
+                    for i, entry in enumerate(inbox):
+                        if thread_date > entry['thread'][0]['send_date'] or i == len(inbox) - 1:
+                            inbox.insert(i, entry_dict)
+                            break
+                else:
+                    inbox = [entry_dict]
+
+    context = {
+        'classes': classes,
+        'message': message,
+        'isProfessor': isProfessor,
+        'isStudent': isStudent,
+        'inbox': inbox,
+        'unread_messages': unread_messages,
+        'messageable_users': messageable_users,
+        'message_form': message_form
     }
     return render(request,'studentview/home.html', context)
 

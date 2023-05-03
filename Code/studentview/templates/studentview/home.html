@@ -10,18 +10,19 @@
                         Create Waitlist
                     </a>
                 </div>
-            {% if classes is not empty %}
-                <div class="col text-center">
-                    <a href="/studenthome/closeclass" type="button" class="btn btn-primary" style="width: 200px;">
-                        Close Class
-                    </a>
-                </div>
-            {% endif %}
+                {% if classes is not empty %}
+                    <div class="col text-center">
+                        <a href="/studenthome/closeclass" type="button" class="btn btn-primary" style="width: 200px;">
+                            Close Class
+                        </a>
+                    </div>
+                {% endif %}
                 <div class="col text-center">
                     <a href="/studenthome/archive" type="button" class="btn btn-primary" style="width: 200px;">
                         Archived Classes
                     </a>
                 </div>
+            </div>
         {% endif %}
         {% if isStudent %}
             <div class="row my-3">
