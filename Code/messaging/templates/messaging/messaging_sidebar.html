@@ -312,63 +312,65 @@
         document.getElementById("send-message-btn").classList.remove("disabled");
     });
 
-    // Add async listener to keep inbox updated while JS context is active
-    let updateInbox = setInterval(function(timeout) {
-        let xhr = new XMLHttpRequest();
+    {% if message_form %}
+        // Add async listener to keep inbox updated while JS context is active
+        let updateInbox = setInterval(function(timeout) {
+            let xhr = new XMLHttpRequest();
 
-        var unread_count = document.getElementById("unread-count").getAttribute("data-count");
+            var unread_count = document.getElementById("unread-count").getAttribute("data-count");
 
-        if (!unread_count) {
-            unread_count = 0;
-        }
+            if (!unread_count) {
+                unread_count = 0;
+            }
 
-        var url = `/messaging/read/?unread_count=${unread_count}`;
-        xhr.open('GET', url, true);
-        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-        xhr.send();
+            var url = `/messaging/read/?unread_count=${unread_count}`;
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xhr.send();
 
-        xhr.onload = function () {
-            if (xhr.status === 201) {
-                var data = JSON.parse(xhr.response);
-                if (!data['up-to-date']) {
-                    // Update unread count
-                    document.getElementById("unread-count").setAttribute("data-count", data['new_unread_count']);
-                    // Update thread with new messages an add inbox rows to inbox
-                    for (i=0; i < data['inbox_threads'].length; i++) {
-                        var thread_nameID = data['inbox_threads'][i]['nameID'];
-                        var thread_html = data['inbox_threads'][i]['thread_html'];
-                        var inbox_thread_html = data['inbox_threads'][i]['inbox_thread_html'];
+            xhr.onload = function () {
+                if (xhr.status === 201) {
+                    var data = JSON.parse(xhr.response);
+                    if (!data['up-to-date']) {
+                        // Update unread count
+                        document.getElementById("unread-count").setAttribute("data-count", data['new_unread_count']);
+                        // Update thread with new messages an add inbox rows to inbox
+                        for (i=0; i < data['inbox_threads'].length; i++) {
+                            var thread_nameID = data['inbox_threads'][i]['nameID'];
+                            var thread_html = data['inbox_threads'][i]['thread_html'];
+                            var inbox_thread_html = data['inbox_threads'][i]['inbox_thread_html'];
 
-                        var old_thread = document.getElementById("thread" + thread_nameID);
-                        if (old_thread) {
-                            if (old_thread.style.display == "block") {
-                                // Thread is active, mark as read.
-                                // Callback will handle unread count
-                                read_thread(thread_nameID);
+                            var old_thread = document.getElementById("thread" + thread_nameID);
+                            if (old_thread) {
+                                if (old_thread.style.display == "block") {
+                                    // Thread is active, mark as read.
+                                    // Callback will handle unread count
+                                    read_thread(thread_nameID);
+                                }
+                                old_thread.innerHTML = thread_html;
+                            } else {
+                                thread_html = `<div id="thread${thread_nameID}" class="inbox-thread px-4" style="display: none;">
+                                                ${thread_html}
+                                            </div>`;
+                                document.getElementById("view-thread-container").insertAdjacentHTML("afterbegin", thread_html);
                             }
-                            old_thread.innerHTML = thread_html;
-                        } else {
-                            thread_html = `<div id="thread${thread_nameID}" class="inbox-thread px-4" style="display: none;">
-                                               ${thread_html}
-                                           </div>`;
-                            document.getElementById("view-thread-container").insertAdjacentHTML("afterbegin", thread_html);
+                            // Delete inbox row with updated HTML from response, add new one to top
+                            var inbox_row = document.getElementById("inbox-thread" + thread_nameID);
+                            if (inbox_row) {
+                                inbox_row.closest(".inbox-row").remove();
+                            }
+                            document.getElementById("inbox").insertAdjacentHTML("afterbegin", inbox_thread_html);
+                            // Restore click handler to new element
+                            document.getElementById("inbox-thread" + thread_nameID).closest(".inbox-row").addEventListener("click", inbox_row_click_handler);
                         }
-                        // Delete inbox row with updated HTML from response, add new one to top
-                        var inbox_row = document.getElementById("inbox-thread" + thread_nameID);
-                        if (inbox_row) {
-                            inbox_row.closest(".inbox-row").remove();
-                        }
-                        document.getElementById("inbox").insertAdjacentHTML("afterbegin", inbox_thread_html);
-                        // Restore click handler to new element
-                        document.getElementById("inbox-thread" + thread_nameID).closest(".inbox-row").addEventListener("click", inbox_row_click_handler);
-                    }
-                    // Scroll message window to bottom in case text is more than one line
-                    var thread_view = document.querySelectorAll('.message-thread[style*="block"]')[0];
-                    document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
+                        // Scroll message window to bottom in case text is more than one line
+                        var thread_view = document.querySelectorAll('.message-thread[style*="block"]')[0];
+                        document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
 
+                    }
                 }
             }
-        }
-    }, 7500);
+        }, 7500);
+    {% endif %}
 </script>
