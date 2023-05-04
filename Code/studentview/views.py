@@ -38,12 +38,12 @@ def home(request):
             if groupOfUser.id == 1:
                 classes = ClassWaitlist.objects.filter(professor=currentUser.pk)
                 isProfessor = True
+
                 # Generate unique list of users in professor's waitlists
                 messageable_users = list(set((
                         ticket.student.id, ticket.student.get_full_name()
                         # StudentProfile.objects.get(id=ticket.student.id).preferred_name
-                    ) for ticket in (
-                        c.studentticket_set.all().first() for c in classes if c.studentticket_set.count())
+                    ) for ticket in StudentTicket.objects.filter(class_waitlist__in=classes)
                 ))
 
             elif groupOfUser.id == 2:
