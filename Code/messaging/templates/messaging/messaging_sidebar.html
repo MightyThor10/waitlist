@@ -361,6 +361,12 @@
                                                 ${thread_html}
                                             </div>`;
                                 document.getElementById("view-thread-container").insertAdjacentHTML("afterbegin", thread_html);
+                                // Add name title for new threads
+                                var select_input = document.getElementById("compose-input-user");
+                                document.getElementById("compose-header").insertAdjacentHTML("beforeend",
+                                    `<div id="thread-name${thread_nameID}" class="col inbox-thread-name h4 text-center" style="display: block;">
+                                        ${select_input.options[select_input.selectedIndex].text}
+                                    </div>`);
                             }
                             // Delete inbox row with updated HTML from response, add new one to top
                             var inbox_row = document.getElementById("inbox-thread" + thread_nameID);
@@ -371,9 +377,11 @@
                             // Restore click handler to new element
                             document.getElementById("inbox-thread" + thread_nameID).closest(".inbox-row").addEventListener("click", inbox_row_click_handler);
                         }
-                        // Scroll message window to bottom in case text is more than one line
+                        // Scroll message window to bottom if user is monitoring thread
                         var thread_view = document.querySelectorAll('.message-thread[style*="block"]')[0];
-                        document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
+                        if (thread_view) {
+                            document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
+                        }
 
                     }
                 }
