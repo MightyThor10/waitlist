@@ -261,10 +261,26 @@
         if (thread_view) {
             // Last thing could add, open new/navigate to existing thread from compose screen
             thread_view.insertAdjacentHTML("beforeend", placeholderHtml);
+            // Scroll message window to bottom
+            document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
+        } else {
+            // New message thread
+            // Hide recipient fields
+            var compose_new_field = document.getElementsByClassName("compose-new");
+            compose_new_field[0].style.display = "none";
+            compose_new_field[1].style.display = "none";
+            compose_new_field[2].style.display = "none";
+            // Create thread and name title
+            document.getElementById("view-thread-container").insertAdjacentHTML("beforeend",
+                `<div id="thread${form_data['receiverID']}" class="message-thread px-4" style="display: block;">
+                     ${placeholderHtml}
+                 </div>`);
+            var select_input = document.getElementById("compose-input-user");
+            document.getElementById("compose-header").insertAdjacentHTML("beforeend",
+                `<div id="thread-name${form_data['receiverID']}" class="col inbox-thread-name h4 text-center" style="display: block;">
+                     ${select_input.options[select_input.selectedIndex].text}
+                 </div>`);
         }
-
-        // Scroll message window to bottom
-        document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
 
         xhr.onload = function () {
             var processing_icon = document.querySelectorAll(".new.thread-msg >i")[0];
@@ -276,9 +292,13 @@
                 // Replace processing icon with message body
                 processing_icon.outerHTML = response_data['message_body'];
                 // Scroll message window to bottom in case text is more than one line
+                var thread_view = document.getElementById("thread" + response_data["receiverID"]);
                 document.getElementById("view-thread-container").scrollTop = thread_view.scrollHeight;
                 // Delete inbox row with updated HTML from response, add new one to top
-                document.getElementById("inbox-thread" + response_data['receiverID']).closest(".inbox-row").remove()
+                var inbox_entry = document.getElementById("inbox-thread" + response_data['receiverID']);
+                if (inbox_entry) {
+                    inbox_entry.closest(".inbox-row").remove();
+                }
                 document.getElementById("inbox").insertAdjacentHTML("afterbegin", response_data['inbox_thread_html']);
                 // Restore click handler to new element
                 document.getElementById("inbox-thread" + response_data['receiverID']).closest(".inbox-row").addEventListener("click", inbox_row_click_handler);

@@ -142,7 +142,8 @@ def sendMessage(request):
         data = {
             'inbox_thread_html': buildInboxThread(message, receiverID, False),
             'message_body': message.body,
-            'receiverID': receiverID
+            'receiverID': receiverID,
+            'preferred_name': receiver.get_full_name(),# Should add preferred name
         }
 
         return JsonResponse(data, status=201)
