@@ -1,0 +1,324 @@
+:root {
+    --banner-gradient-1: #5100e7;
+    --banner-gradient-2: #3b4a5a;
+}
+
+.navbar {
+    background-image: linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%);
+    border-radius: 20px 100px 20px;
+}
+
+.site-header .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    transition: color 0.3s ease-in-out;
+}
+
+.site-header .navbar-brand:hover {
+    color: #000000;
+}
+
+.site-header .navbar-nav .nav-link {
+    color: #ffffff;
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+.site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+}
+
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle closest-side, #B0E0E6, #d5f8f9);
+    color: #333333;
+    margin-top: 4rem;
+    overflow-x: hidden;
+}
+
+body > * {
+    flex-shrink: 0;
+}
+
+#page-flex-row {
+  flex-grow: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+    font-weight: 500;
+}
+
+ul {
+    margin: 0;
+}
+
+.bg-steel {
+    background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+    transition: color 0.3s;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+    font-weight: 600;
+}
+         
+         
+.btn {
+    background-image: linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%);
+    margin: 10px;
+    padding: 15px 15px; /* Adjust horizontal padding here */
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+
+ 
+ 
+
+
+
+
+
+
+
+
+/* Messaging sidebar styling */
+
+#messaging-sidebar-button, #messaging-sidebar-container {
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.25);
+    border-radius: 0.4rem;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-right: 0;
+}
+
+#messaging-sidebar-button {
+    padding-top: 0.55rem;
+    padding-bottom: 0.45rem;
+    transition: background-color 0.3s;
+}
+
+#messaging-sidebar-button:hover {
+    background-color: #e0e0e0;
+}
+
+.fas[data-count]{
+    position:relative;
+}
+
+.fas[data-count]:after{
+    position: absolute;
+    right: -0.75em;
+    top: -.5em;
+    content: attr(data-count);
+    padding: 0.2em;
+    border-radius: 10em;
+    line-height: .9em;
+    color: white;
+    background: rgba(255,0,0,.9);
+    text-align: center;
+    min-width: 1.6em;
+    font: bold .4em sans-serif;
+}
+
+#messaging-sidebar-container {
+    border-radius: 0.5rem;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-left: 0;
+    margin-bottom: 1em;
+}
+
+#messaging-sidebar-content {
+    min-width: 400px;
+}
+
+.inbox-row .list-group-item {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+}
+
+.inbox-row:not(:first-child) .list-group-item {
+    border-top: 0;
+}
+
+.inbox-row .list-group-item:hover {
+    cursor: pointer;
+}
+
+.inbox-row .list-group-item:hover:not(.unread) {
+    background-color: #e0e0e0;
+}
+
+.inbox-row .list-group-item.unread {
+    background-color: #7da5ccd0;
+}
+
+.inbox-row .list-group-item.unread:hover {
+    background-color: #b0c4de;
+}
+
+.inbox-thread {
+    height: 100%;
+}
+
+.thread-msg {
+    border: 1px solid rgb(119, 119, 119);
+    border-radius: 4px;
+    max-width: 400px;
+    color: white
+    ;
+}
+
+.thread-msg.sent {
+background-color: #0d6efd;
+margin-left: 4rem;
+}
+
+.thread-msg.received {
+background-color: rgb(102, 103, 107);
+margin-right: 4rem;
+}
+
+#messaging-footer > .input-group {
+padding-top: 1rem;
+}
+
+label.control-label {
+padding-right: 0.5em;
+padding-top: 7px;
+margin-bottom: 0;
+text-align: right;
+}
+
+/* Alter standard bootstrap checkbox input */
+[id^="thread_select"] {
+border: 2px solid lightslategray !important;
+border-radius: 10px !important;
+clip-path: circle(43% at 50% 50%);
+}
+
+/* End messaging sidebar styling */
+
+.content-section {
+background: #ffffff;
+padding: 20px 30px;
+border: 1px solid #e0e0e0;
+border-radius: 5px;
+margin-bottom: 20px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.article-title {
+color: #444444;
+}
+
+a.article-title:hover {
+color: #428bca;
+text-decoration: none;
+}
+
+.article-content {
+white-space: pre-line;
+}
+
+.article-img {
+height: 65px;
+width: 65px;
+margin-right: 16px;
+}
+
+.article-metadata {
+padding-bottom: 1px;
+margin-bottom: 4px;
+border-bottom: 1px solid #e3e3e3;
+}
+
+.article-metadata a:hover {
+color: #333;
+text-decoration: none;
+}
+
+.article-svg {
+width: 25px;
+height: 25px;
+vertical-align: middle;
+}
+
+.account-img {
+height: 125px;
+width: 125px;
+margin-right: 20px;
+margin-bottom: 16px;
+}
+
+.account-heading {
+font-size: 2.5rem;
+}
+
+/* New css specs created by Annemarie Zheng */
+
+.studentclassbox {
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+    display: flex;
+    flex-direction: column;
+    width: 315px;
+    margin: 20px;
+    /* Add transition for the hover effect */
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .studentclassbox:hover {
+    /* Apply hover effect */
+    transform: translateY(-10px);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 40px 100px;
+  }
+  
+  .studentclassbox.closed {
+    opacity: 0.5;
+  }
+  
+  .studentclassbox.addclassbox {
+    opacity: 0.5;
+    border: 5px dashed #5f788a;
+    transition: border 0.3s;
+  }
+  
+  .studentclassbox.addclassbox:hover {
+    border: 5px dashed #428bca;
+  }
+  
